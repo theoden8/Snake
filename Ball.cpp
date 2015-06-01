@@ -31,6 +31,7 @@ Ball Ball::operator- (const Ball &sec) const {
 	return Ball(x - sec.x, y - sec.y);
 }
 
+
 double Ball::degree () const {
 	return atan2(y, x) / M_PI * 180;
 }
