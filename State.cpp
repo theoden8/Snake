@@ -1,7 +1,7 @@
 #include <cstdlib>
 
-#include "State.h"
-#include "Functions.h"
+#include "State.hpp"
+#include "Functions.hpp"
 
 State::State(int latency, bool pause1, int width, int height) :
 	pause1(pause1), running(0),

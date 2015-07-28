@@ -1,5 +1,5 @@
-#include "Wall.h"
-#include "Functions.h"
+#include "Wall.hpp"
+#include "Functions.hpp"
 
 Walls::Walls(std::string folder, int width, int height) {
 	for(int i = 0; i <= 0; ++i) {

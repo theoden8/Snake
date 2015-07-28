@@ -2,7 +2,7 @@
 
 #include <string>
 #include <map>
-#include "Ball.h"
+#include "Ball.hpp"
 
 struct State {
 	std::string folder;

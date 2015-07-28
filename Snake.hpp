@@ -4,10 +4,10 @@
 #include <string>
 #include <map>
 
-#include "Imagg.h"
-#include "Ball.h"
-#include "Aimer.h"
-#include "Router.h"
+#include "Imagg.hpp"
+#include "Ball.hpp"
+#include "Aimer.hpp"
+#include "Router.hpp"
 
 struct Walls;
 struct Fruits;

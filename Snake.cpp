@@ -2,10 +2,10 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "Snake.h"
-#include "Wall.h"
-#include "Fruit.h"
-#include "Functions.h"
+#include "Snake.hpp"
+#include "Wall.hpp"
+#include "Fruit.hpp"
+#include "Functions.hpp"
 
 Snakes::Snakes(std::string folder, int X, int Y):
 	snake(1, Ball(X >> 1, Y >> 1)),
