@@ -1,9 +1,9 @@
 #include <cstdlib>
 
-#include "Fruit.h"
-#include "Wall.h"
-#include "Snake.h"
-#include "Functions.h"
+#include "Fruit.hpp"
+#include "Wall.hpp"
+#include "Snake.hpp"
+#include "Functions.hpp"
 
 Fruits::Fruits(std::string folder, int width, int height, int fruantity):
 	width(width), height(height), fruantity(fruantity), fru_delta(0), frufru(0)

@@ -3,8 +3,8 @@
 #include <vector>
 #include <string>
 
-#include "Imagg.h"
-#include "Ball.h"
+#include "Imagg.hpp"
+#include "Ball.hpp"
 
 struct Walls;
 struct Snakes;

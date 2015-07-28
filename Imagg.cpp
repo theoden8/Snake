@@ -2,7 +2,7 @@
 #include <fstream>
 #include <sstream>
 
-#include "Imagg.h"
+#include "Imagg.hpp"
 
 Imagg::Imagg()
 {
@@ -45,7 +45,7 @@ bool Imagg::load(const std::string &filename)
 	{
 		File.close();
 		id = 0;
-		//std::cerr << "TGA loading: wrong bit depth" << std::endl;
+		//std::cerr << "TGA loading: wrong bit dep.hpp" << std::endl;
 		return false;
 	}
 

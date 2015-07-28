@@ -1,4 +1,4 @@
-LIBRARIES = Imagg.h Wall.h Ball.h Snake.h Fruit.h Functions.h State.h Aimer.h
+LIBRARIES = Imagg.hpp Wall.hpp Ball.hpp Snake.hpp Fruit.hpp Functions.hpp State.hpp Aimer.hpp
 OBJECTS = main_snake.cpp Imagg.cpp Wall.cpp Ball.cpp Snake.cpp Fruit.cpp Functions.cpp State.cpp Aimer.cpp
 
 all : $(OBJECTS) $(LIBRARIES)

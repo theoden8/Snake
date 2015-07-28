@@ -1,6 +1,6 @@
 #include <math.h>
 
-#include "Ball.h"
+#include "Ball.hpp"
 
 Ball::Ball()
 {

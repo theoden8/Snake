@@ -4,10 +4,10 @@
 #include <queue>
 #include <string>
 
-#include "Ball.h"
-#include "Snake.h"
-#include "Wall.h"
-#include "Fruit.h"
+#include "Ball.hpp"
+#include "Snake.hpp"
+#include "Wall.hpp"
+#include "Fruit.hpp"
 
 std::map <unsigned char, Ball> GetSteps();
 std::map <Ball, int> bfs(std::map <Ball, bool> &sonar, const Ball &from);

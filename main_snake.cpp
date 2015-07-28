@@ -8,13 +8,13 @@
 #include <cmath>
 #include <iostream>
 
-#include "Ball.h"
-#include "Wall.h"
-#include "Fruit.h"
-#include "Snake.h"
-#include "Functions.h"
-#include "State.h"
-#include "Aimer.h"
+#include "Ball.hpp"
+#include "Wall.hpp"
+#include "Fruit.hpp"
+#include "Snake.hpp"
+#include "Functions.hpp"
+#include "State.hpp"
+#include "Aimer.hpp"
 
 State *state;
 Snakes *s;

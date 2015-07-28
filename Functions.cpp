@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cmath>
 
-#include "Functions.h"
+#include "Functions.hpp"
 
 std::map <unsigned char, Ball> GetSteps() {
 	std::map <unsigned char, Ball> steps;
