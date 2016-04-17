@@ -5,7 +5,7 @@
 #include "Snake.hpp"
 #include "Functions.hpp"
 
-Fruits::Fruits(std::string folder, int width, int height, int fruantity):
+Fruit::Fruit(std::string folder, int width, int height, int fruantity):
 	width(width), height(height), fruantity(fruantity), fru_delta(0), frufru(0)
 {
 	for(int i = 0; i < 8; ++i) {
@@ -13,7 +13,7 @@ Fruits::Fruits(std::string folder, int width, int height, int fruantity):
 	}
 }
 
-void Fruits::Keyboard(char key) {
+void Fruit::Keyboard(char key) {
 	switch(key) {
 		case 'm' :
 			if(fru_delta < 0) {
@@ -33,7 +33,7 @@ void Fruits::Keyboard(char key) {
 	}
 }
 
-void Fruits::Push_Back (Walls *w, Snakes *s, int new_fruantity) {
+void Fruit::Push_Back (Wall *w, Snake *s, int new_fruantity) {
 	for(int i = 0; i < new_fruantity; ++i) {
 		if(fruit_Storage.size() >= width * height - s->snake.size() - (w->walls.size() >> 1) + 3) {
 			return;
@@ -50,7 +50,7 @@ void Fruits::Push_Back (Walls *w, Snakes *s, int new_fruantity) {
 	}
 }
 
-void Fruits::DeleteFruit (const Ball &eated_fruit) {
+void Fruit::DeleteFruit (const Ball &eated_fruit) {
 	std::vector <Ball> new_fruit_Storage;
 	for(auto fruit : fruit_Storage) {
 		if (!(eated_fruit == fruit)) {

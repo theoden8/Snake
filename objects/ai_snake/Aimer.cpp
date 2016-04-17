@@ -1,28 +1,26 @@
 #include "Aimer.hpp"
 
-Aimer::Aimer() :
+Aimer::Aimer(Snake *s, Wall *s):
+	s(s), w(w)
 {}
 
 void Aimer::AddObstacle(std::vector <Ball> &objects) {
-	for(auto ball : objects) {
+	for(const auto &ball : objects)
 		sonar[ball] = true;
-	}
 }
 
-void Aimer::DeleteSnakesObstacles() {
+void Aimer::DeleteSnakeObstacles() {
 	std::map <Ball, int> way_to = bfs(sonar, from);
-	for(int i = 1; i < s->snake.size(); ++i) {
-		if(way_to[s->snake[i]] > s->snake.size() - i) {
+	for(int i = 1; i < s->snake.size(); ++i)
+		if(way_to[s->snake[i]] > s->snake.size() - i)
 			sonar.erase(s->snake[i]);
-		}
-	}
 }
 
 void Aimer::Initialize() {
 	AddObstacle(w->walls);
 	AddObstacle(s->snake);
 	from = s->snake.front();
-	DeleteSnakesObstacles();
+	DeleteSnakeObstacles();
 	sonar.erase(s->snake.back());
 	range = -1;
 	way_to = bfs(sonar, from);
@@ -31,13 +29,13 @@ void Aimer::Initialize() {
 
 Ball Aimer::GetTargetFurthest() {
 	Initialize();
-	for(auto it_fruit : f->fruit_Storage) {
-		if (way_to.count(it_fruit)) {
-			if (
+	for(const auto &f : f->fruit_Storage) {
+		if(way_to.count(f)) {
+			if(
 				range == -1
-				|| range > way_to[it_fruit]
+				|| range > way_to[f]
 			) {
-				target = it_fruit;
+				target = f;
 				range = way_to[target];
 			}
 		}
@@ -47,12 +45,10 @@ Ball Aimer::GetTargetFurthest() {
 
 Ball Aimer::GetTargetClosest() {
 	Initialize();
-	for(auto it_fruit : f->fruit_Storage) {
-		if (way_to.count(it_fruit)) {
-			if (
-				range < way_to[it_fruit]
-			) {
-				target = it_fruit;
+	for(const auto &f : f->fruit_Storage) {
+		if(way_to.count(f)) {
+			if(range < way_to[f]) {
+				target = f;
 				range = way_to[target];
 			}
 		}

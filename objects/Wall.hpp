@@ -6,9 +6,9 @@
 #include "Image.hpp"
 #include "Ball.hpp"
 
-struct Walls {
+struct Wall {
 	Imagg cageGallery[0];
 	std::vector <Ball> walls;
-	Walls(std::string folder, int width, int height);
+	Wall(std::string folder, int width, int height);
 	void Keyboard(char key);
 };

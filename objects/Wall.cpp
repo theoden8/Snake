@@ -1,7 +1,7 @@
 #include "Wall.hpp"
 #include "Functions.hpp"
 
-Walls::Walls(std::string folder, int width, int height) {
+Wall::Wall(std::string folder, int width, int height) {
 	for(int i = 0; i <= 0; ++i) {
 		cageGallery[i].load(folder + "_textures/" + std::to_string(i) + "_WALL.tga");
 	}
@@ -15,5 +15,5 @@ Walls::Walls(std::string folder, int width, int height) {
 	}
 };
 
-void Walls::Keyboard (char key) {
+void Wall::Keyboard (char key) {
 }

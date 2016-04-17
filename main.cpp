@@ -17,9 +17,9 @@
 #include "Aimer.hpp"
 
 State *state;
-Snakes *s;
-Walls *w;
-Fruits *f;
+Snake *s;
+Wall *w;
+Fruit *f;
 Aimer *aimer;
 
 void renderBitmapString(float x, float y, void *font, const char *string) {
@@ -53,7 +53,7 @@ void Display () {
 	glColor3f(1.0, 1.0, 1.0);
 
 	renderBitmapString(state->width + 1, state->height * 0.97, GLUT_BITMAP_TIMES_ROMAN_24, std::string("Points   " + std::to_string(f->frufru) + "..").c_str());
-	renderBitmapString(state->width + 1, state->height * 0.93, GLUT_BITMAP_TIMES_ROMAN_24, std::string("Fruits   < " + std::to_string(f->fruit_Storage.size()) + " >").c_str());
+	renderBitmapString(state->width + 1, state->height * 0.93, GLUT_BITMAP_TIMES_ROMAN_24, std::string("Fruit   < " + std::to_string(f->fruit_Storage.size()) + " >").c_str());
 	renderBitmapString(state->width + 1, state->height * 0.89, GLUT_BITMAP_TIMES_ROMAN_24, std::string("Latency   < " + std::to_string(state->latency) + " >").c_str());
 	if(state->pause1) {
 		renderBitmapString(state->width * 0.45, state->height * 0.75, GLUT_BITMAP_TIMES_ROMAN_24, "[Paused]");
@@ -69,7 +69,7 @@ void Display () {
 	glEnable(GL_TEXTURE_2D);
 //	Cursor
 //	DrawObject(Imagg(),,)
-//	Snakes
+//	Snake
 	for (int i = 0; i < s->snake.size(); ++i) {
 		GLuint id;
 		double degree = 90;
@@ -86,12 +86,12 @@ void Display () {
 		DrawObject(s->snake[i].x, s->snake[i].y, id, degree);
 	}
 
-//	Walls
+//	Wall
 	for (auto wall : w->walls) {
 		double degree = 90;
 		DrawObject(wall.x, wall.y, w->cageGallery[0].id, degree);
 	}
-//	Fruits
+//	Fruit
 	for (auto fruit : f->fruit_Storage) {
 		double degree = 90;
 		DrawObject(fruit.x, fruit.y, f->fruitsGallery[s->ID].id, degree);
@@ -211,9 +211,9 @@ int main(int argc, char **argv) {
 	glutSpecialFunc(Arrow_Keys);
 	glutSetCursor(GLUT_CURSOR_NONE);
 
-	s = new Snakes(state->folder, state->width, state->height);
-	w = new Walls(state->folder, state->width, state->height);
-	f = new Fruits(state->folder, state->width, state->height, 2);
+	s = new Snake(state->folder, state->width, state->height);
+	w = new Wall(state->folder, state->width, state->height);
+	f = new Fruit(state->folder, state->width, state->height, 2);
 	aimer = new Aimer();
 	f->Push_Back(w, s, 2);
 	if(argc == 4) {

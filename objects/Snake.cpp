@@ -7,7 +7,7 @@
 #include "Fruit.hpp"
 #include "Functions.hpp"
 
-Snakes::Snakes(std::string folder, int X, int Y):
+Snake::Snake(std::string folder, int X, int Y):
 	snake(1, Ball(X >> 1, Y >> 1)),
 //int
 	ID(0), mode(0), aim(0),
@@ -40,7 +40,7 @@ Snakes::Snakes(std::string folder, int X, int Y):
 	AimName[4] = "Tail";
 }
 
-void Snakes::Keyboard(char key) {
+void Snake::Keyboard(char key) {
 	switch(key) {
 		case 'g' :
 			safe = !safe;
@@ -79,7 +79,7 @@ void Snakes::Keyboard(char key) {
 	}
 }
 
-void Snakes::AutoCorrection(Ball point, Walls *w, Fruits *f) {
+void Snake::AutoCorrection(Ball point, Wall *w, Fruit *f) {
 	std::map <Ball, bool> sonar;
 		AddObstacle(sonar, w->walls);
 		AddObstacle(sonar, snake);
@@ -90,13 +90,13 @@ void Snakes::AutoCorrection(Ball point, Walls *w, Fruits *f) {
 	}
 }
 
-void Snakes::ArtificialMove(Walls *w, Fruits *f) {
+void Snake::ArtificialMove(Wall *w, Fruit *f) {
 	Ball target,
 	     point;
 	std::map <Ball, bool> sonar;
 		AddObstacle(sonar, w->walls);
 		AddObstacle(sonar, snake);
-		DeleteSnakesObstacles(sonar, snake.front());
+		DeleteSnakeObstacles(sonar, snake.front());
 	int range = -1;
 	switch(aim) {
 		case 0:
@@ -128,7 +128,7 @@ void Snakes::ArtificialMove(Walls *w, Fruits *f) {
 			target = GetClosestFruit(f, range, sonar, snake.front());
 			break;
 //		case 5:
-//			target = GetSnakesTail(range, sonar, snake.front());
+//			target = GetSnakeTail(range, sonar, snake.front());
 			break;
 	}
 	switch(mode) {
@@ -146,11 +146,11 @@ void Snakes::ArtificialMove(Walls *w, Fruits *f) {
 }
 
 //C	Sir Robin
-void Snakes::AutoCD_C (Walls *w, Fruits *f) {
+void Snake::AutoCD_C (Wall *w, Fruit *f) {
 	std::map <Ball, bool> sonar;
 		AddObstacle(sonar, w->walls);
 		AddObstacle(sonar, snake);
-		DeleteSnakesObstacles(sonar, snake.front());
+		DeleteSnakeObstacles(sonar, snake.front());
 	int MAX = 0, FRUIT = 1e9;
 	Ball point = varDirection;
 	for (auto it_step : GetSteps()) {
@@ -179,13 +179,13 @@ void Snakes::AutoCD_C (Walls *w, Fruits *f) {
 	SetStep(point);
 }
 
-void Snakes::AddObstacle(std::map <Ball, bool> &sonar, std::vector <Ball> &objects) {
+void Snake::AddObstacle(std::map <Ball, bool> &sonar, std::vector <Ball> &objects) {
 	for(auto ball : objects) {
 		sonar[ball] = true;
 	}
 }
 
-void Snakes::DeleteSnakesObstacles(std::map <Ball, bool> &sonar, Ball &from) {
+void Snake::DeleteSnakeObstacles(std::map <Ball, bool> &sonar, Ball &from) {
 	std::map <Ball, int> way_to = bfs(sonar, from);
 	for(int i = 1; i < snake.size(); ++i) {
 		if(way_to[snake[i]] > snake.size() - i) {
@@ -195,7 +195,7 @@ void Snakes::DeleteSnakesObstacles(std::map <Ball, bool> &sonar, Ball &from) {
 }
 
 
-Ball Snakes::GetClosestFruit(Fruits *f, int &range, std::map <Ball, bool> &sonar, Ball &from) {
+Ball Snake::GetClosestFruit(Fruit *f, int &range, std::map <Ball, bool> &sonar, Ball &from) {
 	std::map <Ball, int> way_to = bfs(sonar, from);
 	Ball target = f->fruit_Storage.front();
 	for(auto it_fruit : f->fruit_Storage) {
@@ -212,7 +212,7 @@ Ball Snakes::GetClosestFruit(Fruits *f, int &range, std::map <Ball, bool> &sonar
 	return target;
 }
 
-Ball Snakes::GetNewestFruit(Fruits *f, int &range, std::map <Ball, bool> &sonar, Ball &from) {
+Ball Snake::GetNewestFruit(Fruit *f, int &range, std::map <Ball, bool> &sonar, Ball &from) {
 	Ball target = f->fruit_Storage.front();
 	if(
 		mode != 1 &&
@@ -224,7 +224,7 @@ Ball Snakes::GetNewestFruit(Fruits *f, int &range, std::map <Ball, bool> &sonar,
 	return target;
 }
 
-Ball Snakes::GetFurthestFruit(Fruits *f, int &range, std::map <Ball, bool> &sonar, Ball &from) {
+Ball Snake::GetFurthestFruit(Fruit *f, int &range, std::map <Ball, bool> &sonar, Ball &from) {
 	std::map <Ball, int> way_to = bfs(sonar, from);
 	Ball target = f->fruit_Storage.front();
 	for(auto it_fruit : f->fruit_Storage) {
@@ -238,7 +238,7 @@ Ball Snakes::GetFurthestFruit(Fruits *f, int &range, std::map <Ball, bool> &sona
 	return target;
 }
 
-Ball Snakes::GetSnakesTail (int &range, std::map <Ball, bool> &sonar, Ball &from) {
+Ball Snake::GetSnakeTail (int &range, std::map <Ball, bool> &sonar, Ball &from) {
 	sonar.erase(snake.back());
 	Ball target = snake.back();
 	std::map <Ball, int> way_to = bfs(sonar, from);
@@ -252,7 +252,7 @@ Ball Snakes::GetSnakesTail (int &range, std::map <Ball, bool> &sonar, Ball &from
 	return target;
 }
 
-Ball Snakes::GetPointStraight(Walls *w, Ball &target, int &strategy) {
+Ball Snake::GetPointStraight(Wall *w, Ball &target, int &strategy) {
 	Ball point = target - snake.front();
 	point.x = point.x ? point.x / abs(point.x) : 0;
 	point.y = point.y ? point.y / abs(point.y) : 0;
@@ -280,7 +280,7 @@ Ball Snakes::GetPointStraight(Walls *w, Ball &target, int &strategy) {
 	return point;
 }
 
-Ball Snakes::GetPointShortest(int range, std::map <Ball, bool> &sonar, Ball &from, Ball &target) {
+Ball Snake::GetPointShortest(int range, std::map <Ball, bool> &sonar, Ball &from, Ball &target) {
 	std::map <Ball, int> way_to = bfs(sonar, target);
 	for (auto step : GetSteps()) {
 		Ball movv = from + step.second;
@@ -291,7 +291,7 @@ Ball Snakes::GetPointShortest(int range, std::map <Ball, bool> &sonar, Ball &fro
 	return varDirection;
 }
 
-std::vector <Ball> Snakes::GetStepsSpaciest(std::map <Ball, bool> &sonar, Ball &from) {
+std::vector <Ball> Snake::GetStepsSpaciest(std::map <Ball, bool> &sonar, Ball &from) {
 	int space(0);
 	std::vector <Ball> steps;
 	for(auto step : GetSteps()) {
@@ -311,26 +311,26 @@ std::vector <Ball> Snakes::GetStepsSpaciest(std::map <Ball, bool> &sonar, Ball &
 	return steps;
 }
 
-void Snakes::SetStep (Ball &point) {
+void Snake::SetStep (Ball &point) {
 	if(point == -varPreviousDirection) {
 		return;
 	}
 	varDirection = point;
 }
 
-void Snakes::DoStep() {
+void Snake::DoStep() {
 	for(int i = snake.size() - 1; i; --i) {
 		snake[i] = snake[i - 1];
 	}
 	snake[0] = snake[0] + varDirection;
 	if(varGrowNextMove) {
-		snake.push_back(varSnakesLast);
+		snake.push_back(varSnakeLast);
 		varGrowNextMove = 0;
 	}
 	varPreviousDirection = varDirection;
 }
 
-void Snakes::Push_Back() {
-	varSnakesLast = snake.back();
+void Snake::Push_Back() {
+	varSnakeLast = snake.back();
 	varGrowNextMove = 1;
 }

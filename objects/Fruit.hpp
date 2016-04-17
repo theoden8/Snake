@@ -6,10 +6,10 @@
 #include "Image.hpp"
 #include "Ball.hpp"
 
-struct Walls;
-struct Snakes;
+struct Wall;
+struct Snake;
 
-struct Fruits {
+struct Fruit {
 	Imagg fruitsGallery[8];
 	std::vector <Ball> fruit_Storage;
 	int width, height,
@@ -17,8 +17,8 @@ struct Fruits {
 	    fru_delta,	//	how many fruits are created with appropriate button
 	    frufru;	//	number of fruits eaten
 
-	Fruits(std::string folder, int width, int height, int fruantity);
+	Fruit(std::string folder, int width, int height, int fruantity);
 	void Keyboard		(char key);
-	void Push_Back		(Walls *c, Snakes *s, int new_fruantity);
+	void Push_Back		(Wall *c, Snake *s, int new_fruantity);
 	void DeleteFruit	(const Ball &sH);
 };

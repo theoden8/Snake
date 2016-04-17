@@ -2,7 +2,7 @@
 #include <fstream>
 #include <sstream>
 
-#include "Imagg.hpp"
+#include "Image.hpp"
 
 Imagg::Imagg()
 {
