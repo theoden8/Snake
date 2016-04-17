@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 
-#include "Imagg.hpp"
+#include "Image.hpp"
 #include "Ball.hpp"
 
 struct Walls {

@@ -11,5 +11,4 @@
 
 std::map <unsigned char, Ball> GetSteps();
 std::map <Ball, int> bfs(std::map <Ball, bool> &sonar, const Ball &from);
-bool process_key(std::string keys, char key);
-std::string str(unsigned int x);
+bool process_key(const char *keys, const char key);

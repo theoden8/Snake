@@ -4,7 +4,7 @@
 #include <string>
 #include <map>
 
-#include "Imagg.hpp"
+#include "Image.hpp"
 #include "Ball.hpp"
 #include "Aimer.hpp"
 #include "Router.hpp"

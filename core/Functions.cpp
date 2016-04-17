@@ -32,22 +32,9 @@ std::map <Ball, int> bfs(std::map <Ball, bool> &sonar, const Ball &from) {
 	return way_to;
 }
 
-bool process_key(std::string keys, char key) {
-	for(int i = 0; i < keys.length(); ++i) {
-		if(keys[i] == key) {
+bool process_key(const char *keys, const char key) {
+	for(const char *c = keys; *c; ++c)
+		if(key == *c)
 			return true;
-		}
-	}
 	return false;
-}
-
-std::string str(unsigned int x) {
-	if (!x)
-		return "0";
-	std::string tmp;
-	while (x) {
-		tmp = char('0' + x % 10) + tmp;
-		x /= 10;
-	}
-	return tmp;
 }

@@ -9,7 +9,7 @@ Fruits::Fruits(std::string folder, int width, int height, int fruantity):
 	width(width), height(height), fruantity(fruantity), fru_delta(0), frufru(0)
 {
 	for(int i = 0; i < 8; ++i) {
-		fruitsGallery[i].load(folder + "textures/" + str(i) + "_FRUIT.tga");
+		fruitsGallery[i].load(folder + "_textures/" + std::to_string(i) + "_FRUIT.tga");
 	}
 }
 

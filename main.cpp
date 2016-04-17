@@ -52,9 +52,9 @@ void Display () {
 	glDisable(GL_TEXTURE_2D);
 	glColor3f(1.0, 1.0, 1.0);
 
-	renderBitmapString(state->width + 1, state->height * 0.97, GLUT_BITMAP_TIMES_ROMAN_24, std::string("Points   " + str(f->frufru) + "..").c_str());
-	renderBitmapString(state->width + 1, state->height * 0.93, GLUT_BITMAP_TIMES_ROMAN_24, std::string("Fruits   < " + str(f->fruit_Storage.size()) + " >").c_str());
-	renderBitmapString(state->width + 1, state->height * 0.89, GLUT_BITMAP_TIMES_ROMAN_24, std::string("Latency   < " + str(state->latency) + " >").c_str());
+	renderBitmapString(state->width + 1, state->height * 0.97, GLUT_BITMAP_TIMES_ROMAN_24, std::string("Points   " + std::to_string(f->frufru) + "..").c_str());
+	renderBitmapString(state->width + 1, state->height * 0.93, GLUT_BITMAP_TIMES_ROMAN_24, std::string("Fruits   < " + std::to_string(f->fruit_Storage.size()) + " >").c_str());
+	renderBitmapString(state->width + 1, state->height * 0.89, GLUT_BITMAP_TIMES_ROMAN_24, std::string("Latency   < " + std::to_string(state->latency) + " >").c_str());
 	if(state->pause1) {
 		renderBitmapString(state->width * 0.45, state->height * 0.75, GLUT_BITMAP_TIMES_ROMAN_24, "[Paused]");
 	}
@@ -64,8 +64,8 @@ void Display () {
 	if(s->safe) {
 		renderBitmapString(state->width + 1, state->height * 0.10, GLUT_BITMAP_TIMES_ROMAN_24, "   [Insurance]");
 	}
-	renderBitmapString(state->width + 1, state->height * 0.06, GLUT_BITMAP_TIMES_ROMAN_24, std::string(" MODE <  " + str(s->mode) + " :: " + s->ModeName[s->mode] + "  >").c_str());
-	renderBitmapString(state->width + 1, state->height * 0.02, GLUT_BITMAP_TIMES_ROMAN_24, std::string(" AIM     <  " + str(s->aim) + " :: " + s->AimName[s->aim] + "  >").c_str());
+	renderBitmapString(state->width + 1, state->height * 0.06, GLUT_BITMAP_TIMES_ROMAN_24, std::string(" MODE <  " + std::to_string(s->mode) + " :: " + s->ModeName[s->mode] + "  >").c_str());
+	renderBitmapString(state->width + 1, state->height * 0.02, GLUT_BITMAP_TIMES_ROMAN_24, std::string(" AIM     <  " + std::to_string(s->aim) + " :: " + s->AimName[s->aim] + "  >").c_str());
 	glEnable(GL_TEXTURE_2D);
 //	Cursor
 //	DrawObject(Imagg(),,)
@@ -110,7 +110,7 @@ void Timer(int) {
 			FreeSpot(s->snake.front(), w->walls)
 			|| FreeSpot(s->snake.front(), s->snake)
 		) {
-			system(std::string("toilet -t --metal " + str(f->frufru)).c_str());
+			system(std::string("toilet -t --metal " + std::to_string(f->frufru)).c_str());
 			exit(0);
 		}
 	}
@@ -139,7 +139,7 @@ void Keyboard(unsigned char key, int x, int y) {
 		s->AutoCorrection(state->DoSteps[key], w, f);
 		return;
 	}
-	if(key == 27  || process_key(std::string("ptoi"), key)) {
+	if(key == 27  || process_key("ptoi", key)) {
 		state->Keyboard(key);
 	}
 	if(process_key("gzxc", key)) {

@@ -22,11 +22,11 @@ Snakes::Snakes(std::string folder, int X, int Y):
 	varGrowNextMove(0),
 	safe(0)
 {
-	Crossed.load(folder + "textures/Cross.tga");
+	Crossed.load(folder + "_textures/Cross.tga");
 	for(int i = 0; i < 8; ++i) {
-		head[i].load(folder + "textures/" + str(i) + "_HEAD.tga");
-		body[i].load(folder + "textures/" + str(i) + "_BODY.tga");
-		tail[i].load(folder + "textures/" + str(i) + "_TAIL.tga");
+		head[i].load(folder + "_textures/" + std::to_string(i) + "_HEAD.tga");
+		body[i].load(folder + "_textures/" + std::to_string(i) + "_BODY.tga");
+		tail[i].load(folder + "_textures/" + std::to_string(i) + "_TAIL.tga");
 	}
 	ModeName[0] = "Human";
 	ModeName[1] = "Fatalist";

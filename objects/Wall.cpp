@@ -3,7 +3,7 @@
 
 Walls::Walls(std::string folder, int width, int height) {
 	for(int i = 0; i <= 0; ++i) {
-		cageGallery[i].load(folder + "textures/" + str(i) + "_WALL.tga");
+		cageGallery[i].load(folder + "_textures/" + std::to_string(i) + "_WALL.tga");
 	}
 	for(int i = 0; i <= width; ++i) {
 		walls.push_back(Ball(i, height));
