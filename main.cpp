@@ -1,6 +1,5 @@
-#include <GLUT/glut.h>
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
+#include "glut_config.h"
+#include "opengl_config.h"
 
 #include <map>
 #include <string>
