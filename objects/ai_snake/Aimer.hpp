@@ -13,10 +13,6 @@ struct Snake;
 struct Aimer {
 	static const int DEFAULT_RANGE;
 
-	std::map <int, std::string> name;
-
-	Ball *from = NULL, *target = NULL;
-
 	Snake *s;
 	Wall *w;
 	Fruit *f;
@@ -28,12 +24,12 @@ struct Aimer {
 	Aimer(Snake *s, Wall *w, Fruit *f);
 
 	static char *GetName(int aim);
-	Ball GetTarget(int aim);
+	void SetTarget(Ball &target, int aim);
 private:
 	void AddObstacle(std::vector <Ball> &objects);
 	void DeleteSnakeObstacles();
-	Ball GetTargetFurthest();
-	Ball GetTargetClosest();
-	Ball GetTargetNewest();
-	Ball GetSnakeTail();
+	Ball GetTargetFurthest(const Ball &target);
+	Ball GetTargetClosest(const Ball &target);
+	Ball GetTargetNewest(const Ball &target);
+	Ball GetSnakeTail(const Ball &target);
 };

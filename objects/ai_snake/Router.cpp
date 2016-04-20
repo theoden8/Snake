@@ -1,7 +1,7 @@
 #include "Router.hpp"
 
-Router::Router(Aimer a):
-	from(aimer.from), target(aimer.target)
+Router::Router(Snake *s, Wall *w):
+	s(s), w(w)
 {}
 
 char *Router::GetName(int mode, int strategy) {
@@ -12,10 +12,10 @@ char *Router::GetName(int mode, int strategy) {
 			return "Fatalist";
 		case 2:
 			if(strategy == 1)
-				return "General Horizon";
+				return "Horizontal Shooter";
 			else if(strategy == 1e9)
-				return "General Vertical";
-			return "General";
+				return "Vertical Shooter";
+			return "Random Shooter";
 		case 3:
 			return "Tracker";
 		case 4:
@@ -25,52 +25,51 @@ char *Router::GetName(int mode, int strategy) {
 	}
 }
 
-Ball Router::GetPoint(int mode) {
+Ball Router::SetPoint(Ball &point, Ball &target, int mode) {
 	switch(mode) {
+		case 0:
+		break;
 		case 1:
-			return GetPointStraight();
+			point = GetPointStraight(target);
+		break;
 		case 2:
-			return GetPointShortest();
+			point = GetPointShortest(target);
+		break;
 		case 3:
-			return GetStepsSpaciest();
+			point = GetStepsSpaciest();
+		break;
 		default:
-			return s->snake.front();
+			return;
 	}
 }
 
-Ball Router::GetPointStraight() {
+Ball Router::GetPointStraight(const Ball &target) {
 	Ball point = target - s->front();
 	point.x = point.x ? point.x / abs(point.x) : 0;
 	point.y = point.y ? point.y / abs(point.y) : 0;
-	if (point.x && point.y) {
-		if(
-			FreeSpot(s->front() + Ball(point.x, 0), w->walls)
+	if(point.x && point.y)
+		((FreeSpot(s->front() + Ball(point.x, 0), w->walls)
 			|| FreeSpot(s->front() + Ball(point.x, 0), s)
 			|| rand() % strategy
-		) {
-			point.x = 0;
-		} else {
-			point.y = 0;
-		}
-	}
+		) ? point.x : point.y) = 0;
 	if(s->front() + point == s[1]) {
 		if(rand() & 1) {
 			point.x = !point.x;
 			point.y = !point.y;
 		}
-		point.x = (rand() & 1) ? -point.x : point.x;
-		point.y = (rand() & 1) ? -point.y : point.y;
+		point.x *= (rand() & 1) ? -1 : 1;
+		point.y *= (rand() & 1) ? -1 : 1;
 	}
-	if(absnt.x) + abs(point.y) != 1)
-		throw std::runtime_error("ALARM! GetPointShortest() happened to be mistaken!");
+	if((absnt.x) + abs(point.y) != 1)
+		throw std::runtime_error("GetPointShortest() happened to be mistaken!");
 	return point;
 }
 
-Ball Router::GetPointShortest() {
+Ball Router::GetPointShortest(const Ball &target) {
 	std::map <Ball, int> way_to = bfs(sonar, target);
-	for (const auto &step : GetSteps()) {
+	for(const auto &step : GetSteps()) {
 		Ball movv = from + step.second;
-		if (way_to.count(movv) == 1 && way_to[movv] + 1 == range) {
+		if(way_to.count(movv) == 1 && way_to[movv] + 1 == range) {
 			return step.second;
 		}
 	}

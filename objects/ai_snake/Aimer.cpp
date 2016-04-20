@@ -24,25 +24,30 @@ char *Aimer::GetName(int aim) {
 	}
 }
 
-Ball Aimer::GetTarget(int aim) {
-	AddObstacle(w->walls);
-	AddObstacle(s->snake);
+Ball Aimer::SetTarget(Ball &target, int aim) {
+	for(const auto &obst : {w->walls, s->snake})
+		AddObstacle(obst);
 	DeleteSnakeObstacles();
 	sonar.erase(s->snake.back());
 	range = DEFAULT_RANGE;
 	way_to = bfs(sonar, *from);
-	*target = f->fruit_Storage.front();
 	switch(aim) {
+		case 0:
+		break;
 		case 1:
-			return GetTargetClosest();
+			target = GetTargetClosest(target);
+		break;
 		case 2:
-			return GetTargetNewest();
+			target = GetTargetNewest(target);
+		break;
 		case 3:
-			return GetTargetFurthest();
+			target = GetTargetFurthest(target);
+		break;
 		case 4:
-			return GetSnakeTail();
+			target = GetSnakeTail(target);
+		break;
 		default:
-			return s->snake.front();
+			return;
 	}
 }
 
@@ -59,22 +64,22 @@ void Aimer::DeleteSnakeObstacles() {
 			sonar.erase(s->snake[i]);
 }
 
-Ball Aimer::GetTargetFurthest() {
+Ball Aimer::GetTargetFurthest(Ball &target) {
 	for(const auto &f : f->fruit_Storage) {
 		if(way_to.count(f)) {
 			if(
 				range == DEFAULT_RANGE
 				|| range > way_to[f]
 			) {
-				*target = f;
-				range = way_to[*target];
+				target = f;
+				range = way_to[target];
 			}
 		}
 	}
-	return *target;
+	return target;
 }
 
-Ball Aimer::GetTargetClosest() {
+Ball Aimer::GetTargetClosest(Ball &target) {
 	for(const auto &f : f->fruit_Storage) {
 		if(way_to.count(f)) {
 			if(range < way_to[f]) {
@@ -86,12 +91,12 @@ Ball Aimer::GetTargetClosest() {
 	return *target;
 }
 
-Ball Aimer::GetTargetNewest() {
+Ball Aimer::GetTargetNewest(Ball &target) {
 	range = way_to[*target];
 	return *target;
 }
 
-Ball Aimer::GetSnakeTail() {
+Ball Aimer::GetSnakeTail(Ball &target) {
 	*target = s->snake.back();
 	for(int i = s->snake.size() - 1; i >= 0; --i) {
 		if(way_to.count(*target)) {

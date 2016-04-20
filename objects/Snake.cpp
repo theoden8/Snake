@@ -32,6 +32,7 @@ void Snake::Keyboard(char key) {
 	switch(key) {
 		case 'g' :
 			safe = !safe;
+		break;
 	}
 	if(process_key("01234", key)) {
 		++ID %= 8;
@@ -58,33 +59,28 @@ void Snake::AutoCorrection(Ball point, Wall *w, Fruit *f) {
 	std::map <Ball, bool> sonar;
 		AddObstacle(sonar, w->walls);
 		AddObstacle(sonar, snake);
-	if(sonar[snake.front() + point] && safe) {
+	if(sonar[snake.front() + point] && safe)
 		AutoCD_C(w, f);
-	} else {
+	else
 		SetStep(point);
-	}
 }
 
 void Snake::ArtificialMove(Wall *w, Fruit *f) {
 	Ball target,
 		 point;
-	std::map <Ball, bool> sonar;
-		AddObstacle(sonar, w->walls);
-		AddObstacle(sonar, snake);
-		DeleteSnakeObstacles(sonar, snake.front());
 	switch(aim) {
 		case 0:
-			return;
+		return;
 		case 1: case 2: case 3:
 			target = aimer.GetTarget(aim);
-			break;
+		break;
 	}
 	switch(mode) {
 		case 0:
 			break;
 		case 1: case 2: case 3: case 4:
 			point = router.GetPoint(mode, strategy);
-			break;
+		break;
 	}
 	AutoCorrection(point, w, f);
 }
@@ -139,102 +135,6 @@ void Snake::DeleteSnakeObstacles(std::map <Ball, bool> &sonar, Ball &from) {
 }
 
 
-Ball Snake::GetClosestFruit(Fruit *f, int &range, std::map <Ball, bool> &sonar, Ball &from) {
-	std::map <Ball, int> way_to = bfs(sonar, from);
-	Ball target = f->fruit_Storage.front();
-	for(auto it_fruit : f->fruit_Storage) {
-		if (way_to.count(it_fruit)) {
-			if (
-				range == -1
-				|| range > way_to[it_fruit]
-			) {
-				target = it_fruit;
-				range = way_to[target];
-			}
-		}
-	}
-	return target;
-}
-
-Ball Snake::GetNewestFruit(Fruit *f, int &range, std::map <Ball, bool> &sonar, Ball &from) {
-	Ball target = f->fruit_Storage.front();
-	if(
-		mode != 1 &&
-		mode != 2
-	) {
-		std::map <Ball, int> way_to = bfs(sonar, from);
-		range = way_to[target];
-	}
-	return target;
-}
-
-Ball Snake::GetFurthestFruit(Fruit *f, int &range, std::map <Ball, bool> &sonar, Ball &from) {
-	std::map <Ball, int> way_to = bfs(sonar, from);
-	Ball target = f->fruit_Storage.front();
-	for(auto it_fruit : f->fruit_Storage) {
-		if (way_to.count(it_fruit)) {
-			if (range < way_to[it_fruit]) {
-				target = it_fruit;
-				range = way_to[target];
-			}
-		}
-	}
-	return target;
-}
-
-Ball Snake::GetSnakeTail (int &range, std::map <Ball, bool> &sonar, Ball &from) {
-	sonar.erase(snake.back());
-	Ball target = snake.back();
-	std::map <Ball, int> way_to = bfs(sonar, from);
-	for(int i = snake.size() - 1; i >= 0; --i) {
-		if(way_to.count(target)) {
-			target = snake[i];
-			range = way_to[target];
-			return target;
-		}
-	}
-	return target;
-}
-
-Ball Snake::GetPointStraight(Wall *w, Ball &target, int &strategy) {
-	Ball point = target - snake.front();
-	point.x = point.x ? point.x / abs(point.x) : 0;
-	point.y = point.y ? point.y / abs(point.y) : 0;
-	if (point.x && point.y) {
-		if(
-			FreeSpot(snake.front() + Ball(point.x, 0), w->walls)
-			|| FreeSpot(snake.front() + Ball(point.x, 0), snake)
-			|| rand() % strategy
-		) {
-			point.x = 0;
-		} else {
-			point.y = 0;
-		}
-	}
-	if(snake.front() + point == snake[1]) {
-		if(rand() & 1) {
-			point.x = !point.x;
-			point.y = !point.y;
-		}
-		point.x = (rand() & 1) ? -point.x : point.x;
-		point.y = (rand() & 1) ? -point.y : point.y;
-	}
-	if(abs(point.x) + abs(point.y) != 1)
-		throw std::runtime_error("ALARM! GetPointShortest() happened to be mistaken!");
-	return point;
-}
-
-Ball Snake::GetPointShortest(int range, std::map <Ball, bool> &sonar, Ball &from, Ball &target) {
-	std::map <Ball, int> way_to = bfs(sonar, target);
-	for (auto step : GetSteps()) {
-		Ball movv = from + step.second;
-		if (way_to.count(movv) == 1 && way_to[movv] + 1 == range) {
-			return step.second;
-		}
-	}
-	return currentDirection;
-}
-
 std::vector <Ball> Snake::GetStepsSpaciest(std::map <Ball, bool> &sonar, Ball &from) {
 	int space(0);
 	std::vector <Ball> steps;
@@ -256,17 +156,17 @@ std::vector <Ball> Snake::GetStepsSpaciest(std::map <Ball, bool> &sonar, Ball &f
 }
 
 void Snake::SetStep (Ball &point) {
-	if(point == -previousDirection) {
+	if(point == -previousDirection)
 		return;
-	}
+
 	currentDirection = point;
 }
 
 void Snake::DoStep() {
-	for(int i = snake.size() - 1; i; --i) {
+	for(int i = snake.size() - 1; i; --i)
 		snake[i] = snake[i - 1];
-	}
-	snake[0] = snake[0] + currentDirection;
+
+	snake[0] += currentDirection;
 	if(growNextMove) {
 		snake.push_back(snakeLast);
 		growNextMove = 0;
