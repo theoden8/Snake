@@ -4,27 +4,34 @@
 #include <string>
 
 #include "Wall.hpp"
+#include "Fruit.hpp"
 #include "Snake.hpp"
 
 struct Snake;
 
+// provides the aim for a snake
 struct Aimer {
-	std::map <int, std::string> name;
-	int aim;
+	static const int DEFAULT_RANGE;
 
-	Ball target;
+	std::map <int, std::string> name;
+
+	Ball *from = NULL, *target = NULL;
+
 	Snake *s;
 	Wall *w;
+	Fruit *f;
 
-	int &range;
+	int range = DEFAULT_RANGE;
 	std::map <Ball, bool> sonar;
 	std::map <Ball, int> way_to;
 
-	Aimer();
+	Aimer(Snake *s, Wall *w, Fruit *f);
 
+	static char *GetName(int aim);
+	Ball GetTarget(int aim);
+private:
 	void AddObstacle(std::vector <Ball> &objects);
 	void DeleteSnakeObstacles();
-	void Initialize();
 	Ball GetTargetFurthest();
 	Ball GetTargetClosest();
 	Ball GetTargetNewest();

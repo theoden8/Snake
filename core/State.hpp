@@ -6,7 +6,7 @@
 
 struct State {
 	std::string folder;
-	bool pause1,
+	bool pause,
 	     running;
 	double width,
 	       height,
@@ -15,6 +15,6 @@ struct State {
 	int latency,
 	    latency_delta;
 	std::map <unsigned char, Ball> DoSteps;
-	State(int latency, bool pause1, int width, int height);
+	State(int latency, bool pause, int width, int height);
 	void Keyboard(char key);
 };

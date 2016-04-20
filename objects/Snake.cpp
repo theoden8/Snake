@@ -13,13 +13,11 @@ Snake::Snake(std::string folder, int X, int Y):
 	ID(0), mode(0), aim(0),
 	modeN(5), aimN(5),
 	strategy(2),
-	controller(0),
-	X(X), Y(Y),
 //Ball
-	varDirection(0, -1),
-	varPreviousDirection(0, 0),
+	currentDirection(0, -1),
+	previousDirection(0, 0),
 //bool
-	varGrowNextMove(0),
+	growNextMove(0),
 	safe(0)
 {
 	Crossed.load(folder + "_textures/Cross.tga");
@@ -28,16 +26,6 @@ Snake::Snake(std::string folder, int X, int Y):
 		body[i].load(folder + "_textures/" + std::to_string(i) + "_BODY.tga");
 		tail[i].load(folder + "_textures/" + std::to_string(i) + "_TAIL.tga");
 	}
-	ModeName[0] = "Human";
-	ModeName[1] = "Fatalist";
-	ModeName[2] = "General";
-	ModeName[3] = "Tracker";
-	ModeName[4] = "Sir Robin";
-	AimName[0] = "Hand Brake";
-	AimName[1] = "Closest fruit";
-	AimName[2] = "Newest fruit";
-	AimName[3] = "Furthest fruit";
-	AimName[4] = "Tail";
 }
 
 void Snake::Keyboard(char key) {
@@ -62,19 +50,14 @@ void Snake::Keyboard(char key) {
 			++aim %= aimN;
 		}
 		if(key == '2') {
-				if(rand() & 1) {
+				if(rand() & 1)
 					strategy = 1;
-					ModeName[mode] = "General Horizon";
-				} else {
+				else
 					strategy = 1e9;
-					ModeName[mode] = "General Vertix";
-				}
 		} else if (key == '5') {
 //				s->mode = 7;
-//				if(!latency_delta) {
+//				if(!latency_delta)
 //					latency = 0;
-//				}
-//				ModeName = "Tornado";
 		}
 	}
 }
@@ -92,54 +75,23 @@ void Snake::AutoCorrection(Ball point, Wall *w, Fruit *f) {
 
 void Snake::ArtificialMove(Wall *w, Fruit *f) {
 	Ball target,
-	     point;
+		 point;
 	std::map <Ball, bool> sonar;
 		AddObstacle(sonar, w->walls);
 		AddObstacle(sonar, snake);
 		DeleteSnakeObstacles(sonar, snake.front());
-	int range = -1;
 	switch(aim) {
 		case 0:
 			return;
-		case 1:
-			target = GetClosestFruit(f, range, sonar, snake.front());
-			break;
-		case 2:
-			target = GetNewestFruit(f, range, sonar, snake.front());
-			break;
-		case 3:
-			target = GetFurthestFruit(f, range, sonar, snake.front());
-			break;
-		case 4:
-			std::vector <Ball> spacy_steps = GetStepsSpaciest(sonar, snake.front());
-			std::vector <Ball> moves;
-			for(auto step : GetSteps()) {
-				moves.push_back(step.second);
-				for(auto sp_step : spacy_steps) {
-					if(sp_step == step.second) {
-						moves.pop_back();
-						break;
-					}
-				}
-			}
-//			for(auto mov : moves) {
-//				sonar[mov + snake.front()] = 1;
-//			}
-			target = GetClosestFruit(f, range, sonar, snake.front());
-			break;
-//		case 5:
-//			target = GetSnakeTail(range, sonar, snake.front());
+		case 1: case 2: case 3:
+			target = aimer.GetTarget(aim);
 			break;
 	}
 	switch(mode) {
-		case 3:
-			point = GetPointShortest(range, sonar, snake.front(), target);
+		case 0:
 			break;
-		case 4:
-			point = GetPointShortest(range, sonar, snake.front(), target);
-			break;
-		default:
-			point = GetPointStraight(w, target, strategy);
+		case 1: case 2: case 3: case 4:
+			point = router.GetPoint(mode, strategy);
 			break;
 	}
 	AutoCorrection(point, w, f);
@@ -152,7 +104,7 @@ void Snake::AutoCD_C (Wall *w, Fruit *f) {
 		AddObstacle(sonar, snake);
 		DeleteSnakeObstacles(sonar, snake.front());
 	int MAX = 0, FRUIT = 1e9;
-	Ball point = varDirection;
+	Ball point = currentDirection;
 	for (auto it_step : GetSteps()) {
 		Ball movv = snake.front() + it_step.second;
 		if (sonar.count(movv) == 0) {
@@ -288,7 +240,7 @@ Ball Snake::GetPointShortest(int range, std::map <Ball, bool> &sonar, Ball &from
 			return step.second;
 		}
 	}
-	return varDirection;
+	return currentDirection;
 }
 
 std::vector <Ball> Snake::GetStepsSpaciest(std::map <Ball, bool> &sonar, Ball &from) {
@@ -312,25 +264,25 @@ std::vector <Ball> Snake::GetStepsSpaciest(std::map <Ball, bool> &sonar, Ball &f
 }
 
 void Snake::SetStep (Ball &point) {
-	if(point == -varPreviousDirection) {
+	if(point == -previousDirection) {
 		return;
 	}
-	varDirection = point;
+	currentDirection = point;
 }
 
 void Snake::DoStep() {
 	for(int i = snake.size() - 1; i; --i) {
 		snake[i] = snake[i - 1];
 	}
-	snake[0] = snake[0] + varDirection;
-	if(varGrowNextMove) {
-		snake.push_back(varSnakeLast);
-		varGrowNextMove = 0;
+	snake[0] = snake[0] + currentDirection;
+	if(growNextMove) {
+		snake.push_back(snakeLast);
+		growNextMove = 0;
 	}
-	varPreviousDirection = varDirection;
+	previousDirection = currentDirection;
 }
 
 void Snake::Push_Back() {
-	varSnakeLast = snake.back();
-	varGrowNextMove = 1;
+	snakeLast = snake.back();
+	growNextMove = 1;
 }

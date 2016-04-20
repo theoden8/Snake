@@ -19,17 +19,14 @@ struct Snake {
 	Imagg Crossed;
 	std::vector <Ball> snake;
 
-	std::map <int, std::string> ModeName, AimName;
 	int ID, mode, aim,
-	    modeN, aimN,
-	    strategy,
-	    controller,
-	    X, Y;
-	Ball varDirection,
-	     varSnakeLast,
-	     varPreviousDirection;
-	bool varGrowNextMove,
-	     safe;
+		modeN, aimN,
+		strategy,
+	Ball currentDirection,
+		 snakeLast,
+		 previousDirection;
+	bool growNextMove,
+		 safe;
 
 	Snake(std::string folder, int x, int y);
 	void Keyboard		(char key);

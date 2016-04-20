@@ -1,6 +1,6 @@
 #pragma once
 
-#include "glut_config.hpp"
+#include "glut_config.h"
 #include <string>
 
 struct Imagg {

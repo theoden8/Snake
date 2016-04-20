@@ -3,29 +3,32 @@
 #include <map>
 #include <string>
 
-#include "Ball.hpp"
 #include "Snake.hpp"
 #include "Wall.hpp"
+#include "Aimer.hpp"
 
 struct Snake;
+struct Aimer;
 
+// gives the step to the aim
 struct Router {
 	std::map <int, std::string> name;
-	int mode;
+	int strategy;
 
-	Ball &target;
-	Ball &from;
+	Ball &target, &from;
 
-	int &strategy;
-	int range;
+	int range = -1;
 
 	std::map <Ball, bool> &sonar;
 
 	Snake *s;
-	Wall *c;
+	Wall *w;
 
-	Router ();
+	Router(Aimer &a);
 
+	char *GetName(int mode, int strategy);
+	Ball GetPoint(int mode);
+private:
 	Ball GetPointStraight();
 	Ball GetPointShortest();
 	Ball GetStepsSpaciest();
