@@ -22,9 +22,9 @@ Snake::Snake(std::string folder, int X, int Y):
 {
 	Crossed.load(folder + "_textures/Cross.tga");
 	for(int i = 0; i < 8; ++i) {
-		head[i].load(folder + "_textures/" + std::to_string(i) + "_HEAD.tga");
-		body[i].load(folder + "_textures/" + std::to_string(i) + "_BODY.tga");
-		tail[i].load(folder + "_textures/" + std::to_string(i) + "_TAIL.tga");
+		skins[i].head.load(folder + "_textures/" + std::to_string(i) + "_HEAD.tga");
+		skins[i].body.load(folder + "_textures/" + std::to_string(i) + "_BODY.tga");
+		skins[i].tail.load(folder + "_textures/" + std::to_string(i) + "_TAIL.tga");
 	}
 }
 
@@ -32,16 +32,8 @@ void Snake::Keyboard(char key) {
 	switch(key) {
 		case 'g' :
 			safe = !safe;
-		case 'z' :
-			controller += 1 - ((controller & 1) << 1);
-			break;
-		case 'x' :
-			controller += (1 - ((controller & 2) << 1)) << 1;
-			break;
-		case 'c' :
-			controller += (1 - ((controller & 4) << 1)) << 2;
-			break;
-	} if(process_key("01234", key)) {
+	}
+	if(process_key("01234", key)) {
 		++ID %= 8;
 		if(mode != key - '0') {
 			aim = 1;

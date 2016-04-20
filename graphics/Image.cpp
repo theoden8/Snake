@@ -4,14 +4,14 @@
 
 #include "Image.hpp"
 
-Imagg::Imagg()
+Image::Image()
 {
 	width = 0;
 	height = 0;
 	id = 0;
 }
 
-bool Imagg::load(const std::string &filename)
+bool Image::load(const std::string &filename)
 {
 	std::ifstream File(filename.c_str(), std::ios::in | std::ios::binary);
 	unsigned char header[20];

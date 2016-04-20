@@ -26,7 +26,7 @@ struct Router {
 
 	Router(Aimer &a);
 
-	char *GetName(int mode, int strategy);
+	static char *GetName(int mode, int strategy);
 	Ball GetPoint(int mode);
 private:
 	Ball GetPointStraight();

@@ -12,16 +12,21 @@
 struct Wall;
 struct Fruit;
 
+struct Skin {
+	Image head, body, tail;
+	Skin(Image h, Image b, Image t):
+		head(h), body(b), tail(t)
+	{}
+};
+
 struct Snake {
-	Imagg head[8];
-	Imagg body[8];
-	Imagg tail[8];
-	Imagg Crossed;
+	static Skin skins[8];
+	Image Crossed;
 	std::vector <Ball> snake;
 
 	int ID, mode, aim,
 		modeN, aimN,
-		strategy,
+		strategy;
 	Ball currentDirection,
 		 snakeLast,
 		 previousDirection;

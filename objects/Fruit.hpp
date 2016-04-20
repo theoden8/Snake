@@ -10,7 +10,7 @@ struct Wall;
 struct Snake;
 
 struct Fruit {
-	Imagg fruitsGallery[8];
+	Image fruitsGallery[8];
 	std::vector <Ball> fruit_Storage;
 	int width, height,
 	    fruantity,	//	number of fruits on field

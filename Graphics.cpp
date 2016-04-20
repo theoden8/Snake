@@ -75,23 +75,23 @@ void Graphics::Display () {
 		renderBitmapString(W * 0.45, H * 0.25, GLUT_BITMAP_TIMES_ROMAN_24, "[Running]");
 	if(sn_->safe)
 		renderBitmapString(W + 1, H * 0.10, GLUT_BITMAP_TIMES_ROMAN_24, "   [Insurance]");
-	renderBitmapString(W + 1, H * 0.06, GLUT_BITMAP_TIMES_ROMAN_24, std::string(" MODE <  " + str(sn_->mode) + " :: " + Router::GetName(sn_->mode) + "  >").c_str());
+	renderBitmapString(W + 1, H * 0.06, GLUT_BITMAP_TIMES_ROMAN_24, std::string(" MODE <  " + str(sn_->mode) + " :: " + Router::GetName(sn_->mode, sn_->strategy) + "  >").c_str());
 	renderBitmapString(W + 1, H * 0.02, GLUT_BITMAP_TIMES_ROMAN_24, std::string(" AIM     <  " + str(sn_->aim) + " :: " + Aimer::GetName(sn_->aim) + "  >").c_str());
 	glEnable(GL_TEXTURE_2D);
 //	Cursor
-//	DrawObject(Imagg(),,)
+//	DrawObject(Image(),,)
 //	Snake
 	for (int i = 0; i < sn_->snake.size(); ++i) {
 		GLuint id;
 		double degree = 90;
 		if (!i) {
-			id = sn_->head[sn_->ID].id;
+			id = sn_->skins[sn_->ID].head.id;
 			degree = sn_->currentDirection.degree();
 		} else if(i == sn_->snake.size() - 1) {
-			id = sn_->tail[sn_->ID].id;
+			id = sn_->skins[sn_->ID].body.id;
 			degree = (sn_->snake[i - 1] - sn_->snake[i]).degree();
 		} else {
-			id = sn_->body[sn_->ID].id;
+			id = sn_->skins[sn_->ID].tail.id;
 			degree = (sn_->snake[i - 1] - sn_->snake[i]).degree();
 		}
 		DrawObject(sn_->snake[i].x, sn_->snake[i].y, id, degree);

@@ -3,11 +3,11 @@
 #include "glut_config.h"
 #include <string>
 
-struct Imagg {
+struct Image {
 	int width;
 	int height;
 	GLuint id;
 
-	Imagg();
+	Image();
 	bool load(const std::string &filename);
 };
