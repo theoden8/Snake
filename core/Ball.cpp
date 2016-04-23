@@ -3,16 +3,19 @@
 #include "Ball.hpp"
 
 Ball::Ball()
-{
-}
+{}
 
 Ball::Ball(int x, int y):
 	x(x), y(y)
-{
-}
+{}
 
 Ball Ball::operator+ (const Ball &sec) const {
 	return Ball(x + sec.x, y + sec.y);
+}
+
+void Ball::operator+=(const Ball &sec) {
+	this->x += sec.x;
+	this->y += sec.y;
 }
 
 bool Ball::operator== (const Ball &sec) const {
@@ -32,7 +35,7 @@ Ball Ball::operator- (const Ball &sec) const {
 }
 
 
-double Ball::degree () const {
+double Ball::degree() const {
 	return atan2(y, x) / M_PI * 180;
 }
 

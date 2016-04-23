@@ -7,17 +7,17 @@
 #include "Fruit.hpp"
 #include "Snake.hpp"
 
+#define INVALID_INT -1
+
 struct Snake;
 
 // provides the aim for a snake
 struct Aimer {
-	static const int DEFAULT_RANGE;
-
 	Snake *s;
 	Wall *w;
 	Fruit *f;
 
-	int range = DEFAULT_RANGE;
+	int range = INVALID_INT;
 	std::map <Ball, bool> sonar;
 	std::map <Ball, int> way_to;
 

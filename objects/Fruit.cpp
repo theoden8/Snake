@@ -6,7 +6,7 @@
 #include "Functions.hpp"
 
 Fruit::Fruit(std::string folder, int width, int height, int fruantity):
-	width(width), height(height), fruantity(fruantity), fru_delta(0), frufru(0)
+	width(width), height(height), fruantity(fruantity)
 {
 	for(int i = 0; i < 8; ++i) {
 		fruitsGallery[i].load(folder + "_textures/" + std::to_string(i) + "_FRUIT.tga");
@@ -16,16 +16,10 @@ Fruit::Fruit(std::string folder, int width, int height, int fruantity):
 void Fruit::Keyboard(char key) {
 	switch(key) {
 		case 'm' :
-			if(fru_delta < 0) {
-				fru_delta = 0;
-			}
-			++fru_delta;
+			++(fru_delta = (fru_delta < 0) ? 0 : fru_delta);
 			break;
 		case 'n' :
-			if(fru_delta > 0) {
-				fru_delta = 0;
-			}
-			--fru_delta;
+			--(fru_delta = (fru_delta > 0) ? 0 : fru_delta);
 			for(int i = 0; i < (abs(fru_delta) >> 2) + 1; ++i) {
 				DeleteFruit(fruit_Storage.front());
 			}
@@ -33,7 +27,7 @@ void Fruit::Keyboard(char key) {
 	}
 }
 
-void Fruit::Push_Back (Wall *w, Snake *s, int new_fruantity) {
+void Fruit::Push_Back(Wall *w, Snake *s, int new_fruantity) {
 	for(int i = 0; i < new_fruantity; ++i) {
 		if(fruit_Storage.size() >= width * height - s->snake.size() - (w->walls.size() >> 1) + 3) {
 			return;
@@ -50,12 +44,11 @@ void Fruit::Push_Back (Wall *w, Snake *s, int new_fruantity) {
 	}
 }
 
-void Fruit::DeleteFruit (const Ball &eated_fruit) {
+void Fruit::DeleteFruit(const Ball &eated_fruit) {
 	std::vector <Ball> new_fruit_Storage;
 	for(auto fruit : fruit_Storage) {
-		if (!(eated_fruit == fruit)) {
+		if(!(eated_fruit == fruit))
 			new_fruit_Storage.push_back(fruit);
-		}
 	}
 	fruit_Storage = new_fruit_Storage;
 }

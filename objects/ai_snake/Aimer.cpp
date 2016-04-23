@@ -1,8 +1,6 @@
 #include "Aimer.hpp"
 #include "Functions.hpp"
 
-const int Aimer::DEFAULT_RANGE = -1;
-
 Aimer::Aimer(Snake *s, Wall *w, Fruit *f):
 	s(s), w(w), f(f)
 {}
@@ -29,7 +27,7 @@ Ball Aimer::SetTarget(Ball &target, int aim) {
 		AddObstacle(obst);
 	DeleteSnakeObstacles();
 	sonar.erase(s->snake.back());
-	range = DEFAULT_RANGE;
+	range = INVALID_INT;
 	way_to = bfs(sonar, *from);
 	switch(aim) {
 		case 0:
@@ -59,22 +57,23 @@ void Aimer::AddObstacle(std::vector <Ball> &objects) {
 void Aimer::DeleteSnakeObstacles() {
 	*from = s->snake.front();
 	std::map <Ball, int> way_to = bfs(sonar, *from);
-	for(int i = 1; i < s->snake.size(); ++i)
+	for(int i = 1; i < s->snake.size(); ++i) {
 		if(way_to[s->snake[i]] > s->snake.size() - i)
 			sonar.erase(s->snake[i]);
+	}
 }
 
 Ball Aimer::GetTargetFurthest(Ball &target) {
 	for(const auto &f : f->fruit_Storage) {
-		if(way_to.count(f)) {
+		if(way_to.count(f))
 			if(
-				range == DEFAULT_RANGE
+				range == INVALID_INT
 				|| range > way_to[f]
-			) {
+			)
+			{
 				target = f;
 				range = way_to[target];
 			}
-		}
 	}
 	return target;
 }

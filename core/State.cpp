@@ -1,18 +1,14 @@
 #include <cstdlib>
+#include <cmath>
 
 #include "State.hpp"
 #include "Functions.hpp"
 
-State::State(int latency, bool pause, int width, int height) :
-	pause(pause), running(0),
+State::State(int latency, int width, int height) :
 	width(width), height(height),
-	latency(latency), latency_delta(0)
-{
-	DoSteps['a'] = Ball(-1, 0);
-	DoSteps['w'] = Ball(0, 1);
-	DoSteps['s'] = Ball(0, -1);
-	DoSteps['d'] = Ball(1, 0);
-}
+	latency(latency)
+{}
+
 void State::Keyboard(char key) {
 	switch(key) {
 		case 27 :
@@ -35,11 +31,7 @@ void State::Keyboard(char key) {
 			latency += ((++latency_delta) >> 3) + 1;
 			break;
 	}
-	if(process_key("0123456789", key)) {
-		if(key == '0')
-			latency = 40;
-		else if(!latency_delta)
-			latency = 0;
-		return;
-	}
+
+	if(process_key("0123456789", key))
+		latency = (key == '0') ? 40 : 0;
 }

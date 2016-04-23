@@ -17,7 +17,7 @@ struct Router {
 
 	Ball &target, &from;
 
-	int range = -1;
+	int range = INVALID_INT;
 
 	std::map <Ball, bool> &sonar;
 

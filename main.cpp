@@ -1,13 +1,12 @@
 #include "glut_config.h"
 #include "opengl_config.h"
 
-#include <map>
-#include <string>
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
 
-#include "Ball.hpp"
+#include <string>
+
 #include "Wall.hpp"
 #include "Fruit.hpp"
 #include "Snake.hpp"
@@ -18,7 +17,7 @@
 
 static State *create_state(const int &argc, char **argv) {
 	Ball *size = new Ball((argc >= 3) ? Ball(atoi(argv[1]), atoi(argv[2])) : Ball(50, 50));
-	State *state = new State(40, 1, size->x, size->y);
+	State *state = new State(40, size->x, size->y);
 	delete(size);
 	std::string exec = argv[0];
 	state->folder = exec.substr(0, exec.length() - 5);
@@ -49,9 +48,5 @@ int main(int argc, char **argv) {
 	Graphics::SetOpenGLContext(state, s, w, f, argc, argv);
 	Graphics::SetOpenGLFunctions();
 
-	Aimer *aimer = new Aimer(s, w, f);
-
-	delete s; delete w; delete f; delete aimer; delete state;
-
-	return 0;
+	delete s; delete w; delete f; delete state;
 }

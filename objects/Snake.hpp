@@ -24,14 +24,18 @@ struct Snake {
 	Image Crossed;
 	std::vector <Ball> snake;
 
-	int ID, mode, aim,
-		modeN, aimN,
-		strategy;
-	Ball currentDirection,
-		 snakeLast,
-		 previousDirection;
-	bool growNextMove,
-		 safe;
+	int
+		ID = 0,
+		mode = 0,
+		aim = 0,
+		strategy = 2;
+	Ball
+		currentDirection = Ball(0, -1),
+		snakeLast,
+		previousDirection = Ball(0, 0);
+	bool
+		growNextMove = false,
+		safe = false;
 
 	Snake(std::string folder, int x, int y);
 	void Keyboard		(char key);
