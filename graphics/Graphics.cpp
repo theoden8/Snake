@@ -150,21 +150,25 @@ void Graphics::Keyboard(unsigned char key, int x, int y) {
 		sn_->AutoCorrection(state_->DoSteps[key], wl_, fr_);
 		return;
 	}
-	if(key == 27  || process_key("ptoi", key)) {
+
+	if(key == 27  || strchr("ptoi", key)) {
 		state_->Keyboard(key);
 	}
-	if(process_key("gzxc", key)) {
+
+	if(strchr("gzxc", key)) {
 		sn_->Keyboard(key);
 		return;
 	}
-	if(process_key("mn", key)) {
+
+	if(strchr("mn", key)) {
 		fr_->Keyboard(key);
 		if(key == 'm') {
 			fr_->Push_Back(wl_, sn_, (fr_->fru_delta >> 2) + 1);
 		}
 		return;
 	}
-	if(process_key("01234", key)) {
+
+	if(strchr("01234", key)) {
 		state_->Keyboard(key);
 		sn_->Keyboard(key);
 		return;

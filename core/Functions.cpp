@@ -1,3 +1,4 @@
+#include <cstring>
 #include <cstdlib>
 #include <iostream>
 #include <cmath>
@@ -30,11 +31,4 @@ std::map <Ball, int> bfs(std::map <Ball, bool> &sonar, const Ball &from) {
 		}
 	}
 	return way_to;
-}
-
-bool process_key(const char *keys, const char key) {
-	for(const char *c = keys; *c; ++c)
-		if(key == *c)
-			return true;
-	return false;
 }

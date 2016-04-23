@@ -24,7 +24,7 @@ void Snake::Keyboard(char key) {
 			safe = !safe;
 		break;
 	}
-	if(process_key("01234", key)) {
+	if(strchr("01234", key)) {
 		++ID %= 8;
 		if(mode != key - '0') {
 			aim = 1;

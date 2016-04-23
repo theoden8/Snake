@@ -32,6 +32,6 @@ void State::Keyboard(char key) {
 			break;
 	}
 
-	if(process_key("0123456789", key))
+	if(strchr("0123456789", key))
 		latency = (key == '0') ? 40 : 0;
 }
