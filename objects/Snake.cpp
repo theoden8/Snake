@@ -7,8 +7,8 @@
 #include "Fruit.hpp"
 #include "Functions.hpp"
 
-Snake::Snake(std::string folder, int X, int Y):
-	snake({Ball(X >> 1, Y >> 1)})
+Snake::Snake(std::string folder, int X, int Y, Aimer &a, Router &r):
+	snake({Ball(X >> 1, Y >> 1)}), aimer(a), router(r)
 {
 	Crossed.load(folder + "_textures/Cross.tga");
 	for(int i = 0; i < 8; ++i) {
@@ -55,10 +55,12 @@ void Snake::AutoCorrection(Ball point, Wall *w, Fruit *f) {
 		SetStep(point);
 }
 
-void Snake::ArtificialMove(Aimer *a, Router *r, Wall *w, Fruit *f) {
+void Snake::ArtificialMove(Wall *w, Fruit *f) {
 	Ball
-		target = aimer.GetTarget(aim),
-		point = router.GetPoint(mode, strategy);
+		target,
+		point;
+	aimer.SetTarget(target, aim);
+	router.SetPoint(point, target, mode);
 	AutoCorrection(point, w, f);
 }
 

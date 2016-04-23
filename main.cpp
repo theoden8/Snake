@@ -41,9 +41,12 @@ int main(int argc, char **argv) {
 
 	State *state = create_state(argc, argv);
 
-	Snake *s = new Snake(state->folder, state->width, state->height);
-	Wall *w = new Wall(state->folder, state->width, state->height);
-	Fruit *f = create_fruits(argc, argv, state, w, s);
+	Snake *s; Wall *w; Fruit *f;
+	Aimer a(s, w, f); Router r(s, w);
+
+	s = new Snake(state->folder, state->width, state->height, a, r);
+	w = new Wall(state->folder, state->width, state->height);
+	f = create_fruits(argc, argv, state, w, s);
 
 	Graphics::SetOpenGLContext(state, s, w, f, argc, argv);
 	Graphics::SetOpenGLFunctions();

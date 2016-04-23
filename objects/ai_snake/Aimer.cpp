@@ -22,27 +22,28 @@ char *Aimer::GetName(int aim) {
 	}
 }
 
-Ball Aimer::SetTarget(Ball &target, int aim) {
-	for(const auto &obst : {w->walls, s->snake})
+void Aimer::SetTarget(Ball &target, int aim) {
+	for(auto obst : {w->walls, s->snake}) {
 		AddObstacle(obst);
+	}
 	DeleteSnakeObstacles();
 	sonar.erase(s->snake.back());
 	range = INVALID_INT;
-	way_to = bfs(sonar, *from);
+	way_to = bfs(sonar, s->snake.front());
 	switch(aim) {
 		case 0:
 		break;
 		case 1:
-			target = GetTargetClosest(target);
+			SetTargetClosest(target);
 		break;
 		case 2:
-			target = GetTargetNewest(target);
+			SetTargetNewest(target);
 		break;
 		case 3:
-			target = GetTargetFurthest(target);
+			SetTargetFurthest(target);
 		break;
 		case 4:
-			target = GetSnakeTail(target);
+			SetTargetSnakeTail(target);
 		break;
 		default:
 			return;
@@ -55,15 +56,15 @@ void Aimer::AddObstacle(std::vector <Ball> &objects) {
 }
 
 void Aimer::DeleteSnakeObstacles() {
-	*from = s->snake.front();
-	std::map <Ball, int> way_to = bfs(sonar, *from);
+	Ball &from = s->snake.front();
+	std::map <Ball, int> way_to = bfs(sonar, from);
 	for(int i = 1; i < s->snake.size(); ++i) {
 		if(way_to[s->snake[i]] > s->snake.size() - i)
 			sonar.erase(s->snake[i]);
 	}
 }
 
-Ball Aimer::GetTargetFurthest(Ball &target) {
+void Aimer::SetTargetFurthest(Ball &target) {
 	for(const auto &f : f->fruit_Storage) {
 		if(way_to.count(f))
 			if(
@@ -75,34 +76,30 @@ Ball Aimer::GetTargetFurthest(Ball &target) {
 				range = way_to[target];
 			}
 	}
-	return target;
 }
 
-Ball Aimer::GetTargetClosest(Ball &target) {
+void Aimer::SetTargetClosest(Ball &target) {
 	for(const auto &f : f->fruit_Storage) {
 		if(way_to.count(f)) {
 			if(range < way_to[f]) {
-				*target = f;
-				range = way_to[*target];
+				target = f;
+				range = way_to[target];
 			}
 		}
 	}
-	return *target;
 }
 
-Ball Aimer::GetTargetNewest(Ball &target) {
-	range = way_to[*target];
-	return *target;
+void Aimer::SetTargetNewest(Ball &target) {
+	range = way_to[target];
 }
 
-Ball Aimer::GetSnakeTail(Ball &target) {
-	*target = s->snake.back();
+void Aimer::SetTargetSnakeTail(Ball &target) {
+	target = s->snake.back();
 	for(int i = s->snake.size() - 1; i >= 0; --i) {
-		if(way_to.count(*target)) {
-			*target = s->snake[i];
-			range = way_to[*target];
-			return *target;
+		if(way_to.count(target)) {
+			target = s->snake[i];
+			range = way_to[target];
+			return;
 		}
 	}
-	return *target;
 }

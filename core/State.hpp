@@ -2,18 +2,28 @@
 
 #include <string>
 #include <map>
-#include "Ball.hpp"
+
+#include "Wall.hpp"
+#include "Fruit.hpp"
+#include "Snake.hpp"
+#include "State.hpp"
+#include "Aimer.hpp"
+#include "Router.hpp"
 
 struct State {
-	std::string folder;
-	bool pause = true,
-	     running = false;
-	double width,
-	       height,
-	       x_Display,
-	       y_Display;
-	int latency,
-	    latency_delta = 0;
+	std::string
+	   	folder;
+	bool
+		pause = true,
+		running = false;
+	double
+		width,
+		height,
+		x_Display,
+		y_Display;
+	int
+		latency,
+		latency_delta = 0;
 	std::map <unsigned char, Ball> DoSteps = {
 		{'a', Ball(-1, 0)},
 		{'w', Ball(0, 1)},

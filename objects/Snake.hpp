@@ -11,6 +11,7 @@
 
 struct Wall;
 struct Fruit;
+struct Router;
 
 struct Skin {
 	Image head, body, tail;
@@ -20,6 +21,9 @@ struct Skin {
 };
 
 struct Snake {
+	Aimer &aimer;
+	Router &router;
+
 	static Skin skins[8];
 	Image Crossed;
 	std::vector <Ball> snake;
@@ -37,21 +41,15 @@ struct Snake {
 		growNextMove = false,
 		safe = false;
 
-	Snake(std::string folder, int x, int y);
-	void Keyboard		(char key);
-	void AutoCorrection	(Ball arrow, Wall *c, Fruit *f);
-	void ArtificialMove	(Wall *c, Fruit *f);
-	void AutoCD_C		(Wall *c, Fruit *f);
-	void AddObstacle	(std::map <Ball, bool> &sonar, std::vector <Ball> &objects);
+	Snake(std::string folder, int x, int y, Aimer &aimer, Router &r);
+	void Keyboard(char key);
+	void AutoCorrection(Ball arrow, Wall *c, Fruit *f);
+	void ArtificialMove(Wall *c, Fruit *f);
+	void AutoCD_C(Wall *c, Fruit *f);
+	void AddObstacle(std::map <Ball, bool> &sonar, std::vector <Ball> &objects);
 	void DeleteSnakeObstacles (std::map <Ball, bool> &sonar, Ball &from);
-	Ball GetSnakeTail	(int &range, std::map <Ball, bool> &sonar, Ball &from);
-	Ball GetClosestFruit	(Fruit *f, int &range, std::map <Ball, bool> &sonar, Ball &from);
-	Ball GetNewestFruit	(Fruit *f, int &range, std::map <Ball, bool> &sonar, Ball &from);
-	Ball GetFurthestFruit	(Fruit *f, int &range, std::map <Ball, bool> &sonar, Ball &from);
-	Ball GetPointStraight	(Wall *c, Ball &target, int &strategy);
-	Ball GetPointShortest	(int range, std::map <Ball, bool> &sonar, Ball &from, Ball &target);
-	std::vector <Ball> GetStepsSpaciest (std::map <Ball, bool> &sonar, Ball &from);
-	void DoStep		();
-	void SetStep		(Ball &point);
-	void Push_Back		();
+	std::vector <Ball> GetStepsSpaciest(std::map <Ball, bool> &sonar, Ball &from);
+	void DoStep();
+	void SetStep(Ball &point);
+	void Push_Back();
 };
