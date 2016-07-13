@@ -15,6 +15,6 @@ struct Ball {
 	double degree() const;
 
 	bool operator< (const Ball &sec) const;
-};
 
-bool FreeSpot(const Ball &spot, const std::vector <Ball> &obstacles);
+	static bool FreeSpot(const Ball &spot, const std::vector <Ball> &obstacles);
+};

@@ -5,13 +5,13 @@
 
 #include "Functions.hpp"
 
-std::map <unsigned char, Ball> GetSteps() {
-	std::map <unsigned char, Ball> steps;
-	steps[0] = Ball(-1, 0);
-	steps[1] = Ball(0, 1);
-	steps[2] = Ball(0, -1);
-	steps[3] = Ball(1, 0);
-	return steps;
+std::vector <Ball> GetSteps() {
+	return {
+		Ball(-1, 0),
+		Ball(0, 1),
+		Ball(0, -1),
+		Ball(1, 0),
+	};
 }
 
 std::map <Ball, int> bfs(std::map <Ball, bool> &sonar, const Ball &from) {

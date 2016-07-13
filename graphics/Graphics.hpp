@@ -9,18 +9,21 @@
 #include "Fruit.hpp"
 
 class Graphics {
-	static State *state_;
-	static Snake *sn_;
-	static Wall *wl_;
-	static Fruit *fr_;
 public:
-	static void SetOpenGLContext(State *s, Snake *sn, Wall *w, Fruit *f, int &argc, char **argv);
+	static State *state;
+private:
+	static Snake *sn;
+	static Wall *wls;
+	static Fruit *frs;
+public:
+	static void SetOpenGLContext(State *st, Snake *sn, Wall *w, Fruit *f, int &argc, char **argv);
 	static void SetOpenGLFunctions();
 	static void StartGraphics();
-private:
-	static void renderBitmapString(float x, float y, void *font, const char *string);
+
+	static void DrawText(float x, float y, char *s);
 	static void DrawObject(int x, int y, GLuint id, double degree);
 
+private:
 	static void Display();
 	static void Timer(int);
 	static void Keyboard(unsigned char key, int x, int y);

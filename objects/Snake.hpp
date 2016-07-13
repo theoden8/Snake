@@ -44,7 +44,7 @@ struct Snake {
 	Snake(std::string folder, int x, int y, Aimer &aimer, Router &r);
 	void Keyboard(char key);
 	void AutoCorrection(Ball arrow, Wall *c, Fruit *f);
-	void ArtificialMove(Wall *c, Fruit *f);
+	void AutomaticMove(Wall *c, Fruit *f);
 	void AutoCD_C(Wall *c, Fruit *f);
 	void AddObstacle(std::map <Ball, bool> &sonar, std::vector <Ball> &objects);
 	void DeleteSnakeObstacles (std::map <Ball, bool> &sonar, Ball &from);

@@ -39,12 +39,13 @@ double Ball::degree() const {
 	return atan2(y, x) / M_PI * 180;
 }
 
-bool Ball::operator < (const Ball &sec) const {
+bool Ball::operator< (const Ball &sec) const {
 	return (x != sec.x) ? (x < sec.x) : (y < sec.y);
 }
 
-bool FreeSpot(const Ball &spot, const std::vector <Ball> &obstacles) {
-	for (int i = 0; i < obstacles.size(); ++i) {
+
+bool Ball::FreeSpot(const Ball &spot, const std::vector <Ball> &obstacles) {
+	for(int i = 0; i < obstacles.size(); ++i) {
 		if(spot == obstacles[i] && &spot != &obstacles[i]) {
 			return 1;
 		}

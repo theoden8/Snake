@@ -41,15 +41,26 @@ int main(int argc, char **argv) {
 
 	State *state = create_state(argc, argv);
 
-	Snake *s; Wall *w; Fruit *f;
-	Aimer a(s, w, f); Router r(s, w);
+	Snake *snake;
+	Wall *walls;
+	Fruit *fruits;
+	Aimer aimer(snake, walls, fruits);
+	Router router(snake, walls);
 
-	s = new Snake(state->folder, state->width, state->height, a, r);
-	w = new Wall(state->folder, state->width, state->height);
-	f = create_fruits(argc, argv, state, w, s);
+	snake = new Snake(state->folder, state->width, state->height, aimer, router);
+	walls = new Wall(state->folder, state->width, state->height);
+	fruits = create_fruits(argc, argv, state, walls, snake);
 
-	Graphics::SetOpenGLContext(state, s, w, f, argc, argv);
+	state->walls = walls;
+	state->fruits = fruits;
+	state->snake = snake;
+
+	Graphics::SetOpenGLContext(
+		state,
+		snake, walls, fruits,
+		argc, argv
+	);
 	Graphics::SetOpenGLFunctions();
 
-	delete s; delete w; delete f; delete state;
+	delete snake; delete walls; delete fruits; delete state;
 }

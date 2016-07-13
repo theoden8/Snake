@@ -1,8 +1,10 @@
 #include "Aimer.hpp"
 #include "Functions.hpp"
 
-Aimer::Aimer(Snake *s, Wall *w, Fruit *f):
-	s(s), w(w), f(f)
+#define state Graphics::state
+
+Aimer::Aimer():
+	sn(state->snake), wls(state->walls), frs(state->frs)
 {}
 
 char *Aimer::GetName(int aim) {

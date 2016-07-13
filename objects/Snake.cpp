@@ -24,19 +24,35 @@ void Snake::Keyboard(char key) {
 			safe = !safe;
 		break;
 	}
+	if(strchr("wasd", key)) {
+		Ball move;
+		switch(key) {
+			case 'a':
+				move = Ball(-1, 0);
+			break;
+			case 'w':
+				move = Ball(0, 1);
+			break;
+			case 's':
+				move = Ball(0, -1);
+			break;
+			case 'd':
+				move = Ball(1, 0);
+			break;
+		}
+		sn_->AutoCorrection(move, wls_, fr_);
+	}
 	if(strchr("01234", key)) {
+		num = key - '0';
 		++ID %= 8;
-		if(mode != key - '0') {
+		if(mode != num) {
 			aim = 1;
-			mode = key - '0';
+			mode = num;
 		} else {
 			++aim %= 5;
 		}
 		if(key == '2') {
-				if(rand() & 1)
-					strategy = 1;
-				else
-					strategy = 1e9;
+			strategy = (rand() & 1) ? 1 : 1e9;
 		} else if(key == '5') {
 //				s->mode = 7;
 //				if(!latency_delta)
@@ -46,16 +62,21 @@ void Snake::Keyboard(char key) {
 }
 
 void Snake::AutoCorrection(Ball point, Wall *w, Fruit *f) {
-	std::map <Ball, bool> sonar;
+	if(
+		sonar[snake.front() + point]
+	   && safe
+	)
+	{
+		std::map <Ball, bool> sonar;
 		AddObstacle(sonar, w->walls);
 		AddObstacle(sonar, snake);
-	if(sonar[snake.front() + point] && safe)
 		AutoCD_C(w, f);
-	else
+	} else {
 		SetStep(point);
+	}
 }
 
-void Snake::ArtificialMove(Wall *w, Fruit *f) {
+void Snake::Auto(Wall *w, Fruit *f) {
 	Ball
 		target,
 		point;
@@ -132,10 +153,9 @@ std::vector <Ball> Snake::GetStepsSpaciest(std::map <Ball, bool> &sonar, Ball &f
 	return steps;
 }
 
-void Snake::SetStep (Ball &point) {
-	if(point == -previousDirection) {
+void Snake::SetStep(Ball &point) {
+	if(point == -previousDirection)
 		return;
-	}
 
 	currentDirection = point;
 }

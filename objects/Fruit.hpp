@@ -11,7 +11,7 @@ struct Snake;
 
 struct Fruit {
 	Image fruitsGallery[8];
-	std::vector <Ball> fruit_Storage;
+	std::vector <Ball> fruitStorage;
 	int
 		width,
 		height,

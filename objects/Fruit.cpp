@@ -17,11 +17,12 @@ void Fruit::Keyboard(char key) {
 	switch(key) {
 		case 'm' :
 			++(fru_delta = (fru_delta < 0) ? 0 : fru_delta);
+			frs_->Push_Back(wls_, sn_, (frs_->fru_delta >> 2) + 1);
 			break;
 		case 'n' :
 			--(fru_delta = (fru_delta > 0) ? 0 : fru_delta);
 			for(int i = 0; i < (abs(fru_delta) >> 2) + 1; ++i) {
-				DeleteFruit(fruit_Storage.front());
+				DeleteFruit(fruitStorage.front());
 			}
 			break;
 	}
@@ -29,7 +30,7 @@ void Fruit::Keyboard(char key) {
 
 void Fruit::Push_Back(Wall *w, Snake *s, int new_fruantity) {
 	for(int i = 0; i < new_fruantity; ++i) {
-		if(fruit_Storage.size() >= width * height - s->snake.size() - (w->walls.size() >> 1) + 3) {
+		if(fruitStorage.size() >= width * height - s->snake.size() - (w->walls.size() >> 1) + 3) {
 			return;
 		}
 		Ball new_fruit;
@@ -38,17 +39,17 @@ void Fruit::Push_Back(Wall *w, Snake *s, int new_fruantity) {
 		} while (
 			FreeSpot(new_fruit, w->walls)
 			|| FreeSpot(new_fruit, s->snake)
-			|| FreeSpot(new_fruit, fruit_Storage)
+			|| FreeSpot(new_fruit, fruitStorage)
 		);
-		fruit_Storage.push_back(new_fruit);
+		fruitStorage.push_back(new_fruit);
 	}
 }
 
 void Fruit::DeleteFruit(const Ball &eated_fruit) {
-	std::vector <Ball> new_fruit_Storage;
-	for(auto fruit : fruit_Storage) {
+	std::vector <Ball> new_fruitStorage;
+	for(auto fruit : fruitStorage) {
 		if(!(eated_fruit == fruit))
-			new_fruit_Storage.push_back(fruit);
+			new_fruitStorage.push_back(fruit);
 	}
-	fruit_Storage = new_fruit_Storage;
+	fruitStorage = new_fruitStorage;
 }

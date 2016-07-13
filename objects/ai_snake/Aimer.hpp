@@ -14,15 +14,15 @@ struct Snake;
 
 // provides the aim for a snake
 class Aimer {
-	Snake *s;
-	Wall *w;
-	Fruit *f;
+	Snake *sn;
+	Wall *wls;
+	Fruit *frs;
 
 	int range = INVALID_INT;
 	std::map <Ball, bool> sonar;
 	std::map <Ball, int> way_to;
 public:
-	Aimer(Snake *s, Wall *w, Fruit *f);
+	Aimer();
 	static char *GetName(int aim);
 	void SetTarget(Ball &target, int aim);
 private:
