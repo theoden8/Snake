@@ -6,9 +6,12 @@
 #include "Image.hpp"
 #include "Ball.hpp"
 
-struct Wall {
-	Image cageGallery[0];
+class Wall {
+	Image wallsGallery[0];
+public:
 	std::vector <Ball> walls;
-	Wall(std::string folder, int width, int height);
+	Wall();
+
 	void Keyboard(char key);
+	void Display();
 };

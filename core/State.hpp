@@ -3,33 +3,37 @@
 #include <string>
 #include <map>
 
-#include "Wall.hpp"
-#include "Fruit.hpp"
-#include "Snake.hpp"
-#include "State.hpp"
-#include "Aimer.hpp"
-#include "Router.hpp"
+class Wall;
+class Fruit;
+class Snake;
+
+#define WALLS  State::walls
+#define FRUITS State::fruits
+#define SNAKE  State::snake
 
 struct State {
-	std::string
+	static std::string
 		folder;
-	bool
-		pause = true,
-		running = false;
-	double
+
+	static bool
+		pause,
+		running;
+
+	static double
 		width,
 		height,
 		x_Display,
 		y_Display;
-	int
+
+	static int
 		latency,
-		latency_delta = 0;
+		latency_delta;
 
-	Wall *walls = NULL;
-	Fruit *fruits = NULL;
-	Snake *snake = NULL;
+	static Wall *walls;
+	static Fruit *fruits;
+	static Snake *snake;
 
-	State(int latency, int width, int height);
-	void Keyboard(char key);
-	void Display();
+	static void InitState(const int &argc, char **argv);
+	static void Keyboard(char key);
+	static void Display();
 };

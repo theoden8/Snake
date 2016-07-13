@@ -1,20 +1,20 @@
+#include <iostream>
 #include <cstdlib>
 #include <cmath>
 
 #include "Functions.hpp"
 #include "Graphics.hpp"
+#include "State.hpp"
+#include "Fruit.hpp"
+#include "Wall.hpp"
+#include "Snake.hpp"
 
-void Graphics::SetOpenGLContext(State *st, int &argc, char **argv) {
-	state = st;
-	sn = st->snake;
-	wls = st->walls;
-	frs = st->fruits;
-
-	int template_size = fmin(40, state->width) * 50 - 1100;
+void Graphics::SetOpenGLContext(int &argc, char **argv) {
+	int template_size = fmin(40, State::width) * 50 - 1100;
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(template_size, template_size * 0.75);
-	glutInitWindowPosition(500 - state->width * 4, 400 - state->height * 4);
+	glutInitWindowPosition(500 - State::width * 4, 400 - State::height * 4);
 	glutCreateWindow("Snake");
 }
 
@@ -24,7 +24,7 @@ void Graphics::SetOpenGLFunctions() {
 	glutMouseFunc(Mouse);
 	glutReshapeFunc(Reshape);
 	glutKeyboardFunc(Keyboard);
-	glutSpecialFunc(Arrow_Keys);
+	glutSpecialFunc(Special);
 	glutSetCursor(GLUT_CURSOR_NONE);
 }
 
@@ -32,9 +32,9 @@ void Graphics::StartGraphics() {
 	glutMainLoop();
 }
 
-void Graphics::DrawText(float x, float y, char *text) {
+void Graphics::DrawText(float x, float y, char *s) {
 	glRasterPos2f(x, y);
-	for(const char *c = string; *c != '\0'; ++c)
+	for(const char *c = s; *c != '\0'; ++c)
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, *c);
 }
 
@@ -59,83 +59,59 @@ void Graphics::Display () {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glMatrixMode(GL_PROJECTION);
 
-	state->Display();
-
+	State::Display();
 //	Cursor
 //	DrawObject(Image(),,)
-//	Snake
-	for(int i = 0; i < sn->snake.size(); ++i) {
-		GLuint id;
-		double degree = 90;
-		if(i == 0) {
-			id = sn->skins[sn->ID].head.id;
-			degree = sn->currentDirection.degree();
-		} else if(i == sn->snake.size() - 1) {
-			id = sn->skins[sn->ID].body.id;
-			degree = (sn->snake[i - 1] - sn->snake[i]).degree();
-		} else {
-			id = sn->skins[sn->ID].tail.id;
-			degree = (sn->snake[i - 1] - sn->snake[i]).degree();
-		}
-		DrawObject(sn->snake[i].x, sn->snake[i].y, id, degree);
-	}
+	SNAKE->Display();
+	WALLS->Display();
+	FRUITS->Display();
 
-//	Wall
-	for(auto wall : wls->walls) {
-		double degree = 90;
-		DrawObject(wall.x, wall.y, wls->cageGallery[0].id, degree);
-	}
-//	Fruit
-	for(auto fruit : frs->fruitStorage) {
-		double degree = 90;
-		DrawObject(fruit.x, fruit.y, frs->fruitsGallery[sn->ID].id, degree);
-	}
 	glutSwapBuffers();
 }
 
 void Graphics::Timer(int) {
-	if(!state->pause) {
-		if(!sn->mode)
-			sn->AutoCorrection(sn->currentDirection, wls, frs);
+	if(!State::pause) {
+		if(!SNAKE->mode)
+			SNAKE->AutoCorrection(SNAKE->currentDirection);
 
-		if(!state->running)
-			sn->DoStep();
+		if(!State::running)
+			SNAKE->DoStep();
 		if(
-			Ball::FreeSpot(sn->snake.front(), wls->walls)
-			|| Ball::FreeSpot(sn->snake.front(), sn->snake)
+			Ball::FreeSpot(SNAKE->snake.front(), WALLS->walls)
+			|| Ball::FreeSpot(SNAKE->snake.front(), SNAKE->snake)
 		)
 		{
-			std::cout << std::to_string(frs->frufru) << std::endl;
+			std::cout << std::to_string(FRUITS->frufru) << std::endl;
 			exit(0);
 		}
 	}
-	if(Ball::FreeSpot(sn->snake.front(), frs->fruitStorage)) {
-		frs->DeleteFruit(sn->snake.front());
-		frs->Push_Back(wls, sn, 1);
-		sn->Push_Back();
-		++frs->frufru;
+	if(Ball::FreeSpot(SNAKE->snake.front(), FRUITS->fruitStorage)) {
+		FRUITS->DeleteFruit(SNAKE->snake.front());
+		FRUITS->Push_Back(1);
+		SNAKE->Push_Back();
+		++FRUITS->frufru;
 	}
-	if(sn->aim) {
-//		switch(sn->mode) {
+	if(SNAKE->aim) {
+//		switch(SNAKE->mode) {
 //			case 4:
-//				sn->AutoCD_C(wls, frs);
+//				SNAKE->AutoCD_C();
 //				break;
 //			default:
-				sn->AutomaticMove(wls, frs);
+				SNAKE->AutomaticMove();
 //				break;
 //		}
 	}
 	Display();
-	glutTimerFunc(state->latency, Timer, 0);
+	glutTimerFunc(State::latency, Timer, 0);
 }
 
 void Graphics::Keyboard(unsigned char key, int x, int y) {
-	state->Keyboard(key);
-	sn->Keyboard(key);
-	frs->Keyboard(key);
+	State::Keyboard(key);
+	SNAKE->Keyboard(key);
+	FRUITS->Keyboard(key);
 }
 
-void Graphics::Arrow_Keys(int key, int x, int y) {
+void Graphics::Special(int key, int x, int y) {
 	switch(key) {
 		case 100 :
 			Keyboard('a', x, y);

@@ -7,60 +7,38 @@
 
 #include <string>
 
-#include "Wall.hpp"
-#include "Fruit.hpp"
-#include "Snake.hpp"
+
 #include "State.hpp"
-#include "Aimer.hpp"
 
 #include "Graphics.hpp"
+class Fruit;
+class Wall;
+class Snake;
+#include "Fruit.hpp"
+#include "Wall.hpp"
+class Aimer;
+class Router;
+#include "Snake.hpp"
 
-static State *create_state(const int &argc, char **argv) {
-	Ball *size = new Ball((argc >= 3) ? Ball(atoi(argv[1]), atoi(argv[2])) : Ball(50, 50));
-	State *state = new State(40, size->x, size->y);
-	delete(size);
-	std::string exec = argv[0];
-	state->folder = exec.substr(0, exec.length() - 5);
-
-	state->x_Display = state->width * 1.4;
-	state->y_Display = state->height + 0.5;
-
-	return state;
-}
-
-static Fruit *create_fruits(const int &argc, char **argv, State *state, Wall *walls, Snake *snake) {
-	Fruit *fruit = new Fruit(state->folder, state->width, state->height, 2);
-	fruit->Push_Back(walls, snake, 2);
+static Fruit *create_fruits(const int &argc, char **argv) {
+	Fruit *fruit = new Fruit(2);
+	fruit->Push_Back(2);
 	if(argc == 4)
-		fruit->Push_Back(walls, snake, atoi(argv[3]));
+		fruit->Push_Back(atoi(argv[3]));
 	return fruit;
 }
 
 int main(int argc, char **argv) {
 	srand(time(NULL));
 
-	State *state = create_state(argc, argv);
+	State::InitState(argc, argv);
 
-	Snake *snake;
-	Wall *walls;
-	Fruit *fruits;
-	Aimer aimer(snake, walls, fruits);
-	Router router(snake, walls);
+	SNAKE = new Snake();
+	WALLS = new Wall();
+	FRUITS = create_fruits(argc, argv);
 
-	snake = new Snake(state->folder, state->width, state->height, aimer, router);
-	walls = new Wall(state->folder, state->width, state->height);
-	fruits = create_fruits(argc, argv, state, walls, snake);
-
-	state->walls = walls;
-	state->fruits = fruits;
-	state->snake = snake;
-
-	Graphics::SetOpenGLContext(
-		state,
-		snake, walls, fruits,
-		argc, argv
-	);
+	Graphics::SetOpenGLContext(argc, argv);
 	Graphics::SetOpenGLFunctions();
 
-	delete snake; delete walls; delete fruits; delete state;
+	delete SNAKE; delete WALLS; delete FRUITS;
 }

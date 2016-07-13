@@ -6,21 +6,19 @@
 #include "Image.hpp"
 #include "Ball.hpp"
 
-struct Wall;
-struct Snake;
-
-struct Fruit {
+class Fruit {
 	Image fruitsGallery[8];
+public:
 	std::vector <Ball> fruitStorage;
 	int
-		width,
-		height,
-		fruantity,	//	number of fruits on field
+		fruantity,	//	number of fruits on the arena
 		fru_delta = 0,
 		frufru = 0;
 
-	Fruit(std::string folder, int width, int height, int fruantity);
-	void Keyboard(char key);
-	void Push_Back(Wall *c, Snake *s, int new_fruantity);
+	Fruit(int fruantity);
+	void Push_Back(int new_fruantity);
 	void DeleteFruit(const Ball &sH);
+
+	void Keyboard(char key);
+	void Display();
 };

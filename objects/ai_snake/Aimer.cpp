@@ -1,13 +1,14 @@
 #include "Aimer.hpp"
 #include "Functions.hpp"
+#include "Graphics.hpp"
+#include "State.hpp"
+#include "Snake.hpp"
+#include "Wall.hpp"
+#include "Fruit.hpp"
 
 #define state Graphics::state
 
-Aimer::Aimer():
-	sn(state->snake), wls(state->walls), frs(state->frs)
-{}
-
-char *Aimer::GetName(int aim) {
+const char *Aimer::GetName(int aim) {
 	switch(aim) {
 		case 0:
 			return "Hand Brake";
@@ -25,13 +26,13 @@ char *Aimer::GetName(int aim) {
 }
 
 void Aimer::SetTarget(Ball &target, int aim) {
-	for(auto obst : {w->walls, s->snake}) {
+	for(auto obst : {WALLS->walls, SNAKE->snake})
 		AddObstacle(obst);
-	}
+
 	DeleteSnakeObstacles();
-	sonar.erase(s->snake.back());
+	sonar.erase(SNAKE->snake.back());
 	range = INVALID_INT;
-	way_to = bfs(sonar, s->snake.front());
+	way_to = bfs(sonar, SNAKE->snake.front());
 	switch(aim) {
 		case 0:
 		break;
@@ -58,16 +59,16 @@ void Aimer::AddObstacle(std::vector <Ball> &objects) {
 }
 
 void Aimer::DeleteSnakeObstacles() {
-	Ball &from = s->snake.front();
+	Ball &from = SNAKE->snake.front();
 	std::map <Ball, int> way_to = bfs(sonar, from);
-	for(int i = 1; i < s->snake.size(); ++i) {
-		if(way_to[s->snake[i]] > s->snake.size() - i)
-			sonar.erase(s->snake[i]);
+	for(int i = 1; i < SNAKE->snake.size(); ++i) {
+		if(way_to[SNAKE->snake[i]] > SNAKE->snake.size() - i)
+			sonar.erase(SNAKE->snake[i]);
 	}
 }
 
 void Aimer::SetTargetFurthest(Ball &target) {
-	for(const auto &f : f->fruit_Storage) {
+	for(const auto &f : FRUITS->fruitStorage) {
 		if(way_to.count(f))
 			if(
 				range == INVALID_INT
@@ -81,7 +82,7 @@ void Aimer::SetTargetFurthest(Ball &target) {
 }
 
 void Aimer::SetTargetClosest(Ball &target) {
-	for(const auto &f : f->fruit_Storage) {
+	for(const auto &f : FRUITS->fruitStorage) {
 		if(way_to.count(f)) {
 			if(range < way_to[f]) {
 				target = f;
@@ -96,10 +97,10 @@ void Aimer::SetTargetNewest(Ball &target) {
 }
 
 void Aimer::SetTargetSnakeTail(Ball &target) {
-	target = s->snake.back();
-	for(int i = s->snake.size() - 1; i >= 0; --i) {
+	target = SNAKE->snake.back();
+	for(int i = SNAKE->snake.size() - 1; i >= 0; --i) {
 		if(way_to.count(target)) {
-			target = s->snake[i];
+			target = SNAKE->snake[i];
 			range = way_to[target];
 			return;
 		}

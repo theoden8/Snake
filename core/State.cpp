@@ -3,12 +3,30 @@
 
 #include "State.hpp"
 #include "Functions.hpp"
+#include "Graphics.hpp"
+#include "Wall.hpp"
+#include "Fruit.hpp"
+#include "Snake.hpp"
+#include "Router.hpp"
+#include "Aimer.hpp"
 
-State::State(int latency, int width, int height) :
-	latency(latency),
-	width(width),
-	height(height)
-{}
+
+static void InitState(const int &argc, char **argv) {
+	State::latency = 40;
+	State::latency_delta = 0;
+	State::width = (argc >= 3) ? atoi(argv[1]) : 50;
+	State::height = (argc >= 3) ? atoi(argv[2]) : 50;
+
+	State::pause = true;
+	State::running = false;
+
+	const std::string exec = argv[0];
+	State::folder = exec.substr(0, exec.length() - 6);
+
+	State::x_Display = State::width * 1.4;
+	State::y_Display = State::height + 0.5;
+}
+
 
 void State::Keyboard(char key) {
 	switch(key) {
@@ -38,32 +56,38 @@ void State::Keyboard(char key) {
 }
 
 void State::Display() {
-	glOrtho(-0.5, state->x_Display, -0.5, state->y_Display, -10, 10);
+	glOrtho(-0.5, x_Display, -0.5, y_Display, -10, 10);
 	glDisable(GL_TEXTURE_2D);
 	glColor3f(1.0, 1.0, 1.0);
 
 	char text[20];
 
 	sprintf(text, "Points: %d..", fruits->frufru);
-	Graphics::DrawTest(width + 1, height * 0.97, text);
+	Graphics::DrawText(width + 1, height * 0.97, text);
 
-	sprintf(text, "Fruits: %d", fruits->fruitStorage.size());
-	Graphics::DrawTest(width + 1, height * 0.93, text);
+	sprintf(text, "Fruits: %lu", fruits->fruitStorage.size());
+	Graphics::DrawText(width + 1, height * 0.93, text);
 
 	sprintf(text, "Latency: %d", latency);
-	Graphics::DrawTest(width + 1, height * 0.89, text);
+	Graphics::DrawText(width + 1, height * 0.89, text);
 
-	if(pause)
-		Graphics::DrawText(width * 0.45, height * 0.75, "[Paused]");
-	if(running)
-		Graphics::DrawText(width * 0.45, height * 0.25, "[Running]");
-	if(snake->safe)
-		Graphics::DrawText(width + 1, height * 0.10, "   [Insurance]");
+	if(pause) {
+		sprintf(text, "[Paused]");
+		Graphics::DrawText(width * 0.45, height * 0.75, text);
+    }
+	if(running) {
+		sprintf(text, "[Running]");
+		Graphics::DrawText(width * 0.45, height * 0.25, text);
+    }
+	if(snake->safe) {
+		sprintf(text, "    [Insurance]");
+		Graphics::DrawText(width + 1, height * 0.10, text);
+    }
 
-	sprintf(mode, "mode <%d::%s>", snake->mode, Rounter::GetName(snake->mode, snake->strategy));
+	sprintf(text, "mode <%d::%s>", snake->mode, Router::GetName(snake->mode, snake->strategy));
 	Graphics::DrawText(width + 1, height * 0.06, text);
 
-	sprintf(mode, "aim  <%d::%s>", snake->aim, Aimer::GetName(snake->ain));
+	sprintf(text, "aim  <%d::%s>", snake->aim, Aimer::GetName(snake->aim));
 	Graphics::DrawText(width + 1, height * 0.02, text);
 
 	glEnable(GL_TEXTURE_2D);
