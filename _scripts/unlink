@@ -1,5 +1,5 @@
 #!/bin/sh
 
 for i in _scripts/*; do
-  ln -vs $i .
+  unlink "$(basename "$i")"
 done
