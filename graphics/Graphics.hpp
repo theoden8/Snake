@@ -1,22 +1,15 @@
 #pragma once
 
 #include "glut_config.h"
-#include "opengl_config.h"
 
-#include "State.hpp"
 #include "Ball.hpp"
-
-class State;
 
 class Graphics {
 public:
-	static void SetOpenGLContext(int &argc, char **argv);
-	static void SetOpenGLFunctions();
-	static void StartGraphics();
+	static void StartGraphics(int &argc, char **argv);
 
-	static void DrawText(float x, float y, char *s);
-	static void DrawObject(int x, int y, GLuint id, double degree);
-
+	static void DisplayText(float x, float y, char *s);
+	static void DisplayObject(Ball ball, GLuint id, double degree);
 private:
 	static void Display();
 	static void Timer(int);

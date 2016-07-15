@@ -5,21 +5,31 @@
 
 #include "Ball.hpp"
 
-class Snake;
-
 #define INVALID_INT -1
 
+class Object;
+class Snake;
+
 class Aimer {
-	int range = INVALID_INT;
-	std::map <Ball, bool> sonar;
+	int
+		range = INVALID_INT;
 	std::map <Ball, int> way_to;
+	const Snake *snake;
 public:
-	Aimer();
-	static const char *GetName(int aim);
-	void SetTarget(Ball &target, int aim);
+	int aim = 0;
+	std::map <Ball, bool> sonar;
+	/* Aimer(); */
+
+public:
+	Aimer(Snake *s);
+	const char *GetName() const;
+	const Snake *GetSnake() const;
+	void SetTarget(Ball &target);
 private:
-	void AddObstacle(std::vector <Ball> &objects);
+	void AddObstacle(const Object &obj);
 	void DeleteSnakeObstacles();
+
+	void SetSonar(Ball &target);
 	void SetTargetFurthest(Ball &target);
 	void SetTargetClosest(Ball &target);
 	void SetTargetNewest(Ball &target);

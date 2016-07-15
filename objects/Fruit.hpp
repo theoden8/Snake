@@ -3,20 +3,21 @@
 #include <vector>
 #include <string>
 
+#include "Object.hpp"
 #include "Image.hpp"
-#include "Ball.hpp"
 
-class Fruit {
+class Fruit : public Object {
 	Image fruitsGallery[8];
+
 public:
-	std::vector <Ball> fruitStorage;
 	int
 		fruantity,	//	number of fruits on the arena
 		fru_delta = 0,
 		frufru = 0;
 
+public:
 	Fruit(int fruantity);
-	void Push_Back(int new_fruantity);
+	void PushBack(int new_fruantity);
 	void DeleteFruit(const Ball &sH);
 
 	void Keyboard(char key);

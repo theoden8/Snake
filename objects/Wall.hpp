@@ -3,15 +3,13 @@
 #include <vector>
 #include <string>
 
+#include "Object.hpp"
 #include "Image.hpp"
-#include "Ball.hpp"
 
-class Wall {
-	Image wallsGallery[0];
+class Wall : public Object {
 public:
-	std::vector <Ball> walls;
+	Image wallsGallery[1];
 	Wall();
 
-	void Keyboard(char key);
 	void Display();
 };

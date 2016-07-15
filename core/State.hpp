@@ -3,13 +3,14 @@
 #include <string>
 #include <map>
 
-class Wall;
-class Fruit;
-class Snake;
-
 #define WALLS  State::walls
 #define FRUITS State::fruits
 #define SNAKE  State::snake
+
+#define SSNAKE ((Snake *)SNAKE)
+#define FFRUITS ((Fruit *)FRUITS)
+
+class Object;
 
 struct State {
 	static std::string
@@ -29,11 +30,12 @@ struct State {
 		latency,
 		latency_delta;
 
-	static Wall *walls;
-	static Fruit *fruits;
-	static Snake *snake;
+	static Object *walls;
+	static Object *fruits;
+	static Object *snake;
 
 	static void InitState(const int &argc, char **argv);
+	static void InitStateFin(const int argc, char **argv);
 	static void Keyboard(char key);
 	static void Display();
 };

@@ -7,18 +7,25 @@
 
 #define INVALID_INT -1
 
+class Aimer;
+class Snake;
+
 class Router {
-public:
-	int strategy,
+	int
 		range = INVALID_INT;
+	const Snake *snake;
+public:
+	int
+		mode = 0,
+		strategy = 2;
 	std::map <Ball, bool> &sonar;
 
-	Router();
-
-	static const char *GetName(int mode, int strategy);
-	void SetPoint(const Ball &from, Ball &point, Ball &target, int mode);
+public:
+	Router(Aimer *a);
+	const char *GetName() const;
+	void SetPoint(const Ball &from, const Ball &target, Ball &point) const;
 private:
-	void SetPointStraight(const Ball &from, Ball &target, Ball &point);
-	void SetPointShortest(const Ball &from, Ball &target, Ball &point);
-	void SetStepsSpaciest(const Ball &from, Ball &target, Ball &point);
+	void SetPointStraight(const Ball &from, const Ball &target, Ball &point) const;
+	void SetPointShortest(const Ball &from, const Ball &target, Ball &point) const;
+	void SetStepsSpaciest(const Ball &from, const Ball &target, Ball &point) const;
 };

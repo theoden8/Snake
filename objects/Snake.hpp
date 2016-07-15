@@ -4,31 +4,28 @@
 #include <string>
 #include <map>
 
+#include "Object.hpp"
 #include "Image.hpp"
 
 class Aimer;
 class Router;
 
-class Snake {
+class Snake : public Object {
+	Aimer *aimer;
+	Router *router;
+
+	Image Crossed;
+public:
 	struct Skin {
 		Image head, body, tail;
 		Skin(Image h, Image b, Image t):
 			head(h), body(b), tail(t)
 		{}
 	};
-
-	Aimer *aimer;
-	Router *router;
-
 	static Skin skins[8];
-	Image Crossed;
-
-public:
-	std::vector <Ball> snake;
 
 	int
-		ID = 0, strategy = 2,
-		mode = 0, aim = 0;
+		ID = 0;
 	Ball
 		currentDirection = Ball(0, -1),
 		previousDirection = Ball(0, 0),
@@ -39,8 +36,10 @@ public:
 
 public:
 	Snake();
-	void Keyboard(char key);
+	~Snake();
 	void Display();
+
+	void Keyboard(char key);
 
 	void AutoCorrection(Ball arrow);
 	void AutomaticMove();
@@ -49,5 +48,5 @@ public:
 	void DeleteSnakeObstacles (std::map <Ball, bool> &sonar, Ball &from);
 	void DoStep();
 	void SetStep(Ball &point);
-	void Push_Back();
+	void PushBack();
 };

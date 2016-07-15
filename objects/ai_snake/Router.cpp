@@ -4,61 +4,21 @@
 #include "Functions.hpp"
 #include "Graphics.hpp"
 #include "State.hpp"
-#include "Wall.hpp"
 #include "Snake.hpp"
 
-const char *Router::GetName(int mode, int strategy) {
-	switch(mode) {
-		case 0:
-			return "Human";
-		case 1:
-			return "Fatalist";
-		case 2:
-			if(strategy == 1)
-				return "Horizontal Shooter";
-			else if(strategy == 1e9)
-				return "Vertical Shooter";
-			return "Random Shooter";
-		case 3:
-			return "Tracker";
-		case 4:
-			return "Sir Robin";
-		default:
-			return NULL;
-	}
-}
-
-void Router::SetPoint(const Ball &from, Ball &point, Ball &target, int mode) {
-	switch(mode) {
-		case 0:
-		break;
-		case 1:
-			SetPointStraight(from, target, point);
-		break;
-		case 2:
-			SetPointShortest(from, target, point);
-		break;
-		case 3:
-			SetStepsSpaciest(from, target, point);
-		break;
-		default:
-			return;
-	}
-}
-
-void Router::SetPointStraight(const Ball &from, Ball &target, Ball &point) {
+void Router::SetPointStraight(const Ball &from, const Ball &target, Ball &point) const {
 	point = target - from;
 
 	point.x = (point.x) ? point.x / abs(point.x) : 0;
 	point.y = (point.y) ? point.y / abs(point.y) : 0;
 
 	if(point.x && point.y)
-		((Ball::FreeSpot(SNAKE->snake.front() + Ball(point.x, 0), WALLS->walls)
-			|| Ball::FreeSpot(SNAKE->snake.front() + Ball(point.x, 0), SNAKE->snake)
+		((Ball::FreeSpot(SNAKE->GetObjects().front() + Ball(point.x, 0), WALLS->GetObjects())
+			|| Ball::FreeSpot(SNAKE->GetObjects().front() + Ball(point.x, 0), SNAKE->GetObjects())
 			|| rand() % strategy
 		) ? point.x : point.y) = 0;
 
-	if(SNAKE->snake.front() + point == SNAKE->snake[1]) {
+	if(SNAKE->GetObjects().front() + point == SNAKE->GetObjects()[1]) {
 		if(rand() & 1) {
 			point.x = !point.x;
 			point.y = !point.y;
@@ -71,7 +31,7 @@ void Router::SetPointStraight(const Ball &from, Ball &target, Ball &point) {
 		throw std::runtime_error("SetPointShortest happened to be mistaken!");
 }
 
-void Router::SetPointShortest(const Ball &from, Ball &target, Ball &point) {
+void Router::SetPointShortest(const Ball &from, const Ball &target, Ball &point) const {
 	std::map <Ball, int> way_to = bfs(sonar, target);
 	for(const auto &step : GetSteps()) {
 		Ball move(from + step);
@@ -83,7 +43,7 @@ void Router::SetPointShortest(const Ball &from, Ball &target, Ball &point) {
 	SetPointStraight(from, target, point);
 }
 
-void Router::SetStepsSpaciest(const Ball &from, Ball &target, Ball &point) {
+void Router::SetStepsSpaciest(const Ball &from, const Ball &target, Ball &point) const {
 	int space = 0;
 	std::vector <Ball> steps;
 	for(const auto &step : GetSteps()) {
