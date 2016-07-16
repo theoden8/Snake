@@ -14,7 +14,7 @@ The purpose of this project was at first to practice C++ OOP and OpenGL, but eve
 
 ### Description
 
-This is a snake game with nice AI routing and aiming switches.
+This is a snake clone with nice manual and AI controls.
 
 ### Features
 
@@ -37,6 +37,10 @@ This is a snake game with nice AI routing and aiming switches.
 * Read walls from file.
 * More snakes.
 * Remote control.
+
+### Contribution
+
+Feel free to submit a pull request or inform about a bug / error.
 
 ## Usage
 
