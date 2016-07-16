@@ -63,6 +63,7 @@ void Snake::AutoMove() {
 			router->route = bu_route;
 		}
 	}
+	targetLast = target;
 
 	SetStep(step);
 }

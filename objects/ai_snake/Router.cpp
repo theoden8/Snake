@@ -56,9 +56,6 @@ void Router::SetStep(const Ball &from, const Ball &target, Ball &step) const {
 }
 
 
-/*
- * Does not care about any obstacles, goes straight to the target.
- */
 void Router::SetStepStraight(const Ball &from, const Ball &target, Ball &step) const {
 	step = target - from;
 

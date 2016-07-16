@@ -13,8 +13,8 @@ class Snake : public Object {
 	Aimer *aimer;
 	Router *router;
 
-	Image Crossed;
 public:
+	Image Crossed;
 	struct Skin {
 		Image head, body, tail;
 		Skin() {}
@@ -27,7 +27,8 @@ public:
 	Ball
 		currentDirection = Ball(-1, 0),
 		previousDirection = Ball(0, 0),
-		snakeLast;
+		snakeLast,
+		targetLast;
 	bool
 		growNextMove = false,
 		safe_walk = false;

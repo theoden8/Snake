@@ -78,9 +78,14 @@ void Snake::Display() {
 
 	for(int i = 0; i < objects.size(); ++i) {
 		Ball &slice = objects[i];
+		double degree = 90;
+		if(objects[i] == targetLast) {
+			std::cout << "crossed" << std::endl;
+			Graphics::DisplayObject(slice, Crossed.id, degree);
+			continue;
+		}
 		Skin &skin = skins[State::skin_id];
 		GLuint id;
-		double degree = 90;
 		if(i == 0) {
 			id = skin.head.id;
 			degree = currentDirection.degree();
