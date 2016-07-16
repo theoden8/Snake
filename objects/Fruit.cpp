@@ -81,10 +81,6 @@ void Fruit::Display() {
 
 	for(const auto &fruit : objects) {
 		double degree = 90;
-		if(fruit == SSNAKE->targetLast) {
-			Graphics::DisplayObject(fruit, SSNAKE->Crossed.id, degree);
-			continue;
-		}
 		Graphics::DisplayObject(fruit, fruitsGallery[State::skin_id].id, degree);
 	}
 }

@@ -70,11 +70,20 @@ void Router::SetStepStraight(const Ball &target, Ball &step) const {
 		if(
 			Ball::InSegment(from + Ball(step.x, 0), WALLS->GetObjects())
 			|| Ball::InSegment(from + Ball(step.x, 0), snake->GetObjects())
-			|| rand() % strategy
 		)
 			step.x = 0;
-		else
+		if(
+			Ball::InSegment(from + Ball(step.y, 0), WALLS->GetObjects())
+			|| Ball::InSegment(from + Ball(step.y, 0), snake->GetObjects())
+		)
 			step.y = 0;
+
+		if(step.x != 0 && step.y != 0) {
+			((rand() % strategy) ? step.x : step.y) = 0;
+		} else if(step == Ball(0, 0)) {
+			step = snake->currentDirection;
+			return;
+		}
 	}
 	std::cout << "step_straight " << step << std::endl;
 

@@ -19,7 +19,7 @@ Snake::Snake()
 		}
 	);
 
-	Crossed.load(FOLDER + "_textures/Cross.tga");
+	IMG_TARGET.load(FOLDER + "_textures/TARGET.tga");
 	for(int i = 0; i < NO_ICONSETS; ++i) {
 		skins[i].head.load(FOLDER + "_textures/" + std::to_string(i) + "_HEAD.tga");
 		skins[i].body.load(FOLDER + "_textures/" + std::to_string(i) + "_BODY.tga");

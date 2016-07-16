@@ -82,9 +82,9 @@ void Graphics::Display () {
 //	Cursor
 //	DisplayObject(Image(),,)
 
-	SNAKE->Display();
 	WALLS->Display();
 	FRUITS->Display();
+	SNAKE->Display();
 
 	glutSwapBuffers();
 }

@@ -39,9 +39,6 @@ const std::map <Ball, bool> &Aimer::GetSonar() {
 }
 
 void Aimer::Scan() {
-	if(!sonar.empty())
-		return;
-
 	for(const auto &objects : {WALLS->GetObjects(), snake->GetObjects()})
 		for(const auto &obj : objects)
 			sonar[obj] = true;

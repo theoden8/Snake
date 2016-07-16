@@ -14,7 +14,7 @@ class Snake : public Object {
 	Router *router;
 
 public:
-	Image Crossed;
+	Image IMG_TARGET;
 	struct Skin {
 		Image head, body, tail;
 		Skin() {}

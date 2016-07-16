@@ -1,6 +1,7 @@
 #pragma once
 
 #include "glut_config.h"
+
 #include <string>
 
 struct Image {

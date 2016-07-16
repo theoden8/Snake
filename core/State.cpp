@@ -1,3 +1,4 @@
+#include <cstring>
 #include <cstdlib>
 #include <iostream>
 
@@ -38,7 +39,7 @@ void State::Init(const int &argc, char **argv) {
 	HEIGHT = (argc >= 3) ? atoi(argv[2]) : 50;
 
 	const std::string exec = argv[0];
-	folder = exec.substr(0, exec.length() - 6);
+	folder = exec.substr(0, exec.length() - strlen("_snake"));
 
 	x_Display = WIDTH * 1.4;
 	y_Display = HEIGHT + 0.5;
