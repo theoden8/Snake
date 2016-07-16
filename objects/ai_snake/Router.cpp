@@ -3,7 +3,7 @@
 #include "Router.hpp"
 #include "Functions.hpp"
 #include "Graphics.hpp"
-#include "State.hpp"
+#include "Common.hpp"
 #include "Snake.hpp"
 
 void Router::SetPointStraight(const Ball &from, const Ball &target, Ball &point) const {

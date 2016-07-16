@@ -1,32 +1,25 @@
 #include "Aimer.hpp"
 #include "Functions.hpp"
 #include "Object.hpp"
-#include "State.hpp"
+#include "Common.hpp"
 
-void Aimer::AddObstacle(const Object &obj) {
-	for(const auto &ball : obj.GetObjects())
-		sonar[ball] = true;
-}
+void Aimer::SetSonar(Ball &target) {
+	for(const auto &obst : {WALLS->GetObjects(), SNAKE->GetObjects()})
+		for(const auto &ball : obst)
+			sonar[ball] = true;
 
-void Aimer::DeleteSnakeObstacles() {
 	Ball &from = SNAKE->GetObjects().front();
 	std::map <Ball, int> way_to = bfs(sonar, from);
 	for(int i = 1; i < SNAKE->GetObjects().size(); ++i) {
 		if(way_to[SNAKE->GetObjects()[i]] > SNAKE->GetObjects().size() - i)
 			sonar.erase(SNAKE->GetObjects()[i]);
 	}
-}
 
-
-void Aimer::SetSonar(Ball &target) {
-	for(const auto &obst : {*WALLS, *SNAKE})
-		AddObstacle(obst);
-
-	DeleteSnakeObstacles();
 	sonar.erase(SNAKE->GetObjects().back());
 	range = INVALID_INT;
 	way_to = bfs(sonar, SNAKE->GetObjects().front());
 }
+
 
 void Aimer::SetTargetFurthest(Ball &target) {
 	SetSonar(target);

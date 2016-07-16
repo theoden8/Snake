@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include <cstring>
 
 #include "Snake.hpp"
 #include "State.hpp"
@@ -54,10 +55,15 @@ void Snake::Display() {
 	char text[20];
 
 	sprintf(text, "mode <%d::%s>", router->mode, router->GetName());
-	Graphics::DisplayText(State::width + 1, State::height * 0.06, text);
+	Graphics::DisplayText(WIDTH + 1, HEIGHT * 0.06, text);
 
 	sprintf(text, "aim  <%d::%s>", aimer->aim, aimer->GetName());
-	Graphics::DisplayText(State::width + 1, State::height * 0.02, text);
+	Graphics::DisplayText(WIDTH + 1, HEIGHT * 0.02, text);
+
+	if(safe) {
+		sprintf(text, "    [Insurance]");
+		Graphics::DisplayText(WIDTH + 1, HEIGHT * 0.10, text);
+	}
 
 	for(int i = 0; i < objects.size(); ++i) {
 		Ball &slice = objects[i];

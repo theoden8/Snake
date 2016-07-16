@@ -26,10 +26,8 @@ public:
 	const Snake *GetSnake() const;
 	void SetTarget(Ball &target);
 private:
-	void AddObstacle(const Object &obj);
-	void DeleteSnakeObstacles();
-
 	void SetSonar(Ball &target);
+
 	void SetTargetFurthest(Ball &target);
 	void SetTargetClosest(Ball &target);
 	void SetTargetNewest(Ball &target);

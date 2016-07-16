@@ -5,5 +5,5 @@
 
 int main(int argc, char **argv) {
 	srand(time(NULL));
-	Graphics::StartGraphics(argc, argv);
+	Graphics::Init(argc, argv);
 }

@@ -1,18 +1,15 @@
 #pragma once
 
 #include <string>
-#include <map>
 
-#define WALLS  State::walls
-#define FRUITS State::fruits
-#define SNAKE  State::snake
+#include "Ball.hpp"
 
-#define SSNAKE ((Snake *)SNAKE)
-#define FFRUITS ((Fruit *)FRUITS)
+#define WIDTH State::width
+#define HEIGHT State::height
+#define FOLDER State::folder
 
-class Object;
-
-struct State {
+class State {
+public:
 	static std::string
 		folder;
 
@@ -30,12 +27,8 @@ struct State {
 		latency,
 		latency_delta;
 
-	static Object *walls;
-	static Object *fruits;
-	static Object *snake;
-
-	static void InitState(const int &argc, char **argv);
-	static void InitStateFin(const int argc, char **argv);
+public:
+	static void Init(const int &argc, char **argv);
 	static void Keyboard(char key);
 	static void Display();
 };

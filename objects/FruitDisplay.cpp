@@ -1,10 +1,11 @@
 #include <cstdlib>
-#include <algorithm>
 
-#include "Fruit.hpp"
 #include "Graphics.hpp"
 #include "State.hpp"
+#include "Fruit.hpp"
 #include "Snake.hpp"
+
+#include "Common.hpp"
 
 void Fruit::Keyboard(char key) {
 	switch(key) {
@@ -22,6 +23,17 @@ void Fruit::Keyboard(char key) {
 }
 
 void Fruit::Display() {
+	char text[20];
+
+	sprintf(text, "Points: %d..", frufru);
+	Graphics::DisplayText(WIDTH + 1, HEIGHT * 0.97, text);
+
+	sprintf(text, "Fruits: %lu", objects.size());
+	Graphics::DisplayText(WIDTH + 1, HEIGHT * 0.93, text);
+
+	sprintf(text, "Latency: %d", State::latency);
+	Graphics::DisplayText(WIDTH + 1, HEIGHT * 0.89, text);
+
 	for(const auto &fruit : objects) {
 		double degree = 90;
 		Graphics::DisplayObject(fruit, fruitsGallery[SSNAKE->ID].id, degree);

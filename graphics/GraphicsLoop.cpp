@@ -3,6 +3,7 @@
 
 #include "Graphics.hpp"
 #include "State.hpp"
+#include "Common.hpp"
 
 #include "Wall.hpp"
 #include "Fruit.hpp"
