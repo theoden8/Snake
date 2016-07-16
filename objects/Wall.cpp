@@ -1,5 +1,6 @@
 #include "Wall.hpp"
 #include "State.hpp"
+#include "Graphics.hpp"
 
 Wall::Wall() {
 	for(int i = 0; i <= 0; ++i)
@@ -15,3 +16,11 @@ Wall::Wall() {
 		objects.push_back(Ball(0, i));
 	}
 };
+
+
+void Wall::Display() {
+	for(const auto &wall : objects) {
+		double degree = 90;
+		Graphics::DisplayObject(wall, wallsGallery[0].id, degree);
+	}
+}

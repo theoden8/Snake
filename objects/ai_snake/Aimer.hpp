@@ -13,22 +13,23 @@ class Snake;
 class Aimer {
 	int
 		range = INVALID_INT;
-	std::map <Ball, int> way_to;
 	const Snake *snake;
+	std::map <Ball, bool> sonar;
 public:
 	int aim = 0;
 	const static int NO_AIMS;
-	std::map <Ball, bool> sonar;
-	/* Aimer(); */
 
 public:
 	Aimer(Snake *s);
 	const char *GetName() const;
 	const Snake *GetSnake() const;
+	const std::map <Ball, bool> &GetSonar();
+
+	void Scan();
+	void Reset();
+
 	void SetTarget(Ball &target);
 private:
-	void SetSonar();
-
 	void SetTargetClosestFruit(Ball &target);
 	void SetTargetNewestFruit(Ball &target);
 	void SetTargetFurthestFruit(Ball &target);

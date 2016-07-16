@@ -4,7 +4,6 @@
 #include "Snake.hpp"
 #include "State.hpp"
 #include "Graphics.hpp"
-
 #include "Router.hpp"
 #include "Aimer.hpp"
 

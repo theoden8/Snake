@@ -13,7 +13,7 @@ class Snake : public Object {
 	Aimer *aimer;
 	Router *router;
 
-	/* Image Crossed; */
+	Image Crossed;
 public:
 	struct Skin {
 		Image head, body, tail;
@@ -41,11 +41,9 @@ public:
 
 	void Keyboard(char key);
 
-	void AutoCorrection(Ball arrow);
+	/* void AutoCorrection(Ball arrow); */
 	void AutoMove();
-	void AddObstacle(std::map <Ball, bool> &sonar, std::vector <Ball> &objects);
-	void DeleteSnakeObstacles (std::map <Ball, bool> &sonar, Ball &from);
-	void DoStep();
 	void SetStep(Ball &step);
+	void DoStep();
 	void PushBack();
 };

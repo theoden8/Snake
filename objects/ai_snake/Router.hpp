@@ -13,13 +13,13 @@ class Snake;
 class Router {
 	int
 		range = INVALID_INT;
+	Aimer *aimer;
 	const Snake *snake;
 public:
 	int
 		mode = 0,
 		strategy = 2;
 	const static int NO_MODES;
-	std::map <Ball, bool> &sonar;
 
 public:
 	Router(Aimer *a);

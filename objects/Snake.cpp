@@ -4,10 +4,9 @@
 
 #include "Snake.hpp"
 #include "Functions.hpp"
-#include "State.hpp"
 #include "Aimer.hpp"
 #include "Router.hpp"
-#include "Common.hpp"
+#include "State.hpp"
 
 Snake::Snake()
 {
@@ -20,7 +19,7 @@ Snake::Snake()
 		}
 	);
 
-	/* Crossed.load(FOLDER + "_textures/Cross.tga"); */
+	Crossed.load(FOLDER + "_textures/Cross.tga");
 	for(int i = 0; i < NO_ICONSETS; ++i) {
 		skins[i].head.load(FOLDER + "_textures/" + std::to_string(i) + "_HEAD.tga");
 		skins[i].body.load(FOLDER + "_textures/" + std::to_string(i) + "_BODY.tga");
@@ -42,45 +41,31 @@ void Snake::AutoMove() {
 	std::cout << "automatic move triggered" << std::endl;
 	Ball target, step;
 
-	aimer->sonar.clear();
+	aimer->Reset();
 	aimer->SetTarget(target);
 	router->SetStep(objects.front(), target, step);
 
-	/* if(safe_walk) { */
-	/* 	Ball overhead = objects.front() + step; */
-	/* 	if(Ball::InSegment(overhead, objects) */
-	/* 	   || Ball::InSegment(overhead, WALLS->GetObjects())) */
-	/* 	{ */
-	/* 		int */
-	/* 			bu_aim = aimer->aim, */
-	/* 			bu_mode = router->mode; */
-	/* 		aimer->aim = 1; */
-	/* 		router->mode = 4; */
+	if(safe_walk) {
+		Ball overhead = objects.front() + step;
+		if(Ball::InSegment(overhead, objects)
+		   || Ball::InSegment(overhead, WALLS->GetObjects()))
+		{
+			int
+				bu_aim = aimer->aim,
+				bu_mode = router->mode;
+			aimer->aim = 1;
+			router->mode = 4;
 
-	/* 		aimer->SetTarget(target); */
-	/* 		router->SetStep(objects.front(), step, target); */
+			aimer->SetTarget(target);
+			router->SetStep(objects.front(), step, target);
 
-	/* 		aimer->aim = bu_aim; */
-	/* 		router->mode = bu_mode; */
-	/* 	} */
-	/* } */
+			aimer->aim = bu_aim;
+			router->mode = bu_mode;
+		}
+	}
 
 	SetStep(step);
 }
-
-void Snake::AddObstacle(std::map <Ball, bool> &sonar, std::vector <Ball> &objects) {
-	for(auto ball : objects)
-		sonar[ball] = true;
-}
-
-void Snake::DeleteSnakeObstacles(std::map <Ball, bool> &sonar, Ball &from) {
-	std::map <Ball, int> way_to = bfs(sonar, from);
-	for(int i = 1; i < objects.size(); ++i) {
-		if(way_to[objects[i]] > objects.size() - i)
-			sonar.erase(objects[i]);
-	}
-}
-
 
 void Snake::SetStep(Ball &step) {
 	if(step == -previousDirection && objects.size() != 1)

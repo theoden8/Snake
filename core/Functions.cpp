@@ -1,7 +1,8 @@
-#include <cstring>
 #include <cstdlib>
-#include <iostream>
 #include <cmath>
+
+/* #include <iostream> */
+#include <queue>
 
 #include "Functions.hpp"
 
@@ -14,7 +15,7 @@ std::vector <Ball> GetSteps() {
 	};
 }
 
-std::map <Ball, int> bfs(std::map <Ball, bool> &sonar, const Ball &from) {
+std::map <Ball, int> bfs(const std::map <Ball, bool> &sonar, const Ball &from) {
 	std::queue <Ball> spiral;
 	std::map <Ball, int>  way_to;
 	spiral.push(from);
