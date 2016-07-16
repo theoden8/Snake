@@ -15,12 +15,14 @@ Snake::Snake()
 			)
 		}
 	);
-	Crossed.load(FOLDER + "_textures/Cross.tga");
+
+	/* Crossed.load(FOLDER + "_textures/Cross.tga"); */
 	for(int i = 0; i < 8; ++i) {
 		skins[i].head.load(FOLDER + "_textures/" + std::to_string(i) + "_HEAD.tga");
 		skins[i].body.load(FOLDER + "_textures/" + std::to_string(i) + "_BODY.tga");
 		skins[i].tail.load(FOLDER + "_textures/" + std::to_string(i) + "_TAIL.tga");
 	}
+
 	aimer = new Aimer(this);
 	router = new Router(aimer);
 }

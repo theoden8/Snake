@@ -5,6 +5,11 @@
 #include "Wall.hpp"
 #include "Fruit.hpp"
 
+Object
+	*WALLS = NULL,
+	*FRUITS = NULL,
+	*SNAKE = NULL;
+
 void Common::Init(const int argc, char **argv) {
 	SNAKE = new Snake();
 	WALLS = new Wall();

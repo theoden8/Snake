@@ -4,7 +4,6 @@
 #include <string>
 
 #include "Object.hpp"
-#include "Image.hpp"
 
 class Wall : public Object {
 public:

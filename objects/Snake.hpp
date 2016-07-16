@@ -4,7 +4,6 @@
 #include <map>
 
 #include "Object.hpp"
-#include "Image.hpp"
 
 class Aimer;
 class Router;
@@ -13,15 +12,16 @@ class Snake : public Object {
 	Aimer *aimer;
 	Router *router;
 
-	Image Crossed;
+	/* Image Crossed; */
 public:
 	struct Skin {
 		Image head, body, tail;
+		Skin() {}
 		Skin(Image h, Image b, Image t):
 			head(h), body(b), tail(t)
 		{}
 	};
-	static Skin skins[8];
+	Skin skins[8];
 
 	int
 		ID = 0;

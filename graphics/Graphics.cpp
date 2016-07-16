@@ -28,7 +28,9 @@ void Graphics::Init(int &argc, char **argv) {
 
 	glutMainLoop();
 
-	delete SNAKE; delete WALLS; delete FRUITS;
+	delete SNAKE;
+	delete WALLS;
+	delete FRUITS;
 }
 
 void Graphics::Keyboard(unsigned char key, int x, int y) {

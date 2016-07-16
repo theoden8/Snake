@@ -13,9 +13,10 @@
 class Object;
 
 struct Common {
-	static Object *walls;
-	static Object *fruits;
-	static Object *snake;
+	static Object
+		*walls,
+		*fruits,
+		*snake;
 
 	static void Init(const int argc, char **argv);
 	static void Keyboard(char key);

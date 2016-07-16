@@ -2,6 +2,7 @@
 
 #include <vector>
 
+#include "Image.hpp"
 #include "Ball.hpp"
 
 class Object {
@@ -11,8 +12,6 @@ protected:
 protected:
 	Object();
 public:
-	virtual ~Object() = 0;
-
 	std::vector <Ball> GetObjects() const;
 	virtual void Keyboard(char key);
 	virtual void Display() = 0;
