@@ -16,8 +16,5 @@ void Common::Init(const int argc, char **argv) {
 	FRUITS = new Fruit((argc == 4) ? atoi(argv[3]) : 2);
 }
 
-void Common::Keyboard(char key) {
-}
-
 void Common::Display() {
 }

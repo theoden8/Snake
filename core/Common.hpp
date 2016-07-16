@@ -19,6 +19,5 @@ struct Common {
 		*snake;
 
 	static void Init(const int argc, char **argv);
-	static void Keyboard(char key);
 	static void Display();
 };

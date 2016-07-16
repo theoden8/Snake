@@ -31,7 +31,7 @@ public:
 		snakeLast;
 	bool
 		growNextMove = false,
-		safe = false;
+		safe_walk = false;
 
 public:
 	Snake();
@@ -42,7 +42,6 @@ public:
 
 	void AutoCorrection(Ball arrow);
 	void AutomaticMove();
-	/* void AutoCD_C(); */
 	void AddObstacle(std::map <Ball, bool> &sonar, std::vector <Ball> &objects);
 	void DeleteSnakeObstacles (std::map <Ball, bool> &sonar, Ball &from);
 	void DoStep();

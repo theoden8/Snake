@@ -25,14 +25,13 @@ void Fruit::Keyboard(char key) {
 void Fruit::Display() {
 	char text[20];
 
+	glColor3f(0.3f, 1.0f, 0.0f);
 	sprintf(text, "Points: %d..", frufru);
 	Graphics::DisplayText(WIDTH + 1, HEIGHT * 0.97, text);
 
+	glColor3f(1.0f, 0.0f, 0.0f);
 	sprintf(text, "Fruits: %lu", objects.size());
 	Graphics::DisplayText(WIDTH + 1, HEIGHT * 0.93, text);
-
-	sprintf(text, "Latency: %d", State::latency);
-	Graphics::DisplayText(WIDTH + 1, HEIGHT * 0.89, text);
 
 	for(const auto &fruit : objects) {
 		double degree = 90;

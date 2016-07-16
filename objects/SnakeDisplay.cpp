@@ -11,7 +11,7 @@
 void Snake::Keyboard(char key) {
 	switch(key) {
 		case 'g' :
-			safe = !safe;
+			safe_walk = !safe_walk;
 		break;
 	}
 	if(strchr("wasd", key)) {
@@ -30,23 +30,26 @@ void Snake::Keyboard(char key) {
 				move = Ball(1, 0);
 			break;
 		}
-		AutoCorrection(move);
+		/* AutoCorrection(move); */
 	}
-	if(strchr("01234", key)) {
-		int num = key - '0';
+	else if(strchr("01234", key)) {
+		const int num = key - '0';
 		++ID %= 8;
-		if(router->mode != num) {
+		if(num == 0) {
+			router->mode = 0;
+			aimer->aim = 0;
+		} else if(router->mode != num) {
 			aimer->aim = 1;
-			router->mode = num;
+			router->mode = num % (Router::NO_MODES + 1);
+			if(router->mode == 0)
+				++router->mode;
 		} else {
-			++aimer->aim %= 5;
+			++aimer->aim %= (Aimer::NO_AIMS + 1);
+			if(aimer->aim == 0)
+				++aimer->aim;
 		}
-		if(key == '2') {
+		if(num == 2) {
 			router->strategy = (rand() & 1) ? 1 : 1e9;
-//		} else if(key == '5') {
-//				s->mode = 7;
-//				if(!latency_delta)
-//					latency = 0;
 		}
 	}
 }
@@ -54,14 +57,17 @@ void Snake::Keyboard(char key) {
 void Snake::Display() {
 	char text[20];
 
+	glColor3f(1.0f, 1.0f, 0.0f);
 	sprintf(text, "mode <%d::%s>", router->mode, router->GetName());
 	Graphics::DisplayText(WIDTH + 1, HEIGHT * 0.06, text);
 
+	glColor3f(0.0f, 1.0f, 0.0f);
 	sprintf(text, "aim  <%d::%s>", aimer->aim, aimer->GetName());
 	Graphics::DisplayText(WIDTH + 1, HEIGHT * 0.02, text);
 
-	if(safe) {
-		sprintf(text, "    [Insurance]");
+	if(safe_walk) {
+		glColor3f(1.0f, 0.0f, 0.0f);
+		sprintf(text, "[Insurance]");
 		Graphics::DisplayText(WIDTH + 1, HEIGHT * 0.10, text);
 	}
 

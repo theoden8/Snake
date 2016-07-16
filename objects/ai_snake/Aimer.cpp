@@ -1,5 +1,7 @@
 #include "Aimer.hpp"
 
+const int Aimer::NO_AIMS = 4;
+
 Aimer::Aimer(Snake *s):
 	snake(s)
 {}

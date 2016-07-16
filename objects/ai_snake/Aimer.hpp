@@ -17,6 +17,7 @@ class Aimer {
 	const Snake *snake;
 public:
 	int aim = 0;
+	const static int NO_AIMS;
 	std::map <Ball, bool> sonar;
 	/* Aimer(); */
 

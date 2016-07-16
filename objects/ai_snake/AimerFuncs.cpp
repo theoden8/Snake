@@ -21,9 +21,12 @@ void Aimer::SetSonar(Ball &target) {
 }
 
 
+#include <iostream>
 void Aimer::SetTarget(Ball &target) {
+	std::cout << "aimer: target " << target << " aim " << aim << std::endl;
 	switch(aim) {
 		case 0:
+			;
 		break;
 		case 1:
 			SetTargetClosest(target);

@@ -18,6 +18,7 @@ public:
 	int
 		mode = 0,
 		strategy = 2;
+	const static int NO_MODES;
 	std::map <Ball, bool> &sonar;
 
 public:

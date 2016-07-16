@@ -22,17 +22,17 @@ std::string
 	State::folder = "";
 
 void State::Init(const int &argc, char **argv) {
-	/* latency = 40; */
-	/* latency_delta = 0; */
+	latency = 40;
+	latency_delta = 0;
 	WIDTH = (argc >= 3) ? atoi(argv[1]) : 50;
 	HEIGHT = (argc >= 3) ? atoi(argv[2]) : 50;
 
-	/* pause = true; */
-	/* running = false; */
+	pause = true;
+	running = false;
 
 	const std::string exec = argv[0];
 	folder = exec.substr(0, exec.length() - 6);
 
-	/* x_Display = WIDTH * 1.4; */
-	/* y_Display = HEIGHT + 0.5; */
+	x_Display = WIDTH * 1.4;
+	y_Display = HEIGHT + 0.5;
 }
