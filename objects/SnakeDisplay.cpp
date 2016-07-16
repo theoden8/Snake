@@ -30,7 +30,8 @@ void Snake::Keyboard(char key) {
 				move = Ball(1, 0);
 			break;
 		}
-		/* AutoCorrection(move); */
+		if(router->mode == 0)
+			SetStep(move);
 	}
 	else if(strchr("01234", key)) {
 		const int num = key - '0';

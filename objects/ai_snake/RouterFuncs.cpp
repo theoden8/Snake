@@ -13,8 +13,8 @@ void Router::SetPointStraight(const Ball &from, const Ball &target, Ball &point)
 	point.y = (point.y) ? point.y / abs(point.y) : 0;
 
 	if(point.x && point.y)
-		((Ball::FreeSpot(SNAKE->GetObjects().front() + Ball(point.x, 0), WALLS->GetObjects())
-			|| Ball::FreeSpot(SNAKE->GetObjects().front() + Ball(point.x, 0), SNAKE->GetObjects())
+		((Ball::InSegment(SNAKE->GetObjects().front() + Ball(point.x, 0), WALLS->GetObjects())
+			|| Ball::InSegment(SNAKE->GetObjects().front() + Ball(point.x, 0), SNAKE->GetObjects())
 			|| rand() % strategy
 		) ? point.x : point.y) = 0;
 
@@ -37,12 +37,13 @@ void Router::SetPoint(const Ball &from, const Ball &target, Ball &point) const {
 		case 0:
 		break;
 		case 1:
+		case 2:
 			SetPointStraight(from, target, point);
 		break;
-		case 2:
+		case 3:
 			SetPointShortest(from, target, point);
 		break;
-		case 3:
+		case 4:
 			SetStepsSpaciest(from, target, point);
 		break;
 		default:

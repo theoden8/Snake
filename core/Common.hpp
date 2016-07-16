@@ -20,4 +20,5 @@ struct Common {
 
 	static void Init(const int argc, char **argv);
 	static void Display();
+	static void Timer();
 };

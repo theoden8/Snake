@@ -2,6 +2,7 @@
 
 #include "Fruit.hpp"
 #include "State.hpp"
+#include "Snake.hpp"
 #include "Common.hpp"
 
 void Fruit::PushBack(int new_fruantity) {
@@ -16,10 +17,17 @@ void Fruit::PushBack(int new_fruantity) {
 				rand() % (int(HEIGHT) - 1) + 1
 			);
 		} while (
-			Ball::FreeSpot(new_fruit, WALLS->GetObjects())
-			|| Ball::FreeSpot(new_fruit, SNAKE->GetObjects())
-			|| Ball::FreeSpot(new_fruit, GetObjects())
+			Ball::InSegment(new_fruit, WALLS->GetObjects())
+			|| Ball::InSegment(new_fruit, SNAKE->GetObjects())
+			|| Ball::InSegment(new_fruit, GetObjects())
 		);
 		objects.push_back(new_fruit);
 	}
+}
+
+void Fruit::EatFruit() {
+	DeleteFruit(SNAKE->GetObjects().front());
+	PushBack(1);
+	SSNAKE->PushBack();
+	++frufru;
 }

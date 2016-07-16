@@ -17,6 +17,7 @@ public:
 public:
 	Fruit(int fruantity);
 	void PushBack(int new_fruantity);
+	void EatFruit();
 	void DeleteFruit(const Ball &sH);
 
 	void Keyboard(char key);

@@ -1,7 +1,7 @@
 #include "Router.hpp"
 #include "Aimer.hpp"
 
-const int Router::NO_MODES = 3;
+const int Router::NO_MODES = 4;
 
 Router::Router(Aimer *a):
 	sonar(a->sonar), snake(a->GetSnake())

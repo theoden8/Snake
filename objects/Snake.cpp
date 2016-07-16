@@ -34,13 +34,15 @@ Snake::~Snake() {
 }
 
 
+#include <iostream>
 void Snake::AutomaticMove() {
+	std::cout << "automatic move triggered" << std::endl;
 	Ball
 		target,
 		point;
 	aimer->SetTarget(target);
 	router->SetPoint(objects.front(), point, target);
-	/* AutoCorrection(point); */
+	SetStep(point);
 }
 
 void Snake::AddObstacle(std::map <Ball, bool> &sonar, std::vector <Ball> &objects) {

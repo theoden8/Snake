@@ -1,5 +1,4 @@
 #include <cmath>
-#include <iostream>
 
 #include "Graphics.hpp"
 #include "Object.hpp"
@@ -61,34 +60,7 @@ void Graphics::Display () {
 }
 
 void Graphics::Timer(int) {
-	if(!State::pause) {
-		if(!State::running)
-			SSNAKE->DoStep();
-		if(
-			Ball::FreeSpot(SNAKE->GetObjects().front(), WALLS->GetObjects())
-			|| Ball::FreeSpot(SNAKE->GetObjects().front(), SNAKE->GetObjects())
-		)
-		{
-			std::cout << std::to_string(FFRUITS->frufru) << std::endl;
-			exit(0);
-		}
-	}
-	if(Ball::FreeSpot(SNAKE->GetObjects().front(), FRUITS->GetObjects())) {
-		FFRUITS->DeleteFruit(SNAKE->GetObjects().front());
-		FFRUITS->PushBack(1);
-		SSNAKE->PushBack();
-		++FFRUITS->frufru;
-	}
-	/* if(SSNAKE->aim) { */
-	/* 	switch(SSNAKE->mode) { */
-	/* 		case 4: */
-	/* 			SSNAKE->AutoCD_C(); */
-	/* 			break; */
-	/* 		default: */
-	/* 			/1* SSNAKE->AutomaticMove(); *1/ */
-	/* 			break; */
-	/* 	} */
-	/* } */
+	Common::Timer();
 	Display();
 	glutTimerFunc(State::latency, Timer, 0);
 }

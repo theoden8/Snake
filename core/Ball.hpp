@@ -18,5 +18,6 @@ struct Ball {
 
 	friend std::ostream &operator<< (std::ostream &os, const Ball &B);
 
-	static bool FreeSpot(const Ball &spot, const std::vector <Ball> &objects);
+	static bool InSegment(const Ball &spot, const std::vector <Ball> &objects);
+	static bool InSegment(const Ball &spot, const std::vector <Ball> &objects, const Ball &interval);
 };

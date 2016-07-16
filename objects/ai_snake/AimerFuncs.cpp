@@ -4,6 +4,8 @@
 #include "Common.hpp"
 
 void Aimer::SetSonar(Ball &target) {
+	sonar.clear();
+
 	for(const auto &obst : {WALLS->GetObjects(), SNAKE->GetObjects()})
 		for(const auto &ball : obst)
 			sonar[ball] = true;
@@ -63,6 +65,7 @@ void Aimer::SetTargetFurthest(Ball &target) {
 
 void Aimer::SetTargetClosest(Ball &target) {
 	SetSonar(target);
+	std::cout << "setsonar" << std::endl;
 	for(const auto &fruit : FRUITS->GetObjects()) {
 		if(way_to.count(fruit)) {
 			if(range < way_to[fruit]) {
@@ -71,6 +74,7 @@ void Aimer::SetTargetClosest(Ball &target) {
 			}
 		}
 	}
+	std::cout << target << std::endl;
 }
 
 void Aimer::SetTargetNewest(Ball &target) {

@@ -48,10 +48,13 @@ std::ostream &operator<< (std::ostream &os, const Ball &B) {
 	return os;
 }
 
+bool Ball::InSegment(const Ball &spot, const std::vector <Ball> &objects) {
+	return InSegment(spot, objects, Ball(0, objects.size()));
+}
 
-bool Ball::FreeSpot(const Ball &spot, const std::vector <Ball> &objects) {
-	for(const auto &obj : objects)
-		if(spot == obj && &spot != &obj)
+bool Ball::InSegment(const Ball &spot, const std::vector <Ball> &objects, const Ball &interval) {
+	for(size_t i = interval.x; i < interval.y; ++i)
+		if(spot == objects[i])
 			return 1;
 	return 0;
 }
