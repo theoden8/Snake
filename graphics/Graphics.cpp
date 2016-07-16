@@ -1,4 +1,7 @@
 #include <cmath>
+#include <cassert>
+#include <cstdlib>
+#include <iostream>
 
 #include "Graphics.hpp"
 #include "Object.hpp"
@@ -7,13 +10,14 @@
 #include "Fruit.hpp"
 #include "Snake.hpp"
 
+#define LOG(msg) std::cerr << msg << std::endl;
 void Graphics::Init(int &argc, char **argv) {
 	int template_size = fmin(40, WIDTH) * 50 - 1100;
 
 	State::Init(argc, argv);
 
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+	/* glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); */
 	glutInitWindowSize(template_size, template_size * 0.75);
 	glutInitWindowPosition(500 - WIDTH * 4, 400 - HEIGHT * 4);
 	glutCreateWindow("Snake");
@@ -26,6 +30,13 @@ void Graphics::Init(int &argc, char **argv) {
 	glutSpecialFunc(Special);
 	glutSetCursor(GLUT_CURSOR_NONE);
 
+	WALLS = new Wall();
+	assert(WALLS != NULL);
+	SNAKE = new Snake();
+	assert(SNAKE != NULL);
+	FRUITS = new Fruit((argc == 4) ? atoi(argv[3]) : 2);
+	assert(FRUITS != NULL);
+
 	glutMainLoop();
 
 	delete SSNAKE;
@@ -35,14 +46,16 @@ void Graphics::Init(int &argc, char **argv) {
 
 
 void Graphics::DisplayText(float x, float y, const char *s) {
+	glDisable(GL_TEXTURE_2D);
 	glRasterPos2f(x, y);
 	for(const char *c = s; *c != '\0'; ++c)
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, *c);
 }
 
 void Graphics::DisplayObject(Ball ball, GLuint id, double degree) {
+	glEnable(GL_TEXTURE_2D);
 	glPushMatrix();
-	glColor3f(1 , 1, 1);
+	glColor3f(1.0f , 1.0f, 1.0f);
 	glTranslatef(ball.x, ball.y, 0);
 	glRotatef(degree, 0, 0, 1);
 	glBindTexture(GL_TEXTURE_2D, id);
@@ -64,11 +77,8 @@ void Graphics::Display () {
 
 	glOrtho(-0.5, State::x_Display, -0.5, State::y_Display, -10, 10);
 
-	glDisable(GL_TEXTURE_2D);
-	glColor3f(1.0, 1.0, 1.0);
 	State::Display();
 
-	glEnable(GL_TEXTURE_2D);
 //	Cursor
 //	DisplayObject(Image(),,)
 

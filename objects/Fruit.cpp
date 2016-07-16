@@ -81,6 +81,6 @@ void Fruit::Display() {
 
 	for(const auto &fruit : objects) {
 		double degree = 90;
-		Graphics::DisplayObject(fruit, fruitsGallery[SSNAKE->ID].id, degree);
+		Graphics::DisplayObject(fruit, fruitsGallery[State::skin_id].id, degree);
 	}
 }

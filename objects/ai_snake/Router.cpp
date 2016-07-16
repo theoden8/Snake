@@ -7,14 +7,14 @@
 
 #include <iostream>
 
-const int Router::NO_MODES = 4;
+const int Router::NO_ROUTES = 4;
 
 Router::Router(Aimer *a):
 	aimer(a), snake(a->GetSnake())
 {}
 
 const char *Router::GetName() const {
-	switch(mode) {
+	switch(route) {
 		case 0:
 			return "Human";
 		case 1:
@@ -36,12 +36,14 @@ const char *Router::GetName() const {
 
 void Router::SetStep(const Ball &from, const Ball &target, Ball &step) const {
 	std::cout << "router:  from " << from << " to  target " << target << std::endl;
-	switch(mode) {
+	switch(route) {
 		case 0:
+			step = snake->currentDirection;
 		break;
 		case 1:
 		case 2:
 			SetStepStraight(from, target, step);
+			std::cout << "returned " << step << std::endl;
 		break;
 		case 3:
 			SetStepShortest(from, target, step);
@@ -50,9 +52,9 @@ void Router::SetStep(const Ball &from, const Ball &target, Ball &step) const {
 			SetStepsSpaciest(from, target, step);
 		break;
 	}
-	step = snake->currentDirection;
 	std::cout << "router step " << step << std::endl;
 }
+
 
 /*
  * Does not care about any obstacles, goes straight to the target.
@@ -60,16 +62,25 @@ void Router::SetStep(const Ball &from, const Ball &target, Ball &step) const {
 void Router::SetStepStraight(const Ball &from, const Ball &target, Ball &step) const {
 	step = target - from;
 
-	step.x = (step.x) ? step.x / abs(step.x) : 0;
-	step.y = (step.y) ? step.y / abs(step.y) : 0;
+	step = Ball(
+		(step.x != 0) ? step.x / abs(step.x) : 0,
+		(step.y != 0) ? step.y / abs(step.y) : 0
+	);
+	std::cout << "step_straight " << step << std::endl;
 
-	if(step.x && step.y)
-		((Ball::InSegment(from + Ball(step.x, 0), WALLS->GetObjects())
-			|| Ball::InSegment(snake->GetObjects().front() + Ball(step.x, 0), snake->GetObjects())
+	if(step.x != 0 && step.y != 0) {
+		if(
+			Ball::InSegment(from + Ball(step.x, 0), WALLS->GetObjects())
+			|| Ball::InSegment(from + Ball(step.x, 0), snake->GetObjects())
 			|| rand() % strategy
-		) ? step.x : step.y) = 0;
+		)
+			step.x = 0;
+		else
+			step.y = 0;
+	}
+	std::cout << "step_straight " << step << std::endl;
 
-	if(snake->GetObjects().front() + step == snake->GetObjects()[1]) {
+	if(from + step == snake->GetObjects()[1]) {
 		if(rand() & 1) {
 			step.x = !step.x;
 			step.y = !step.y;

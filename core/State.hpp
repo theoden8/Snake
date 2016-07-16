@@ -20,23 +20,25 @@ class Object;
 #define FFRUITS ((Fruit *)FRUITS)
 
 class State {
-public:
-	static std::string
-		folder;
+	static int
+		latency_delta;
 
 	static bool
 		pause,
 		running;
+public:
+	static int
+		latency,
+		skin_id;
+
+	static std::string
+		folder;
 
 	static double
 		width,
 		height,
 		x_Display,
 		y_Display;
-
-	static int
-		latency,
-		latency_delta;
 
 	static Object
 		*walls,

@@ -2,6 +2,8 @@
 #include "State.hpp"
 #include "Graphics.hpp"
 
+#include <iostream>
+
 Wall::Wall() {
 	for(int i = 0; i <= 0; ++i)
 		wallsGallery[i].load(FOLDER + "_textures/" + std::to_string(i) + "_WALL.tga");

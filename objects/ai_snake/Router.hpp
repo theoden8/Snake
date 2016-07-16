@@ -17,9 +17,9 @@ class Router {
 	const Snake *snake;
 public:
 	int
-		mode = 0,
+		route = 0,
 		strategy = 2;
-	const static int NO_MODES;
+	const static int NO_ROUTES;
 
 public:
 	Router(Aimer *a);

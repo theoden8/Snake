@@ -24,8 +24,6 @@ public:
 	};
 	Skin skins[NO_ICONSETS];
 
-	int
-		ID = 0;
 	Ball
 		currentDirection = Ball(-1, 0),
 		previousDirection = Ball(0, 0),

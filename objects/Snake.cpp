@@ -52,15 +52,15 @@ void Snake::AutoMove() {
 		{
 			int
 				bu_aim = aimer->aim,
-				bu_mode = router->mode;
+				bu_route = router->route;
 			aimer->aim = 1;
-			router->mode = 4;
+			router->route = 4;
 
 			aimer->SetTarget(target);
 			router->SetStep(objects.front(), step, target);
 
 			aimer->aim = bu_aim;
-			router->mode = bu_mode;
+			router->route = bu_route;
 		}
 	}
 

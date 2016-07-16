@@ -29,20 +29,19 @@ void Snake::Keyboard(char key) {
 				move = Ball(1, 0);
 			break;
 		}
-		if(router->mode == 0)
+		if(router->route == 0)
 			SetStep(move);
 	}
 	else if(strchr("01234", key)) {
 		const int num = key - '0';
-		++ID %= NO_ICONSETS;
 		if(num == 0) {
-			router->mode = 0;
+			router->route = 0;
 			aimer->aim = 0;
-		} else if(router->mode != num) {
+		} else if(router->route != num) {
 			aimer->aim = 1;
-			router->mode = num % (Router::NO_MODES + 1);
-			if(router->mode == 0)
-				++router->mode;
+			router->route = num % (Router::NO_ROUTES + 1);
+			if(router->route == 0)
+				++router->route;
 		} else {
 			++aimer->aim %= (Aimer::NO_AIMS + 1);
 			if(aimer->aim == 0)
@@ -57,10 +56,18 @@ void Snake::Keyboard(char key) {
 #define str(x) std::to_string(x)
 #include <iostream>
 void Snake::Display() {
+	glColor3f(1.0f, 0.0f, 0.0f);
+	if(safe_walk) {
+		Graphics::DisplayText(
+			WIDTH + 1, HEIGHT * 0.10,
+			"[Insurance]"
+		);
+	}
+
 	glColor3f(1.0f, 1.0f, 0.0f);
 	Graphics::DisplayText
 		(WIDTH + 1, HEIGHT * 0.06,
-		(std::string() + "mode <" + str(router->mode) + "::" + router->GetName() + ">").c_str()
+		(std::string() + "route <" + str(router->route) + "::" + router->GetName() + ">").c_str()
 	);
 
 	glColor3f(0.0f, 1.0f, 0.0f);
@@ -69,17 +76,9 @@ void Snake::Display() {
 		(std::string() + "aim  <" + str(aimer->aim) + "::" + aimer->GetName() + ">").c_str()
 	);
 
-	if(safe_walk) {
-		glColor3f(1.0f, 0.0f, 0.0f);
-		Graphics::DisplayText(
-			WIDTH + 1, HEIGHT * 0.10,
-			"[Insurance]"
-		);
-	}
-
 	for(int i = 0; i < objects.size(); ++i) {
 		Ball &slice = objects[i];
-		Skin &skin = skins[ID];
+		Skin &skin = skins[State::skin_id];
 		GLuint id;
 		double degree = 90;
 		if(i == 0) {
