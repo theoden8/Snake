@@ -4,6 +4,7 @@
 #include <string>
 
 #include "Object.hpp"
+#include "State.hpp"
 
 class Wall : public Object {
 public:

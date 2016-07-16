@@ -4,13 +4,13 @@
 
 ## Author
 
-Created by Kirill Rodriguez on 08/2014.
+Created by Kirill Rodriguez on 06/2014.
 
 ## Program
 
 ### Purpose
 
-The purpose of this project was at first to practice C++ OOP and OpenGL, but eventually it became a great challenge of fixing the code: checking links, inclusions; handling errors and so on. It was a long way since August 2014.
+The purpose of this project was at first to practice C++ OOP and OpenGL, but eventually it became a great challenge of fixing the code: checking links, inclusions; handling errors and so on. It has been a long way since June 2014.
 
 ### Description
 
@@ -20,16 +20,16 @@ This is a snake game with nice AI routing and aiming switches.
 
 * 1 snake
 * 5 routing modes
-* 4 aiming modes
+* 5 aiming modes
 * Walls
 * Fruits
 * 8 sets of icons.
 * Pause (freezes the game)
 * Safe mode (makes the best AI move when the current player about to crash)
 * Running mode (moves only when a button is pressed)
-* Adjustable delay between iterations.
-* Adjustable number of fruits.
-* Does not crash at each obvious bug.
+* Adjustable delay between iterations
+* Adjustable number of fruits
+* Has fixes for unobvious bugs
 
 ### Ideas
 

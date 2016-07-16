@@ -35,7 +35,7 @@ void Snake::Keyboard(char key) {
 	}
 	else if(strchr("01234", key)) {
 		const int num = key - '0';
-		++ID %= 8;
+		++ID %= NO_ICONSETS;
 		if(num == 0) {
 			router->mode = 0;
 			aimer->aim = 0;
@@ -55,21 +55,27 @@ void Snake::Keyboard(char key) {
 	}
 }
 
+#define str(x) std::to_string(x)
+#include <iostream>
 void Snake::Display() {
-	char text[20];
-
 	glColor3f(1.0f, 1.0f, 0.0f);
-	sprintf(text, "mode <%d::%s>", router->mode, router->GetName());
-	Graphics::DisplayText(WIDTH + 1, HEIGHT * 0.06, text);
+	Graphics::DisplayText
+		(WIDTH + 1, HEIGHT * 0.06,
+		(std::string() + "mode <" + str(router->mode) + "::" + router->GetName() + ">").c_str()
+	);
 
 	glColor3f(0.0f, 1.0f, 0.0f);
-	sprintf(text, "aim  <%d::%s>", aimer->aim, aimer->GetName());
-	Graphics::DisplayText(WIDTH + 1, HEIGHT * 0.02, text);
+	Graphics::DisplayText(
+		WIDTH + 1, HEIGHT * 0.02,
+		(std::string() + "aim  <" + str(aimer->aim) + "::" + aimer->GetName() + ">").c_str()
+	);
 
 	if(safe_walk) {
 		glColor3f(1.0f, 0.0f, 0.0f);
-		sprintf(text, "[Insurance]");
-		Graphics::DisplayText(WIDTH + 1, HEIGHT * 0.10, text);
+		Graphics::DisplayText(
+			WIDTH + 1, HEIGHT * 0.10,
+			"[Insurance]"
+		);
 	}
 
 	for(int i = 0; i < objects.size(); ++i) {

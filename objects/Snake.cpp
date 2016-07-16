@@ -1,3 +1,5 @@
+#include <cassert>
+#include <cstdlib>
 #include <iostream>
 
 #include "Snake.hpp"
@@ -5,6 +7,7 @@
 #include "State.hpp"
 #include "Aimer.hpp"
 #include "Router.hpp"
+#include "Common.hpp"
 
 Snake::Snake()
 {
@@ -18,7 +21,7 @@ Snake::Snake()
 	);
 
 	/* Crossed.load(FOLDER + "_textures/Cross.tga"); */
-	for(int i = 0; i < 8; ++i) {
+	for(int i = 0; i < NO_ICONSETS; ++i) {
 		skins[i].head.load(FOLDER + "_textures/" + std::to_string(i) + "_HEAD.tga");
 		skins[i].body.load(FOLDER + "_textures/" + std::to_string(i) + "_BODY.tga");
 		skins[i].tail.load(FOLDER + "_textures/" + std::to_string(i) + "_TAIL.tga");
@@ -35,14 +38,34 @@ Snake::~Snake() {
 
 
 #include <iostream>
-void Snake::AutomaticMove() {
+void Snake::AutoMove() {
 	std::cout << "automatic move triggered" << std::endl;
-	Ball
-		target,
-		point;
+	Ball target, step;
+
+	aimer->sonar.clear();
 	aimer->SetTarget(target);
-	router->SetPoint(objects.front(), point, target);
-	SetStep(point);
+	router->SetStep(objects.front(), target, step);
+
+	/* if(safe_walk) { */
+	/* 	Ball overhead = objects.front() + step; */
+	/* 	if(Ball::InSegment(overhead, objects) */
+	/* 	   || Ball::InSegment(overhead, WALLS->GetObjects())) */
+	/* 	{ */
+	/* 		int */
+	/* 			bu_aim = aimer->aim, */
+	/* 			bu_mode = router->mode; */
+	/* 		aimer->aim = 1; */
+	/* 		router->mode = 4; */
+
+	/* 		aimer->SetTarget(target); */
+	/* 		router->SetStep(objects.front(), step, target); */
+
+	/* 		aimer->aim = bu_aim; */
+	/* 		router->mode = bu_mode; */
+	/* 	} */
+	/* } */
+
+	SetStep(step);
 }
 
 void Snake::AddObstacle(std::map <Ball, bool> &sonar, std::vector <Ball> &objects) {
@@ -59,15 +82,18 @@ void Snake::DeleteSnakeObstacles(std::map <Ball, bool> &sonar, Ball &from) {
 }
 
 
-void Snake::SetStep(Ball &point) {
-	if(point == -previousDirection)
+void Snake::SetStep(Ball &step) {
+	if(step == -previousDirection && objects.size() != 1)
 		return;
 
-	currentDirection = point;
+	std::cout << step << std::endl;
+	assert(std::abs(step.x) + std::abs(step.y) == 1);
+
+	currentDirection = step;
 }
 
 void Snake::DoStep() {
-	for(int i = objects.size() - 1; i != 0; --i)
+	for(size_t i = objects.size() - 1; i != 0; --i)
 		objects[i] = objects[i - 1];
 
 	objects[0] += currentDirection;

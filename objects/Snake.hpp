@@ -4,6 +4,7 @@
 #include <map>
 
 #include "Object.hpp"
+#include "State.hpp"
 
 class Aimer;
 class Router;
@@ -21,12 +22,12 @@ public:
 			head(h), body(b), tail(t)
 		{}
 	};
-	Skin skins[8];
+	Skin skins[NO_ICONSETS];
 
 	int
 		ID = 0;
 	Ball
-		currentDirection = Ball(0, -1),
+		currentDirection = Ball(-1, 0),
 		previousDirection = Ball(0, 0),
 		snakeLast;
 	bool
@@ -41,10 +42,10 @@ public:
 	void Keyboard(char key);
 
 	void AutoCorrection(Ball arrow);
-	void AutomaticMove();
+	void AutoMove();
 	void AddObstacle(std::map <Ball, bool> &sonar, std::vector <Ball> &objects);
 	void DeleteSnakeObstacles (std::map <Ball, bool> &sonar, Ball &from);
 	void DoStep();
-	void SetStep(Ball &point);
+	void SetStep(Ball &step);
 	void PushBack();
 };

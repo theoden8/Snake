@@ -27,10 +27,10 @@ public:
 	const Snake *GetSnake() const;
 	void SetTarget(Ball &target);
 private:
-	void SetSonar(Ball &target);
+	void SetSonar();
 
-	void SetTargetFurthest(Ball &target);
-	void SetTargetClosest(Ball &target);
-	void SetTargetNewest(Ball &target);
+	void SetTargetClosestFruit(Ball &target);
+	void SetTargetNewestFruit(Ball &target);
+	void SetTargetFurthestFruit(Ball &target);
 	void SetTargetSnakeTail(Ball &target);
 };

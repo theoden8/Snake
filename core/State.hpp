@@ -6,7 +6,9 @@
 
 #define WIDTH State::width
 #define HEIGHT State::height
+
 #define FOLDER State::folder
+#define NO_ICONSETS 8
 
 class State {
 public:

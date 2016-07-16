@@ -37,5 +37,5 @@ void Common::Timer() {
 	if(Ball::InSegment(SNAKE->GetObjects().front(), FRUITS->GetObjects()))
 		FFRUITS->EatFruit();
 
-	SSNAKE->AutomaticMove();
+	SSNAKE->AutoMove();
 }

@@ -3,10 +3,11 @@
 #include <vector>
 #include <string>
 
+#include "State.hpp"
 #include "Object.hpp"
 
 class Fruit : public Object {
-	Image fruitsGallery[8];
+	Image fruitsGallery[NO_ICONSETS];
 
 public:
 	int

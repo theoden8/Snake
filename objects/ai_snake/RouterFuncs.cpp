@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include <cassert>
 
 #include "Router.hpp"
 #include "Functions.hpp"
@@ -6,64 +7,66 @@
 #include "Common.hpp"
 #include "Snake.hpp"
 
-void Router::SetPointStraight(const Ball &from, const Ball &target, Ball &point) const {
-	point = target - from;
-
-	point.x = (point.x) ? point.x / abs(point.x) : 0;
-	point.y = (point.y) ? point.y / abs(point.y) : 0;
-
-	if(point.x && point.y)
-		((Ball::InSegment(SNAKE->GetObjects().front() + Ball(point.x, 0), WALLS->GetObjects())
-			|| Ball::InSegment(SNAKE->GetObjects().front() + Ball(point.x, 0), SNAKE->GetObjects())
-			|| rand() % strategy
-		) ? point.x : point.y) = 0;
-
-	if(SNAKE->GetObjects().front() + point == SNAKE->GetObjects()[1]) {
-		if(rand() & 1) {
-			point.x = !point.x;
-			point.y = !point.y;
-		}
-		point.x *= (rand() & 1) ? -1 : 1;
-		point.y *= (rand() & 1) ? -1 : 1;
-	}
-
-	if(abs(point.x) + abs(point.y) != 1)
-		throw std::runtime_error("SetPointShortest happened to be mistaken!");
-}
-
-
-void Router::SetPoint(const Ball &from, const Ball &target, Ball &point) const {
+#include <iostream>
+void Router::SetStep(const Ball &from, const Ball &target, Ball &step) const {
+	std::cout << "router:  from " << from << " to  target " << target << std::endl;
 	switch(mode) {
 		case 0:
 		break;
 		case 1:
 		case 2:
-			SetPointStraight(from, target, point);
+			SetStepStraight(from, target, step);
 		break;
 		case 3:
-			SetPointShortest(from, target, point);
+			SetStepShortest(from, target, step);
 		break;
 		case 4:
-			SetStepsSpaciest(from, target, point);
+			SetStepsSpaciest(from, target, step);
 		break;
-		default:
-			return;
+	}
+	step = snake->currentDirection;
+	std::cout << "router step " << step << std::endl;
+}
+
+/*
+ * Does not care about any obstacles, goes straight to the target.
+ */
+void Router::SetStepStraight(const Ball &from, const Ball &target, Ball &step) const {
+	step = target - from;
+
+	step.x = (step.x) ? step.x / abs(step.x) : 0;
+	step.y = (step.y) ? step.y / abs(step.y) : 0;
+
+	if(step.x && step.y)
+		((Ball::InSegment(from + Ball(step.x, 0), WALLS->GetObjects())
+			|| Ball::InSegment(snake->GetObjects().front() + Ball(step.x, 0), snake->GetObjects())
+			|| rand() % strategy
+		) ? step.x : step.y) = 0;
+
+	if(snake->GetObjects().front() + step == snake->GetObjects()[1]) {
+		if(rand() & 1) {
+			step.x = !step.x;
+			step.y = !step.y;
+		}
+		step.x *= (rand() & 1) ? -1 : 1;
+		step.y *= (rand() & 1) ? -1 : 1;
 	}
 }
 
-void Router::SetPointShortest(const Ball &from, const Ball &target, Ball &point) const {
+void Router::SetStepShortest(const Ball &from, const Ball &target, Ball &step) const {
 	std::map <Ball, int> way_to = bfs(sonar, target);
-	for(const auto &step : GetSteps()) {
-		Ball move(from + step);
-		if(way_to.count(move) == 1 && way_to[move] + 1 == range) {
-			point = step;
+	for(const auto &st : GetSteps()) {
+		Ball move(from + st);
+		if(way_to.count(move) == 1
+			&& way_to[move] + 1 == range)
+		{
+			step = st;
 			return;
 		}
 	}
-	SetPointStraight(from, target, point);
 }
 
-void Router::SetStepsSpaciest(const Ball &from, const Ball &target, Ball &point) const {
+void Router::SetStepsSpaciest(const Ball &from, const Ball &target, Ball &step) const {
 	int space = 0;
 	std::vector <Ball> steps;
 	for(const auto &step : GetSteps()) {
@@ -80,5 +83,5 @@ void Router::SetStepsSpaciest(const Ball &from, const Ball &target, Ball &point)
 			}
 		}
 	}
-	point = steps.front();
+	step = steps.front();
 }

@@ -8,7 +8,7 @@ class Graphics {
 public:
 	static void Init(int &argc, char **argv);
 
-	static void DisplayText(float x, float y, char *s);
+	static void DisplayText(float x, float y, const char *s);
 	static void DisplayObject(Ball ball, GLuint id, double degree);
 private:
 	static void Display();

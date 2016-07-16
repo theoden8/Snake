@@ -22,11 +22,11 @@ std::map <Ball, int> bfs(std::map <Ball, bool> &sonar, const Ball &from) {
 	while (!spiral.empty()) {
 		Ball pointer = spiral.front();
 		spiral.pop();
-		for (auto it : GetSteps()) {
-			Ball movv = pointer + it;
-			if(sonar.count(movv) == 0 && (way_to.count(movv) == 0)) {
-				way_to[movv] = way_to[pointer] + 1;
-				spiral.push(movv);
+		for(const auto &step : GetSteps()) {
+			Ball move = pointer + step;
+			if(sonar.count(move) == 0 && (way_to.count(move) == 0)) {
+				way_to[move] = way_to[pointer] + 1;
+				spiral.push(move);
 			}
 		}
 	}

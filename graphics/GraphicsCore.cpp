@@ -1,7 +1,7 @@
 #include "Graphics.hpp"
 #include "glut_config.h"
 
-void Graphics::DisplayText(float x, float y, char *s) {
+void Graphics::DisplayText(float x, float y, const char *s) {
 	glRasterPos2f(x, y);
 	for(const char *c = s; *c != '\0'; ++c)
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, *c);
