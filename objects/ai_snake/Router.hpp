@@ -24,9 +24,9 @@ public:
 public:
 	Router(Aimer *a);
 	const char *GetName() const;
-	void SetStep(const Ball &from, const Ball &target, Ball &step) const;
+	void SetStep(const Ball &target, Ball &step) const;
 private:
-	void SetStepStraight(const Ball &from, const Ball &target, Ball &step) const;
-	void SetStepShortest(const Ball &from, const Ball &target, Ball &step) const;
-	void SetStepsSpaciest(const Ball &from, const Ball &target, Ball &step) const;
+	void SetStepStraight(const Ball &target, Ball &step) const;
+	void SetStepShortest(const Ball &target, Ball &step) const;
+	void SetStepsSpaciest(const Ball &target, Ball &step) const;
 };

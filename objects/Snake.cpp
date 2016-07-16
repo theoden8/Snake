@@ -43,7 +43,7 @@ void Snake::AutoMove() {
 
 	aimer->Reset();
 	aimer->SetTarget(target);
-	router->SetStep(objects.front(), target, step);
+	router->SetStep(target, step);
 
 	if(safe_walk) {
 		Ball overhead = objects.front() + step;
@@ -57,7 +57,7 @@ void Snake::AutoMove() {
 			router->route = 4;
 
 			aimer->SetTarget(target);
-			router->SetStep(objects.front(), step, target);
+			router->SetStep(step, target);
 
 			aimer->aim = bu_aim;
 			router->route = bu_route;

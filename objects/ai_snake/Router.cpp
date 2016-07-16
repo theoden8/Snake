@@ -34,7 +34,8 @@ const char *Router::GetName() const {
 	}
 }
 
-void Router::SetStep(const Ball &from, const Ball &target, Ball &step) const {
+void Router::SetStep(const Ball &target, Ball &step) const {
+	const Ball &from = snake->GetObjects().front();
 	std::cout << "router:  from " << from << " to  target " << target << std::endl;
 	switch(route) {
 		case 0:
@@ -42,21 +43,21 @@ void Router::SetStep(const Ball &from, const Ball &target, Ball &step) const {
 		break;
 		case 1:
 		case 2:
-			SetStepStraight(from, target, step);
-			std::cout << "returned " << step << std::endl;
+			SetStepStraight(target, step);
 		break;
 		case 3:
-			SetStepShortest(from, target, step);
+			SetStepShortest(target, step);
 		break;
 		case 4:
-			SetStepsSpaciest(from, target, step);
+			SetStepsSpaciest(target, step);
 		break;
 	}
 	std::cout << "router step " << step << std::endl;
 }
 
 
-void Router::SetStepStraight(const Ball &from, const Ball &target, Ball &step) const {
+void Router::SetStepStraight(const Ball &target, Ball &step) const {
+	const Ball &from = snake->GetObjects().front();
 	step = target - from;
 
 	step = Ball(
@@ -87,7 +88,8 @@ void Router::SetStepStraight(const Ball &from, const Ball &target, Ball &step) c
 	}
 }
 
-void Router::SetStepShortest(const Ball &from, const Ball &target, Ball &step) const {
+void Router::SetStepShortest(const Ball &target, Ball &step) const {
+	const Ball &from = snake->GetObjects().front();
 	std::map <Ball, int> way_to = bfs(aimer->GetSonar(), target);
 	for(const auto &st : GetSteps()) {
 		Ball move(from + st);
@@ -100,8 +102,9 @@ void Router::SetStepShortest(const Ball &from, const Ball &target, Ball &step) c
 	}
 }
 
-void Router::SetStepsSpaciest(const Ball &from, const Ball &target, Ball &step) const {
+void Router::SetStepsSpaciest(const Ball &target, Ball &step) const {
 	int space = 0;
+	const Ball &from = snake->GetObjects().front();
 	std::vector <Ball> steps;
 	for(const auto &step : GetSteps()) {
 		Ball move(from + step);
