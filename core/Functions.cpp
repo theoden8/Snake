@@ -18,7 +18,7 @@ std::vector <Ball> GetSteps() {
 std::map <Ball, int> bfs(const std::map <Ball, bool> &sonar, const Ball &from) {
 	std::queue <Ball> spiral;
 	std::map <Ball, int>  way_to;
-	spiral.push(from);
+	spiral.push(Ball(from));
 	way_to[from] = 0;
 	while (!spiral.empty()) {
 		Ball pointer = spiral.front();

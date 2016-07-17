@@ -5,18 +5,17 @@
 
 #include "Ball.hpp"
 
-#define INVALID_INT -1
+#define UNDEF_INT -1
 
 class Object;
 class Snake;
 
 class Aimer {
-	int
-		range = INVALID_INT;
 	const Snake *snake;
 	std::map <Ball, bool> sonar;
 public:
-	int aim = 0;
+	int aim = 0,
+		range = UNDEF_INT;
 	const static int NO_AIMS;
 
 public:
@@ -28,7 +27,7 @@ public:
 	void Scan();
 	void Reset();
 
-	void SetTarget(Ball &target);
+	Ball GetTarget();
 private:
 	void SetTargetClosestFruit(Ball &target);
 	void SetTargetNewestFruit(Ball &target);

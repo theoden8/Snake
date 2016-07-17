@@ -1,6 +1,8 @@
 #include <math.h>
+#include <cstdlib>
 
 #include "Ball.hpp"
+#include "State.hpp"
 
 Ball::Ball()
 {}
@@ -40,6 +42,14 @@ bool Ball::operator< (const Ball &sec) const {
 
 double Ball::degree() const {
 	return atan2(y, x) / M_PI * 180;
+}
+
+const bool Ball::is_valid_step() const {
+	return std::abs(x) + std::abs(y) == 1;
+}
+
+const bool Ball::is_valid_position() const {
+	return 0 <= x < WIDTH && 0 <= y < HEIGHT;
 }
 
 

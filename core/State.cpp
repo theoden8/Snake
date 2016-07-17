@@ -16,15 +16,15 @@ bool
 int
 	State::latency = 40,
 	State::latency_delta = 0,
-	State::skin_id = 0;
 
-double
+	State::skin_id = 0,
+
 	State::width = 50,
 	State::height = 50;
 
 double
-	State::x_Display = WIDTH * 1.4,
-	State::y_Display = HEIGHT * 0.5;
+	State::x_Display = double(WIDTH) * 1.4,
+	State::y_Display = double(HEIGHT) * 0.5;
 
 std::string
 	State::folder = "";
@@ -111,5 +111,5 @@ void State::Timer() {
 	if(Ball::InSegment(SNAKE->GetObjects().front(), FRUITS->GetObjects()))
 		FFRUITS->EatFruit();
 
-	SSNAKE->AutoMove();
+	SSNAKE->AutoSetStep();
 }

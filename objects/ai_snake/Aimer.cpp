@@ -43,23 +43,18 @@ void Aimer::Scan() {
 		for(const auto &obj : objects)
 			sonar[obj] = true;
 
-	std::cout << "way_to bfs" << std::endl;
-
-	Ball &from = snake->GetObjects().front();
+	const Ball &from = snake->head();
+    std::cout << from << std::endl;
 	std::map <Ball, int> way_to = bfs(sonar, from);
-
-	std::cout << "bfs" << std::endl;
 
 	const std::vector <Ball> &snobj = snake->GetObjects();
 	for(size_t i = 1; i < snobj.size(); ++i) {
 		if(way_to[snobj[i]] > snobj.size() - i) {
-			std::cout << "sonar_erasing:: " << snobj[i] << std::endl;
 			sonar.erase(snobj[i]);
 		}
 	}
 
 	sonar.erase(snake->GetObjects().back());
-	range = INVALID_INT;
 }
 
 void Aimer::Reset() {
@@ -67,15 +62,16 @@ void Aimer::Reset() {
 }
 
 
-void Aimer::SetTarget(Ball &target) {
+#include <cassert>
+Ball Aimer::GetTarget() {
+	Ball target;
 	std::cout << "aimer: aim " << aim << std::endl;
 	switch(aim) {
 		case 0:
-			target = snake->GetObjects().front() + snake->currentDirection;
+			target = snake->head() + snake->currentDirection;
 		break;
 		case 1:
-			/* SetTargetClosestFruit(target); */
-			SetTargetNewestFruit(target);
+			SetTargetClosestFruit(target);
 		break;
 		case 2:
 			SetTargetNewestFruit(target);
@@ -88,17 +84,18 @@ void Aimer::SetTarget(Ball &target) {
 		break;
 	}
 	std::cout << "aimer: target " << target << std::endl;
+
+	return target;
 }
 
 void Aimer::SetTargetClosestFruit(Ball &target) {
-	std::cout << "setsonar" << std::endl;
-	std::map <Ball, int> way_to = bfs(GetSonar(), snake->GetObjects().front());
+	range = UNDEF_INT;
+	std::map <Ball, int> way_to = bfs(GetSonar(), snake->head());
 	for(const auto &fruit : FRUITS->GetObjects()) {
-		if(way_to.count(fruit)) {
-			if(range < way_to[fruit]) {
-				target = fruit;
-				range = way_to[target];
-			}
+		if(way_to.count(fruit) && (range > way_to[fruit]) || range == UNDEF_INT) {
+			std::cout << "fruit " << fruit << " range " << way_to[fruit];
+			target = fruit;
+			range = way_to[target];
 		}
 	}
 	std::cout << target << std::endl;
@@ -109,24 +106,26 @@ void Aimer::SetTargetNewestFruit(Ball &target) {
 }
 
 void Aimer::SetTargetFurthestFruit(Ball &target) {
-	std::map <Ball, int> way_to = bfs(GetSonar(), snake->GetObjects().front());
+	std::map <Ball, int> way_to = bfs(GetSonar(), snake->head());
+	if(target == snake->targetLast
+	   && way_to.count(target))
+	{
+		target = snake->targetLast;
+		return;
+	}
+	range = UNDEF_INT;
 	for(const auto &fruit : FRUITS->GetObjects()) {
-		if(way_to.count(fruit)) {
-			if(
-				range == INVALID_INT
-				|| range > way_to[fruit]
-			)
-			{
-				target = fruit;
-				range = way_to[target];
-			}
+		if(way_to.count(fruit) && range < way_to[fruit]) {
+			target = fruit;
+			range = way_to[target];
 		}
 	}
 }
 
 void Aimer::SetTargetSnakeTail(Ball &target) {
+	int range = UNDEF_INT;
 	target = snake->GetObjects().back();
-	std::map <Ball, int> way_to = bfs(GetSonar(), snake->GetObjects().front());
+	std::map <Ball, int> way_to = bfs(GetSonar(), snake->head());
 	for(int i = snake->GetObjects().size() - 1; i >= 0; --i) {
 		if(way_to.count(target)) {
 			target = snake->GetObjects()[i];

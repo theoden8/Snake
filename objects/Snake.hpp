@@ -36,13 +36,18 @@ public:
 public:
 	Snake();
 	~Snake();
-	void Display();
 
+	const Ball &head() const;
+	const Ball &tail() const;
+
+	void Display();
 	void Keyboard(char key);
 
 	/* void AutoCorrection(Ball arrow); */
-	void AutoMove();
-	void SetStep(Ball &step);
+	void AutoSetStep();
 	void DoStep();
 	void PushBack();
+
+private:
+	void SetStep(Ball &step);
 };

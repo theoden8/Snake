@@ -5,14 +5,10 @@
 
 #include "Ball.hpp"
 
-#define INVALID_INT -1
-
 class Aimer;
 class Snake;
 
 class Router {
-	int
-		range = INVALID_INT;
 	Aimer *aimer;
 	const Snake *snake;
 public:
@@ -24,9 +20,9 @@ public:
 public:
 	Router(Aimer *a);
 	const char *GetName() const;
-	void SetStep(const Ball &target, Ball &step) const;
+	Ball GetStep(const Ball &target) const;
 private:
-	void SetStepStraight(const Ball &target, Ball &step) const;
-	void SetStepShortest(const Ball &target, Ball &step) const;
-	void SetStepsSpaciest(const Ball &target, Ball &step) const;
+	void SetStepHeuristically(const Ball &target, Ball &step) const;
+	void SetStepShortestRoute(const Ball &target, Ball &step) const;
+	void SetStepSpaciestRoute(const Ball &target, Ball &step) const;
 };

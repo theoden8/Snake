@@ -13,8 +13,8 @@ Snake::Snake()
 	objects.push_back(
 		{
 			Ball(
-				int(WIDTH) >> 1,
-				int(HEIGHT) >> 1
+				WIDTH >> 1,
+				HEIGHT >> 1
 			)
 		}
 	);
@@ -35,15 +35,23 @@ Snake::~Snake() {
 	delete router;
 }
 
+const Ball &Snake::head() const {
+	return objects.front();
+}
+
+const Ball &Snake::tail() const {
+	return objects.back();
+}
+
 
 #include <iostream>
-void Snake::AutoMove() {
+void Snake::AutoSetStep() {
 	std::cout << "automatic move triggered" << std::endl;
 	Ball target, step;
 
 	aimer->Reset();
-	aimer->SetTarget(target);
-	router->SetStep(target, step);
+	target = aimer->GetTarget();
+	step = router->GetStep(target);
 
 	if(safe_walk) {
 		Ball overhead = objects.front() + step;
@@ -56,8 +64,8 @@ void Snake::AutoMove() {
 			aimer->aim = 1;
 			router->route = 4;
 
-			aimer->SetTarget(target);
-			router->SetStep(step, target);
+			target = aimer->GetTarget();
+			step = router->GetStep(target);
 
 			aimer->aim = bu_aim;
 			router->route = bu_route;
@@ -73,7 +81,8 @@ void Snake::SetStep(Ball &step) {
 		return;
 
 	std::cout << step << std::endl;
-	assert(std::abs(step.x) + std::abs(step.y) == 1);
+	assert(step.is_valid_step());
+	assert((head() + step).is_valid_position());
 
 	currentDirection = step;
 }

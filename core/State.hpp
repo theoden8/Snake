@@ -29,14 +29,14 @@ class State {
 public:
 	static int
 		latency,
-		skin_id;
+		skin_id,
+		width,
+		height;
 
 	static std::string
 		folder;
 
 	static double
-		width,
-		height,
 		x_Display,
 		y_Display;
 
