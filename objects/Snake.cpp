@@ -78,7 +78,7 @@ void Snake::SetStep(Ball step) {
 	if(step == -previousDirection && objects.size() != 1)
 		return;
 
-	/* std::cout << step << std::endl; */
+	std::cout << step << std::endl;
 	assert(step.is_valid_step());
 	assert((head() + step).is_valid_position());
 

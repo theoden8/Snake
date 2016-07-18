@@ -52,8 +52,12 @@ void Aimer::Scan() {
 			sonar[obj] = true;
 
 	const std::vector <Ball> &snobj = snake->GetObjects();
+	const std::map <Ball, int> &distances = GetHeadDistances();
 	for(size_t i = 1; i < snobj.size(); ++i)
-		if(GetHeadDistances()[snobj[i]] > snobj.size() - i)
+		if(
+			distances.count(snobj[i]) == 1
+			&& distances.at(snobj[i]) > snobj.size() - i
+		)
 			sonar.erase(snobj[i]);
 
 	/* sonar.erase(snake->tail()); */
@@ -78,7 +82,7 @@ Ball Aimer::GetTarget() {
 		return target;
 	}
 
-	/* std::cout << "aimer: aim " << aim << std::endl; */
+	std::cout << "aimer: aim " << aim << std::endl;
 
 	switch(aim) {
 		case 1:
@@ -94,7 +98,7 @@ Ball Aimer::GetTarget() {
 			SetTargetSnakeTail();
 		break;
 	}
-	/* std::cout << "aimer: target " << target << std::endl; */
+	std::cout << "aimer: target " << target << std::endl;
 
 	assert(target.is_valid_position() || target == UNDEF_BALL);
 	return target;
@@ -119,13 +123,11 @@ void Aimer::SetTargetClosestFruit() {
 			range = distances.at(target);
 		}
 	}
-	/* std::cout << target << std::endl; */
+	std::cout << target << std::endl;
 }
 
 void Aimer::SetTargetRandomFruit() {
 	const std::map <Ball, int> &distances = GetHeadDistances();
-	if(FRUITS->GetObjects().empty())
-		return;
 
 	if(
 		Ball::InSegment(snake->targetLast, FRUITS->GetObjects())

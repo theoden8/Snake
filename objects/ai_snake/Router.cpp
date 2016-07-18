@@ -37,7 +37,7 @@ const char *Router::Name() const {
 
 
 Ball Router::GetStep() const {
-	/* std::cout << "router: route " << route << std::endl; */
+	std::cout << "router: route " << route << std::endl;
 	assert(0 <= route && route < NO_ROUTES);
 	switch(route) {
 		case 0:
@@ -159,9 +159,9 @@ Ball Router::GetStepSpaciestRoute() const {
 		}
 	}
 
-	/* std::cout << "steps " << std::endl; */
-	/* for(const auto &s : steps) */
-	/* 	std::cout << "\t" << s << std::endl; */
+	std::cout << "steps " << std::endl;
+	for(const auto &s : steps)
+		std::cout << "\t" << s << std::endl;
 
 	Ball step = GetStepShortestRoute(steps);
 	if(step == UNDEF_BALL)
