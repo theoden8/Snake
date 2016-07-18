@@ -10,11 +10,6 @@ class Aimer;
 class Router;
 
 class Snake : public Object {
-	Aimer *aimer;
-	Router *router;
-
-public:
-	Image IMG_TARGET;
 	struct Skin {
 		Image head, body, tail;
 		Skin() {}
@@ -24,14 +19,23 @@ public:
 	};
 	Skin skins[NO_ICONSETS];
 
-	Ball
-		currentDirection = Ball(-1, 0),
-		previousDirection = Ball(0, 0),
-		snakeLast,
-		targetLast;
+	Aimer *aimer;
+	Router *router;
+
 	bool
 		growNextMove = false,
 		safe_walk = false;
+
+	Ball
+		previousDirection = Ball(-1, 0),
+		snakeLast;
+
+public:
+	Image IMG_TARGET;
+
+	Ball
+		currentDirection = previousDirection,
+		targetLast;
 
 public:
 	Snake();
@@ -43,11 +47,8 @@ public:
 	void Display();
 	void Keyboard(char key);
 
-	/* void AutoCorrection(Ball arrow); */
-	void AutoSetStep();
+	Ball GetAutoStep();
 	void DoStep();
 	void PushBack();
-
-private:
-	void SetStep(Ball &step);
+	void SetStep(Ball step);
 };

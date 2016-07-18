@@ -8,16 +8,17 @@
 #include <cassert>
 #include <iostream>
 
-const int Router::NO_ROUTES = 4;
+const int Router::NO_ROUTES = 5;
 
 Router::Router(Aimer *a):
-	aimer(a), snake(a->GetSnake())
+	aimer(a),
+	snake(a->GetSnake())
 {}
 
-const char *Router::GetName() const {
+const char *Router::Name() const {
 	switch(route) {
 		case 0:
-			return "Manual";
+			return "Hand Brake";
 		case 1:
 		case 2:
 			if(strategy == 1)
@@ -34,47 +35,36 @@ const char *Router::GetName() const {
 	}
 }
 
-Ball Router::GetStep(const Ball &target) const {
-	Ball step;
 
-	assert(target.is_valid_position());
-
+Ball Router::GetStep() const {
+	/* std::cout << "router: route " << route << std::endl; */
+	assert(0 <= route && route < NO_ROUTES);
 	switch(route) {
 		case 0:
-			step = snake->currentDirection;
-		break;
+			return snake->currentDirection;
 		case 1:
 		case 2:
-			SetStepHeuristically(target, step);
-		break;
+			return GetStepHeuristically();
 		case 3:
-			SetStepShortestRoute(target, step);
-			if(!step.is_valid_step())
-				step = snake->currentDirection;
-		break;
+			return GetStepShortestRoute();
 		case 4:
-			SetStepSpaciestRoute(target, step);
-			if(!step.is_valid_step())
-				step = snake->currentDirection;
-		break;
+			return GetStepSpaciestRoute();
 	}
-	std::cout << "router step " << step << std::endl;
-
-	assert(step.is_valid_step());
-	return step;
 }
 
 
-void Router::SetStepHeuristically(const Ball &target, Ball &step) const {
+Ball Router::GetStepHeuristically() const {
 	const Ball &from = snake->head();
-	step = target - from;
+	if(aimer->GetTarget() == UNDEF_BALL)
+		return snake->currentDirection;
 
+	Ball step = aimer->GetTarget() - from;
 	step = Ball(
-		(step.x != 0) ? step.x / abs(step.x) : 0,
-		(step.y != 0) ? step.y / abs(step.y) : 0
+		(step.x) ? step.x / abs(step.x) : 0,
+		(step.y) ? step.y / abs(step.y) : 0
 	);
 
-	if(step.x != 0 && step.y != 0) {
+	if(step.x && step.y) {
 		if(
 			Ball::InSegment(from + Ball(step.x, 0), WALLS->GetObjects())
 			|| Ball::InSegment(from + Ball(step.x, 0), snake->GetObjects())
@@ -83,66 +73,127 @@ void Router::SetStepHeuristically(const Ball &target, Ball &step) const {
 			step.x = 0;
 		}
 		if(
-			Ball::InSegment(from + Ball(step.y, 0), WALLS->GetObjects())
-			|| Ball::InSegment(from + Ball(step.y, 0), snake->GetObjects())
+			Ball::InSegment(from + Ball(0, step.y), WALLS->GetObjects())
+			|| Ball::InSegment(from + Ball(0, step.y), snake->GetObjects())
 		)
 		{
 			step.y = 0;
 		}
 
-		if(step.x != 0 && step.y != 0) {
+		if(step.x && step.y)
 			((rand() % strategy) ? step.x : step.y) = 0;
-		} else
-		if(step == Ball(0, 0)) {
-			step = snake->currentDirection;
-			return;
-		}
+		else if(step == Ball(0, 0))
+			return snake->currentDirection;
 	}
 
 	if(from + step == snake->GetObjects()[1]) {
-		step.x = !step.x;
-		step.y = !step.y;
-		if(rand() & 1)
-			step.x = -step.x;
-		if(rand() & 1)
-			step.y = -step.y;
+		step.x = !step.x * ((rand() & 1) ? -1 : 1);
+		step.y = !step.y * ((rand() & 1) ? -1 : 1);
 	}
+
+	return step;
 }
 
-void Router::SetStepShortestRoute(const Ball &target, Ball &step) const {
-	const Ball &from = snake->head();
-	std::map <Ball, int> way_to = bfs(aimer->GetSonar(), target);
-	for(const auto &st : GetSteps()) {
-		Ball move(from + st);
+Ball Router::GetStepShortestRoute() const {
+	Ball step = GetStepShortestRoute(GetSteps());
+
+	if(step == UNDEF_BALL)
+		return snake->currentDirection;
+	return step;
+}
+
+Ball Router::GetStepShortestRoute(const std::vector <Ball> &steps) const {
+	const Ball from = snake->head();
+
+	const std::map <Ball, int> &distances = bfs(aimer->Sonar(), aimer->GetTarget());
+	if(distances.count(from) != 1)
+		return UNDEF_BALL;
+
+	const int range = distances.at(from);
+
+	/* for(int i = 0; i < HEIGHT; ++i) { */
+	/* 	for(int j = 0; j < WIDTH; ++j) { */
+	/* 		std::cout << " "; */
+	/* 		Ball pos(j, HEIGHT - i); */
+	/* 		if(distances.count(pos) == 1) */
+	/* 			if(pos == from) */
+	/* 				std::cout << "\033[1;93m" << distances[pos] << "\033[0m"; */
+	/* 			else */
+	/* 				std::cout << distances[pos]; */
+	/* 		else */
+	/* 			std::cout << UNDEF_INT; */
+	/* 	} */
+	/* 	std::cout << std::endl; */
+	/* } */
+
+	for(const auto &step : steps) {
 		if(
-			way_to.count(move) == 1
-			&& way_to[move] == aimer->range - 1
-		) {
-			std::cout << "step = " << st << std::endl;
-			step = st;
-			return;
+			distances.count(from + step) == 1
+			&& distances.at(from + step) == range - 1
+		)
+		{
+			return step;
 		}
 	}
-	std::cout << "shortest" << step << std::endl;
+
+	return UNDEF_BALL;
 }
 
-void Router::SetStepSpaciestRoute(const Ball &target, Ball &step) const {
-	int space = 0;
+Ball Router::GetStepSpaciestRoute() const {
+	int max_space = UNDEF_INT;
 	const Ball &from = snake->head();
 	std::vector <Ball> steps;
+
 	for(const auto &step : GetSteps()) {
-		Ball move(from + step);
-		if(!aimer->GetSonar().count(move)) {
-			std::map <Ball, int> way_to = bfs(aimer->GetSonar(), move);
-			if(space <= way_to.size()) {
-				if(space < way_to.size()) {
-					space = way_to.size();
-					steps.clear();
-				} else {
-					steps.push_back(step);
-				}
+		if(aimer->Sonar().count(from + step) == 0) {
+			const std::map <Ball, int> &distances = bfs(aimer->Sonar(), from + step);
+			if(max_space == UNDEF_INT
+			   || max_space < distances.size())
+			{
+				max_space = distances.size();
+				steps.clear();
+			}
+			if(max_space == distances.size()) {
+				steps.push_back(step);
 			}
 		}
 	}
-	step = steps.front();
+
+	/* std::cout << "steps " << std::endl; */
+	/* for(const auto &s : steps) */
+	/* 	std::cout << "\t" << s << std::endl; */
+
+	Ball step = GetStepShortestRoute(steps);
+	if(step == UNDEF_BALL)
+		return steps.front();
+	return step;
 }
+
+/* void Snake::AutoCD_C() { */
+/* 	int MAX = 0, FRUIT = 1e9; */
+/* 	Ball point = currentDirection; */
+/* 	for(const auto &it_step : GetSteps()) { */
+/* 		Ball movv = snake.front() + it_step; */
+/* 		if(aimer->Sonar().count(movv) == 0) { */
+/* 			const std::map <Ball, int> distances = bfs(sonar, movv); */
+/* 			int NEW_MAX = distances.size(); */
+/* 			if(NEW_MAX >= MAX) { */
+/* 				if(NEW_MAX > MAX) { */
+/* 					FRUIT = 1e9; */
+/* 					point = it_step; */
+/* 				} */
+/* 				MAX = NEW_MAX; */
+/* 				for(const auto &it_fruit : FRUITS->objects) { */
+/* 					if(distances.count(it_fruit) > 0) { */
+/* 						int NEW_FRUIT = distances[it_fruit]; */
+/* 						if(NEW_FRUIT < FRUIT) { */
+/* 							FRUIT = NEW_FRUIT; */
+/* 							point = it_step; */
+/* 						} */
+/* 					} */
+/* 				} */
+/* 			} */
+/* 		} */
+/* 	} */
+/* 	SetStep(point); */
+/* } */

@@ -111,5 +111,5 @@ void State::Timer() {
 	if(Ball::InSegment(SNAKE->GetObjects().front(), FRUITS->GetObjects()))
 		FFRUITS->EatFruit();
 
-	SSNAKE->AutoSetStep();
+	SSNAKE->SetStep(SSNAKE->GetAutoStep());
 }

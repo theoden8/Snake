@@ -29,7 +29,9 @@ This is a snake clone with nice manual and AI controls.
 * Running mode (moves only when a button is pressed)
 * Adjustable delay between iterations
 * Adjustable number of fruits
+* Adjustable field dimensions
 * Has fixes for unobvious bugs
+* Has obvious bugs unfixed
 
 ### Ideas
 
@@ -46,8 +48,10 @@ Feel free to submit a pull request or inform about a bug / error.
 
 ### Tools
 
-* GLUT/OpenGL
+* C++ compiler
+* GLUT, OpenGL
 * cmake
+* make
 
 ### Compilation
 

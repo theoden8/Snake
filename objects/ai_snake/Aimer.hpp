@@ -1,11 +1,8 @@
 #pragma once
 
 #include <map>
-#include <string>
 
 #include "Ball.hpp"
-
-#define UNDEF_INT -1
 
 class Object;
 class Snake;
@@ -13,24 +10,26 @@ class Snake;
 class Aimer {
 	const Snake *snake;
 	std::map <Ball, bool> sonar;
+	std::map <Ball, int> distances_head;
+	Ball target;
 public:
-	int aim = 0,
-		range = UNDEF_INT;
+	int aim = 0;
 	const static int NO_AIMS;
 
 public:
 	Aimer(Snake *s);
-	const char *GetName() const;
+	const char *Name() const;
 	const Snake *GetSnake() const;
-	const std::map <Ball, bool> &GetSonar();
+	const std::map <Ball, bool> &Sonar();
+	std::map <Ball, int> GetHeadDistances();
 
 	void Scan();
 	void Reset();
 
 	Ball GetTarget();
 private:
-	void SetTargetClosestFruit(Ball &target);
-	void SetTargetNewestFruit(Ball &target);
-	void SetTargetFurthestFruit(Ball &target);
-	void SetTargetSnakeTail(Ball &target);
+	void SetTargetClosestFruit();
+	void SetTargetRandomFruit();
+	void SetTargetFurthestFruit();
+	void SetTargetSnakeTail();
 };

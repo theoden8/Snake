@@ -3,22 +3,23 @@
 #include "State.hpp"
 #include "Snake.hpp"
 
+#include <cassert>
 #include <iostream>
 
-const int Aimer::NO_AIMS = 4;
+const int Aimer::NO_AIMS = 5;
 
 Aimer::Aimer(Snake *s):
 	snake(s)
 {}
 
-const char *Aimer::GetName() const {
+const char *Aimer::Name() const {
 	switch(aim) {
 		case 0:
-			return "Hand Brake";
+			return "None";
 		case 1:
 			return "Closest Fruit";
 		case 2:
-			return "Newest fruit";
+			return "Random fruit";
 		case 3:
 			return "Furthest fruit";
 		case 4:
@@ -32,10 +33,17 @@ const Snake *Aimer::GetSnake() const {
 	return snake;
 }
 
-const std::map <Ball, bool> &Aimer::GetSonar() {
+const std::map <Ball, bool> &Aimer::Sonar() {
 	if(sonar.empty())
 		Scan();
+
 	return sonar;
+}
+
+std::map <Ball, int> Aimer::GetHeadDistances() {
+	if(!distances_head.empty())
+		return distances_head;
+	return bfs(Sonar(), snake->head());
 }
 
 void Aimer::Scan() {
@@ -43,93 +51,121 @@ void Aimer::Scan() {
 		for(const auto &obj : objects)
 			sonar[obj] = true;
 
-	const Ball &from = snake->head();
-    std::cout << from << std::endl;
-	std::map <Ball, int> way_to = bfs(sonar, from);
-
 	const std::vector <Ball> &snobj = snake->GetObjects();
-	for(size_t i = 1; i < snobj.size(); ++i) {
-		if(way_to[snobj[i]] > snobj.size() - i) {
+	for(size_t i = 1; i < snobj.size(); ++i)
+		if(GetHeadDistances()[snobj[i]] > snobj.size() - i)
 			sonar.erase(snobj[i]);
-		}
-	}
 
-	sonar.erase(snake->GetObjects().back());
+	/* sonar.erase(snake->tail()); */
+	sonar.erase(snake->head());
 }
 
 void Aimer::Reset() {
 	sonar.clear();
+	distances_head.clear();
+	target = UNDEF_BALL;
 }
 
 
-#include <cassert>
 Ball Aimer::GetTarget() {
-	Ball target;
-	std::cout << "aimer: aim " << aim << std::endl;
+	if(aim == 0) {
+		target = UNDEF_BALL;
+		return UNDEF_BALL;
+	}
+
+	if(target != UNDEF_BALL) {
+		assert(target.is_valid_position());
+		return target;
+	}
+
+	/* std::cout << "aimer: aim " << aim << std::endl; */
+
 	switch(aim) {
-		case 0:
-			target = snake->head() + snake->currentDirection;
-		break;
 		case 1:
-			SetTargetClosestFruit(target);
+			SetTargetClosestFruit();
 		break;
 		case 2:
-			SetTargetNewestFruit(target);
+			SetTargetRandomFruit();
 		break;
 		case 3:
-			SetTargetFurthestFruit(target);
+			SetTargetFurthestFruit();
 		break;
 		case 4:
-			SetTargetSnakeTail(target);
+			SetTargetSnakeTail();
 		break;
 	}
-	std::cout << "aimer: target " << target << std::endl;
+	/* std::cout << "aimer: target " << target << std::endl; */
 
+	assert(target.is_valid_position() || target == UNDEF_BALL);
 	return target;
 }
 
-void Aimer::SetTargetClosestFruit(Ball &target) {
-	range = UNDEF_INT;
-	std::map <Ball, int> way_to = bfs(GetSonar(), snake->head());
+void Aimer::SetTargetClosestFruit() {
+	if(FRUITS->GetObjects().empty())
+		return;
+
+	int range = UNDEF_INT;
+	const std::map <Ball, int> &distances = GetHeadDistances();
 	for(const auto &fruit : FRUITS->GetObjects()) {
-		if(way_to.count(fruit) && (range > way_to[fruit]) || range == UNDEF_INT) {
-			std::cout << "fruit " << fruit << " range " << way_to[fruit];
+		if(
+			distances.count(fruit)
+			&& (
+				range == UNDEF_INT
+				|| range > distances.at(fruit)
+			)
+		)
+		{
 			target = fruit;
-			range = way_to[target];
+			range = distances.at(target);
 		}
 	}
-	std::cout << target << std::endl;
+	/* std::cout << target << std::endl; */
 }
 
-void Aimer::SetTargetNewestFruit(Ball &target) {
-	target = FRUITS->GetObjects().back();
-}
+void Aimer::SetTargetRandomFruit() {
+	const std::map <Ball, int> &distances = GetHeadDistances();
+	if(FRUITS->GetObjects().empty())
+		return;
 
-void Aimer::SetTargetFurthestFruit(Ball &target) {
-	std::map <Ball, int> way_to = bfs(GetSonar(), snake->head());
-	if(target == snake->targetLast
-	   && way_to.count(target))
+	if(
+		Ball::InSegment(snake->targetLast, FRUITS->GetObjects())
+		&& distances.count(snake->targetLast))
 	{
 		target = snake->targetLast;
 		return;
 	}
-	range = UNDEF_INT;
+	target = FRUITS->GetObjects()[rand() % FRUITS->GetObjects().size()];
+}
+
+void Aimer::SetTargetFurthestFruit() {
+	if(FRUITS->GetObjects().empty())
+		return;
+
+	const std::map <Ball, int> &distances = GetHeadDistances();
+	int range = UNDEF_INT;
+	if(
+		Ball::InSegment(snake->targetLast, FRUITS->GetObjects())
+		&& distances.count(snake->targetLast))
+	{
+		target = snake->targetLast;
+		return;
+	}
 	for(const auto &fruit : FRUITS->GetObjects()) {
-		if(way_to.count(fruit) && range < way_to[fruit]) {
+		if(distances.count(fruit) && range < distances.at(fruit)) {
 			target = fruit;
-			range = way_to[target];
+			range = distances.at(target);
 		}
 	}
 }
 
-void Aimer::SetTargetSnakeTail(Ball &target) {
+void Aimer::SetTargetSnakeTail() {
+	const std::map <Ball, int> &distances = GetHeadDistances();
 	int range = UNDEF_INT;
 	target = snake->GetObjects().back();
-	std::map <Ball, int> way_to = bfs(GetSonar(), snake->head());
 	for(int i = snake->GetObjects().size() - 1; i >= 0; --i) {
-		if(way_to.count(target)) {
+		if(distances.count(target)) {
 			target = snake->GetObjects()[i];
-			range = way_to[target];
+			range = distances.at(target);
 			return;
 		}
 	}

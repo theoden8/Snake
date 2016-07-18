@@ -3,6 +3,9 @@
 #include <ostream>
 #include <vector>
 
+#define UNDEF_INT -1
+#define UNDEF_BALL Ball(UNDEF_INT, UNDEF_INT)
+
 struct Ball {
 	int x, y;
 	Ball();

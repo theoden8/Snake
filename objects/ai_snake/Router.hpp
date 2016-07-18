@@ -1,7 +1,6 @@
 #pragma once
 
 #include <map>
-#include <string>
 
 #include "Ball.hpp"
 
@@ -13,16 +12,20 @@ class Router {
 	const Snake *snake;
 public:
 	int
-		route = 0,
-		strategy = 2;
+		strategy = 2,
+		route = 0;
 	const static int NO_ROUTES;
 
 public:
 	Router(Aimer *a);
-	const char *GetName() const;
-	Ball GetStep(const Ball &target) const;
+	const char *Name() const;
+	void SetStrategy(int strat);
+
+	Ball GetStep() const;
+
 private:
-	void SetStepHeuristically(const Ball &target, Ball &step) const;
-	void SetStepShortestRoute(const Ball &target, Ball &step) const;
-	void SetStepSpaciestRoute(const Ball &target, Ball &step) const;
+	Ball GetStepHeuristically() const;
+	Ball GetStepShortestRoute() const;
+	Ball GetStepShortestRoute(const std::vector <Ball> &steps) const;
+	Ball GetStepSpaciestRoute() const;
 };
