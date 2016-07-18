@@ -82,8 +82,6 @@ Ball Aimer::GetTarget() {
 		return target;
 	}
 
-	std::cout << "aimer: aim " << aim << std::endl;
-
 	switch(aim) {
 		case 1:
 			SetTargetClosestFruit();
@@ -98,7 +96,6 @@ Ball Aimer::GetTarget() {
 			SetTargetSnakeTail();
 		break;
 	}
-	std::cout << "aimer: target " << target << std::endl;
 
 	assert(target.is_valid_position() || target == UNDEF_BALL);
 	return target;
@@ -123,7 +120,6 @@ void Aimer::SetTargetClosestFruit() {
 			range = distances.at(target);
 		}
 	}
-	std::cout << target << std::endl;
 }
 
 void Aimer::SetTargetRandomFruit() {

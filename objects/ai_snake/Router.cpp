@@ -37,7 +37,6 @@ const char *Router::Name() const {
 
 
 Ball Router::GetStep() const {
-	std::cout << "router: route " << route << std::endl;
 	assert(0 <= route && route < NO_ROUTES);
 	switch(route) {
 		case 0:
@@ -104,28 +103,14 @@ Ball Router::GetStepShortestRoute() const {
 
 Ball Router::GetStepShortestRoute(const std::vector <Ball> &steps) const {
 	const Ball from = snake->head();
+	if(aimer->GetTarget() == UNDEF_BALL)
+		return UNDEF_BALL;
 
 	const std::map <Ball, int> &distances = bfs(aimer->Sonar(), aimer->GetTarget());
 	if(distances.count(from) != 1)
 		return UNDEF_BALL;
 
 	const int range = distances.at(from);
-
-	/* for(int i = 0; i < HEIGHT; ++i) { */
-	/* 	for(int j = 0; j < WIDTH; ++j) { */
-	/* 		std::cout << " "; */
-	/* 		Ball pos(j, HEIGHT - i); */
-	/* 		if(distances.count(pos) == 1) */
-	/* 			if(pos == from) */
-	/* 				std::cout << "\033[1;93m" << distances[pos] << "\033[0m"; */
-	/* 			else */
-	/* 				std::cout << distances[pos]; */
-	/* 		else */
-	/* 			std::cout << UNDEF_INT; */
-	/* 	} */
-	/* 	std::cout << std::endl; */
-	/* } */
-
 	for(const auto &step : steps) {
 		if(
 			distances.count(from + step) == 1
@@ -159,41 +144,10 @@ Ball Router::GetStepSpaciestRoute() const {
 		}
 	}
 
-	std::cout << "steps " << std::endl;
-	for(const auto &s : steps)
-		std::cout << "\t" << s << std::endl;
-
+	if(steps.empty())
+		return snake->currentDirection;
 	Ball step = GetStepShortestRoute(steps);
 	if(step == UNDEF_BALL)
 		return steps.front();
 	return step;
 }
-
-/* void Snake::AutoCD_C() { */
-/* 	int MAX = 0, FRUIT = 1e9; */
-/* 	Ball point = currentDirection; */
-/* 	for(const auto &it_step : GetSteps()) { */
-/* 		Ball movv = snake.front() + it_step; */
-/* 		if(aimer->Sonar().count(movv) == 0) { */
-/* 			const std::map <Ball, int> distances = bfs(sonar, movv); */
-/* 			int NEW_MAX = distances.size(); */
-/* 			if(NEW_MAX >= MAX) { */
-/* 				if(NEW_MAX > MAX) { */
-/* 					FRUIT = 1e9; */
-/* 					point = it_step; */
-/* 				} */
-/* 				MAX = NEW_MAX; */
-/* 				for(const auto &it_fruit : FRUITS->objects) { */
-/* 					if(distances.count(it_fruit) > 0) { */
-/* 						int NEW_FRUIT = distances[it_fruit]; */
-/* 						if(NEW_FRUIT < FRUIT) { */
-/* 							FRUIT = NEW_FRUIT; */
-/* 							point = it_step; */
-/* 						} */
-/* 					} */
-/* 				} */
-/* 			} */
-/* 		} */
-/* 	} */
-/* 	SetStep(point); */
-/* } */

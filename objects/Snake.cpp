@@ -47,28 +47,26 @@ const Ball &Snake::tail() const {
 
 
 Ball Snake::GetAutoStep() {
-	/* std::cout << "automove" << std::endl; */
-
 	aimer->Reset();
 	Ball step = router->GetStep();
 
-	/* if(safe_walk) { */
-	/* 	Ball overhead = objects.front() + step; */
-	/* 	if(Ball::InSegment(overhead, objects) */
-	/* 	   || Ball::InSegment(overhead, WALLS->GetObjects())) */
-	/* 	{ */
-	/* 		int */
-	/* 			bu_aim = aimer->aim, */
-	/* 			bu_route = router->route; */
-	/* 		aimer->aim = 1; */
-	/* 		router->route = 4; */
+	if(safe_walk) {
+		Ball overhead = objects.front() + step;
+		if(Ball::InSegment(overhead, objects)
+		   || Ball::InSegment(overhead, WALLS->GetObjects()))
+		{
+			int
+				bu_aim = aimer->aim,
+				bu_route = router->route;
+			aimer->aim = 1;
+			router->route = 4;
 
-	/* 		step = router->GetStep(); */
+			step = router->GetStep();
 
-	/* 		aimer->aim = bu_aim; */
-	/* 		router->route = bu_route; */
-	/* 	} */
-	/* } */
+			aimer->aim = bu_aim;
+			router->route = bu_route;
+		}
+	}
 	targetLast = aimer->GetTarget();
 
 	return step;
@@ -78,7 +76,6 @@ void Snake::SetStep(Ball step) {
 	if(step == -previousDirection && objects.size() != 1)
 		return;
 
-	std::cout << step << std::endl;
 	assert(step.is_valid_step());
 	assert((head() + step).is_valid_position());
 
