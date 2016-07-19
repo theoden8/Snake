@@ -16,7 +16,7 @@ std::vector <Ball> GetSteps() {
 
 std::map <Ball, int> bfs(const std::map <Ball, bool> &sonar, const Ball &from) {
 	std::queue <Ball> spiral;
-	std::map <Ball, int>  distances;
+	std::map <Ball, int> distances;
 	spiral.push(from);
 	distances[from] = 0;
 	while (!spiral.empty()) {

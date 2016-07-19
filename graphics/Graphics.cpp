@@ -97,9 +97,6 @@ void Graphics::Timer(int) {
 
 void Graphics::Keyboard(unsigned char key, int x, int y) {
 	State::Keyboard(key);
-	SNAKE->Keyboard(key);
-	WALLS->Keyboard(key);
-	FRUITS->Keyboard(key);
 }
 
 void Graphics::Special(int key, int x, int y) {

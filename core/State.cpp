@@ -73,6 +73,12 @@ void State::Keyboard(char key) {
 		latency = (key == '0') ? 40 : 0;
 		++skin_id %= NO_ICONSETS;
 	}
+
+	SNAKE->Keyboard(key);
+	if(running)
+		SSNAKE->DoStep();
+	WALLS->Keyboard(key);
+	FRUITS->Keyboard(key);
 }
 
 void State::Display() {
