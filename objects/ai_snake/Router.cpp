@@ -1,12 +1,11 @@
+#include <cassert>
+
 #include "Router.hpp"
 #include "Functions.hpp"
 #include "Graphics.hpp"
 #include "State.hpp"
 #include "Snake.hpp"
 #include "Aimer.hpp"
-
-#include <cassert>
-#include <iostream>
 
 const int Router::NO_ROUTES = 5;
 
@@ -37,7 +36,6 @@ const char *Router::Name() const {
 
 
 Ball Router::GetStep() const {
-	assert(0 <= route && route < NO_ROUTES);
 	switch(route) {
 		case 0:
 			return snake->currentDirection;
@@ -49,6 +47,7 @@ Ball Router::GetStep() const {
 		case 4:
 			return GetStepSpaciestRoute();
 	}
+	assert(0 <= route && route < NO_ROUTES);
 }
 
 
@@ -102,13 +101,15 @@ Ball Router::GetStepShortestRoute() const {
 }
 
 Ball Router::GetStepShortestRoute(const std::vector <Ball> &steps) const {
-	const Ball from = snake->head();
+	const Ball &from = snake->head();
 	if(aimer->GetTarget() == UNDEF_BALL)
 		return UNDEF_BALL;
 
+	aimer->SonarToggleHead();
 	const std::map <Ball, int> &distances = bfs(aimer->Sonar(), aimer->GetTarget());
 	if(distances.count(from) != 1)
 		return UNDEF_BALL;
+	aimer->SonarToggleHead();
 
 	const int range = distances.at(from);
 	for(const auto &step : steps) {

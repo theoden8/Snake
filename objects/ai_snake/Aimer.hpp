@@ -20,8 +20,10 @@ public:
 	Aimer(Snake *s);
 	const char *Name() const;
 	const Snake *GetSnake() const;
+
 	const std::map <Ball, bool> &Sonar();
-	std::map <Ball, int> GetHeadDistances();
+	void SonarToggleHead();
+	std::map <Ball, int> &DistancesHead();
 
 	void Scan();
 	void Reset();

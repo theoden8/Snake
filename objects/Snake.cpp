@@ -1,14 +1,11 @@
 #include <cassert>
 #include <cstdlib>
-#include <iostream>
 
 #include "Snake.hpp"
 #include "Functions.hpp"
 #include "Aimer.hpp"
 #include "Router.hpp"
 #include "State.hpp"
-
-#include <iostream>
 
 Snake::Snake()
 {
