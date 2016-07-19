@@ -18,6 +18,10 @@ I believe, this picture speaks for itself.
 
 The purpose of this project was at first to practice C++ OOP and OpenGL (GLUT), but eventually it became a severe challenge of fixing the code: linkage, compilation; runtime errors and all the fun within it. It has been a rather long time since the initial code was finished, and although the code quality still remains average, it has improved A LOT since then.
 
+### Description
+
+The game is implemented through **GLUT** loop, from where a user can interact with the game configuration itself (State class: adjusting intervals, pausing/unpausing and more) and groups of **Ball** objects, of which there are three: a snake, fruits and walls (the last can not be interacted with though). All of these objects have a superclass **Object**, which has a **Keyboard** and **Display** methods. The snake has multiple AIs, which can be switched by pressing relevant keyboard buttons. There are two separate parts of the snake AI: aiming (Aimer class) and routing (Routing class). The Aimer chooses a target (**Ball**), and the Router chooses which step is to be made. The algorithms used by these include primarily BFS (for calculating all the distances) and stupid heuristic hacks. This way the code duplication is reduced to some sort of minimum (not to say so about the bugs), as well as the number of operations necessary for taking a step (take a look at getter functions in the AI implementation), and thereby, fortunately, it just works.
+
 ### Features
 
 * 1 snake
