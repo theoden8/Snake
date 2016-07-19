@@ -8,17 +8,15 @@ Created by Kirill Rodriguez on 06/2014.
 
 ## Program
 
-### Demo!
+### Demo
 
 ![demo](./_demo/demo.gif)
 
+I believe, this picture speaks for itself.
+
 ### Purpose
 
-The purpose of this project was at first to practice C++ OOP and OpenGL (GLUT), but eventually it became a great challenge of fixing the code: checking links, inclusions; handling errors and so on. It has been a long way since June 2014 and since the initial code was written far worse than it is now, the code quality remains average.
-
-### Description
-
-This is a snake clone with nice manual and AI controls.
+The purpose of this project was at first to practice C++ OOP and OpenGL (GLUT), but eventually it became a severe challenge of fixing the code: linkage, compilation; runtime errors and all the fun within it. It has been a rather long time since the initial code was finished, and although the code quality still remains average, it has improved A LOT since then.
 
 ### Features
 
@@ -39,10 +37,11 @@ This is a snake clone with nice manual and AI controls.
 
 ### Ideas
 
-* Mouse control (the current AI aims to get to the mouse pointer)
+* Option to follow the cursor.
 * Read walls from file.
+* Mice (running fruits)
 * More snakes.
-* Better snake AIs.
+* Better snake AIs (for example, one planning to target the best cluster of fruits).
 * Remote intelligence.
 
 ### Contribution
@@ -69,12 +68,12 @@ Feel free to submit a pull request or an issue to inform about a bug / error.
 #### Controls
 
 * Arrows
-* p - Toggle pause
-* r - Toggle running mode
-* g - Toggle safe mode
-* 0-4 - change AI (aiming and/or routing)
-* 0-9 - change skin
-* n/m - delete/add a fruit
-* i/o - reduce/increase frame interval
-* wasd - game controls (alternatives to arrows)
-* ESC - exit
+* **p** - Toggle pause
+* **r** - Toggle running mode
+* **g** - Toggle safe mode
+* **0-4** - change AI (aiming and/or routing)
+* **0-9** - change skin
+* **n**/**m** - delete/add a fruit
+* **o**/**i** - reduce/increase frame interval
+* **wasd** - game controls (alternatives to arrows)
+* **ESC** - exit
