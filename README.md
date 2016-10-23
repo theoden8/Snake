@@ -12,15 +12,11 @@ Created by Kirill Rodriguez on 06/2014.
 
 ![demo](./_demo/demo.gif)
 
-I believe, this picture speaks for itself.
+I believe, this picture ~~snakes~~ speaks for itself.
 
 ### Purpose
 
-The purpose of this project was at first to practice C++ OOP and OpenGL (GLUT), but eventually it became a severe challenge of fixing the code: linkage, compilation; runtime errors and all the fun within it. It has been a rather long time since the initial code was finished, and although the code quality still remains average, it has improved A LOT since then.
-
-### Description
-
-The game is implemented through **GLUT** loop, from where a user can interact with the game configuration itself (State class: adjusting intervals, pausing/unpausing and more) and groups of **Ball** objects, of which there are three: a snake, fruits and walls (the last can not be interacted with though). All of these objects have a superclass **Object**, which has a **Keyboard** and **Display** methods. The snake has multiple AIs, which can be switched by pressing relevant keyboard buttons. There are two separate parts of the snake AI: aiming (Aimer class) and routing (Routing class). The Aimer chooses a target (**Ball**), and the Router chooses which step is to be made. The algorithms used by these include primarily BFS (for calculating all the distances) and stupid heuristic hacks. This way the code duplication is reduced to some sort of minimum (not to say so about the bugs), as well as the number of operations necessary for taking a step (take a look at getter functions in the AI implementation), and thereby, fortunately, it just works.
+The purpose of this project was at first to practice C++ OOP and GLUT, but eventually it became a severe challenge of fixing bad code: linkage, compilation, runtime errors, - and all the fun relevant to these processes. It has been a long time since the initial release, but the goal of debugging was only brought to achievement recently.
 
 ### Features
 
@@ -39,14 +35,14 @@ The game is implemented through **GLUT** loop, from where a user can interact wi
 * Has fixes for unobvious bugs
 * Has obvious bugs unfixed
 
-### Ideas
+### Possible improvements
 
-* Option to follow the cursor.
-* Read walls from file.
+* Option to make AI follow the cursor
+* Read walls from file
 * Mice (running fruits)
-* More snakes.
-* Better snake AIs (for example, one planning to target the best cluster of fruits).
-* Remote intelligence.
+* More snakes
+* Better snake AIs (for example, one planning to target the best cluster of fruits)
+* Remote intelligence
 
 ### Contribution
 
@@ -56,8 +52,8 @@ Feel free to submit a pull request or an issue to inform about a bug / error.
 
 ### Tools
 
-* C++ compiler
-* GLUT, OpenGL
+* c++ compiler
+* glut
 * cmake
 * make
 
@@ -72,9 +68,9 @@ Feel free to submit a pull request or an issue to inform about a bug / error.
 #### Controls
 
 * Arrows
-* **p** - Toggle pause
-* **r** - Toggle running mode
-* **g** - Toggle safe mode
+* **p** - toggle pause mode
+* **r** - toggle running mode
+* **g** - toggle safe mode
 * **0-4** - change AI (aiming and/or routing)
 * **0-9** - change skin
 * **n**/**m** - delete/add a fruit
