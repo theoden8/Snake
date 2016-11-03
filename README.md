@@ -1,6 +1,6 @@
 # Snake
 
-![Green snake](./_Icon.jpg)
+![Green snake](./_misc/_Icon.jpg)
 
 ## Author
 
@@ -10,7 +10,7 @@ Created by Kirill Rodriguez on 06/2014.
 
 ### Demo
 
-![demo](./_demo/demo.gif)
+![demo](./_misc/demo.gif)
 
 I believe, this picture ~~snakes~~ speaks for itself.
 

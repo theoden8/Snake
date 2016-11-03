@@ -12,9 +12,9 @@ file(GLOB SRCS
 	./objects/*.cpp
 	./objects/ai_snake/*.cpp
 )
-add_executable(_snake ${SRCS})
+add_executable(snake ${SRCS})
 
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
-include_directories( ${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS} )
-target_link_libraries( _snake ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} )
+include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS})
+target_link_libraries(snake ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
