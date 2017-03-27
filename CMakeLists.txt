@@ -3,15 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 project(snake)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O3 -Wno-deprecated")
 
-include_directories(. core graphics objects objects/ai_snake)
-
-file(GLOB SRCS
-	./*.cpp
-	./core/*.cpp
-	./graphics/*.cpp
-	./objects/*.cpp
-	./objects/ai_snake/*.cpp
-)
+file(GLOB SRCS ./*.cpp)
 add_executable(snake ${SRCS})
 
 find_package(OpenGL REQUIRED)

@@ -1,4 +1,0 @@
-#!/bin/sh
-
-./clean
-c++ $(find . -type f -name "*.cpp") $(for i in $(find . -type d); do echo "-I$i" "-L$i"; done) -std=c++11 -O3 -Wno-deprecated $*
