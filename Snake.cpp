@@ -18,11 +18,11 @@ Snake::Snake()
 		}
 	);
 
-	IMG_TARGET.load(FOLDER + "_textures/TARGET.tga");
+	IMG_TARGET.load(FOLDER + "textures/TARGET.tga");
 	for(int i = 0; i < NO_ICONSETS; ++i) {
-		skins[i].head.load(FOLDER + "_textures/" + std::to_string(i) + "_HEAD.tga");
-		skins[i].body.load(FOLDER + "_textures/" + std::to_string(i) + "_BODY.tga");
-		skins[i].tail.load(FOLDER + "_textures/" + std::to_string(i) + "_TAIL.tga");
+		skins[i].head.load(FOLDER + "textures/" + std::to_string(i) + "_HEAD.tga");
+		skins[i].body.load(FOLDER + "textures/" + std::to_string(i) + "_BODY.tga");
+		skins[i].tail.load(FOLDER + "textures/" + std::to_string(i) + "_TAIL.tga");
 	}
 
 	aimer = new Aimer(this);

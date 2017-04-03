@@ -7,7 +7,7 @@
 class Graphics {
 public:
 	static void Init(int &argc, char **argv);
-
+	static void Quit();
 	static void DisplayText(float x, float y, const char *s);
 	static void DisplayObject(Ball ball, GLuint id, double degree);
 private:

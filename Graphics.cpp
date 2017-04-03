@@ -12,15 +12,16 @@
 
 #define LOG(msg) std::cerr << msg << std::endl;
 void Graphics::Init(int &argc, char **argv) {
-	int template_size = fmin(40, WIDTH) * 50 - 1100;
+	int template_size = fmin(40, WIDTH) * 60 - 1100;
 
 	State::Init(argc, argv);
 
 	glutInit(&argc, argv);
 	/* glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); */
 	glutInitWindowSize(template_size, template_size * 0.75);
-	glutInitWindowPosition(500 - WIDTH * 4, 400 - HEIGHT * 4);
+	glutInitWindowPosition(500 - WIDTH * 6, 400 - HEIGHT * 6);
 	glutCreateWindow("Snake");
+	glutShowWindow();
 
 	glutDisplayFunc(Display);
 	glutTimerFunc(1000, Timer, 0);
@@ -38,10 +39,13 @@ void Graphics::Init(int &argc, char **argv) {
 	assert(FRUITS != NULL);
 
 	glutMainLoop();
+}
 
+void Graphics::Quit() {
 	delete SSNAKE;
 	delete (Wall *)WALLS;
 	delete FFRUITS;
+	exit(0);
 }
 
 
@@ -67,7 +71,6 @@ void Graphics::DisplayObject(Ball ball, GLuint id, double degree) {
 	glEnd();
 	glPopMatrix();
 }
-
 
 #define str(x) std::to_string(x)
 void Graphics::Display () {

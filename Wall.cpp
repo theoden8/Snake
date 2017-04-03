@@ -6,7 +6,7 @@
 
 Wall::Wall() {
 	for(int i = 0; i <= 0; ++i)
-		wallsGallery[i].load(FOLDER + "_textures/" + std::to_string(i) + "_WALL.tga");
+		wallsGallery[i].load(FOLDER + "textures/" + std::to_string(i) + "_WALL.tga");
 
 	for(int i = 0; i <= WIDTH; ++i) {
 		objects.push_back(Ball(i, HEIGHT));

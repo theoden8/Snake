@@ -49,7 +49,7 @@ void State::Init(const int &argc, char **argv) {
 void State::Keyboard(char key) {
 	switch(key) {
 		case 27 :
-			exit(0);
+			Graphics::Quit();
 		break;
 		case 'p' :
 			pause = !pause;
@@ -111,7 +111,7 @@ void State::Timer() {
 		)
 		{
 			std::cout << std::to_string(FFRUITS->frufru) << std::endl;
-			exit(0);
+			Graphics::Quit();
 		}
 	}
 	if(Ball::InSegment(SNAKE->GetObjects().front(), FRUITS->GetObjects()))

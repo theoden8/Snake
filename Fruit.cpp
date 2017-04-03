@@ -11,7 +11,7 @@ Fruit::Fruit(int fruantity):
 	PushBack(fruantity);
 
 	for(int i = 0; i < NO_ICONSETS; ++i)
-		fruitsGallery[i].load(FOLDER + "_textures/" + std::to_string(i) + "_FRUIT.tga");
+		fruitsGallery[i].load(FOLDER + "textures/" + std::to_string(i) + "_FRUIT.tga");
 }
 
 void Fruit::DeleteFruit(const Ball &fruit) {
