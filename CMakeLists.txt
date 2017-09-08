@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
 
 project(snake)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O3 -Wno-deprecated")
+add_compile_option(-Wno-deprecated)
+add_compile_option(-std=c++0x)
 
 file(GLOB SRCS ./*.cpp)
 add_executable(snake ${SRCS})
