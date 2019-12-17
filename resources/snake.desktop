@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=snake
+Type=Application
+Terminal=false
+Exec=snake
+Icon=snake
+Categories=Game;

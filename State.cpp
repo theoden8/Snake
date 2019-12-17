@@ -2,6 +2,10 @@
 #include <cstdlib>
 #include <iostream>
 
+#ifdef __linux__
+#include <unistd.h>
+#endif
+
 #include "State.hpp"
 #include "Graphics.hpp"
 
@@ -34,12 +38,29 @@ Object
 	*FRUITS,
 	*SNAKE;
 
+#ifdef __linux__
+static std::string get_executable_path() {
+  std::vector<char> buf(1000);
+  readlink("/proc/self/exe", buf.data(), 1000);
+  return std::string(buf.begin(), buf.end());
+}
+#endif
+
 void State::Init(const int &argc, char **argv) {
 	WIDTH = (argc >= 3) ? atoi(argv[1]) : 50;
 	HEIGHT = (argc >= 3) ? atoi(argv[2]) : 50;
 
-	const std::string exec = argv[0];
-	folder = exec.substr(0, exec.length() - strlen("snake"));
+#ifdef __linux__
+  const std::string exec = get_executable_path();
+#else
+  const std::string exec = argv[0];
+#endif
+  std::string::size_type n = exec.rfind('/');
+  if(n == std::string::npos) {
+    folder = "./";
+  } else {
+    folder = exec.substr(0, n + 1);
+  }
 
 	x_Display = WIDTH * 1.4;
 	y_Display = HEIGHT + 0.5;
