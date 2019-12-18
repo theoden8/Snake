@@ -1,0 +1,22 @@
+#!/bin/bash
+
+
+BUILD_DIR=build_app_osx
+ASSEMBLY_DIR=$BUILD_DIR
+SOURCE_DIR=$PWD
+
+mkdir "$BUILD_DIR"
+cd "$BUILD_DIR"
+cmake "$SOURCE_DIR" -DCMAKE_BUILD_TYPE=Release
+make -j4
+cd "$SOURCE_DIR"
+
+mkdir "$ASSEMBLY_DIR"
+mkdir -p "$ASSEMBLY_DIR/Snake.app/Contents"
+cp -v "$SOURCE_DIR/resources/Info.plist" "$ASSEMBLY_DIR/Snake.app/Contents/"
+mkdir -p "$ASSEMBLY_DIR/Snake.app/Contents/MacOS"
+cp -v "$BUILD_DIR/snake" "$ASSEMBLY_DIR/Snake.app/Contents/MacOS/"
+cp -rv "$BUILD_DIR/textures" "$ASSEMBLY_DIR/Snake.app/Contents/MacOS/textures"
+mkdir -p "$ASSEMBLY_DIR/Snake.app/Contents/Resources"
+cp -v "$SOURCE_DIR/resources/snake.icns" "$ASSEMBLY_DIR/Snake.app/Contents/Resources/Snake.icns"
+cp -rv "$BUILD_DIR/textures" "$ASSEMBLY_DIR/Snake.app/Contents/Resources/textures"
